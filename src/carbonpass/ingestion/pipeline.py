@@ -90,6 +90,8 @@ def ingest_firm(firm_dir: str | Path, use_vlm: bool = True) -> dict:
             raise RuntimeError(
                 "Ollama is not reachable and --no-vlm was not given. "
                 "Start `ollama serve` + pull the model, or rerun with --no-vlm.")
+        from carbonpass.ingestion.backstop import apply_to_document
+
         for k, png in enumerate(bills, 1):
             print(f"[ingest] bill {k}/{len(bills)}: {png.name}", flush=True)
             pdf = png.with_suffix(".pdf")
@@ -103,14 +105,17 @@ def ingest_firm(firm_dir: str | Path, use_vlm: bool = True) -> dict:
                 good = abs(s - fields["kwh_total"]) <= max(2.0, 0.005 * fields["kwh_total"])
                 checks.append(f"peak+half+off={s} vs total={fields['kwh_total']}: {'OK' if good else 'MISMATCH'}")
                 ok &= good
-            documents.append({
+            doc = {
                 "type": "taipower_bill",
                 "file": str(png.relative_to(firm_dir)),
                 "parser": "vlm",
                 "fields": fields,
                 "confidence": {k: float(v) for k, v in conf.items() if isinstance(v, (int, float))},
                 "validation": {"passed": bool(ok), "checks": checks},
-            })
+            }
+            # numeric backstop: independent PP-OCRv4 text vs the VLM's numbers
+            apply_to_document(doc, context)
+            documents.append(doc)
             if isinstance(fields.get("billing_month"), (int, float)) and isinstance(fields.get("kwh_total"), (int, float)):
                 kwh_by_month[int(fields["billing_month"])] = float(fields["kwh_total"])
             numeric_confs = [v for v in conf.values() if isinstance(v, (int, float))]
@@ -232,11 +237,11 @@ def accuracy_report(activity: dict, ground_truth_path: Path, firm_key: str) -> d
     gt = json.loads(ground_truth_path.read_text(encoding="utf-8"))["firms"].get(firm_key)
     if gt is None:
         return None
+    from carbonpass.ingestion.scoring import BILL_FIELDS, score_fields
+
     expected_bills = {b["month"]: b for b in gt["expected_extractions"]["bills"]}
-    fields = ["kwh_peak", "kwh_half_peak", "kwh_off_peak", "kwh_total",
-              "total_ntd", "contract_capacity_kw"]
     n_ok = n_tot = 0
-    per_field = {f: {"ok": 0, "tot": 0} for f in fields}
+    per_field = {f: {"ok": 0, "tot": 0} for f in BILL_FIELDS}
     for doc in activity["documents"]:
         if doc["type"] != "taipower_bill":
             continue
@@ -244,13 +249,10 @@ def accuracy_report(activity: dict, ground_truth_path: Path, firm_key: str) -> d
         exp = expected_bills.get(int(m)) if isinstance(m, (int, float)) else None
         if exp is None:
             continue
-        for f in fields:
-            got, want = doc["fields"].get(f), exp.get(f)
-            if want is None:
-                continue
+        for f, ok in score_fields(doc["fields"], exp, BILL_FIELDS).items():
             per_field[f]["tot"] += 1
             n_tot += 1
-            if isinstance(got, (int, float)) and abs(got - want) <= max(1.0, 0.002 * abs(want)):
+            if ok:
                 per_field[f]["ok"] += 1
                 n_ok += 1
     elec = activity["aggregated"]["electricity_mwh"]["value"]
