@@ -1,0 +1,119 @@
+{
+  "_source": "data/cbam_official/template_examples/4 CBAM SEE V2.1_Example Steel 3 Screws and nuts_final.xlsx",
+  "_note": "Commission's worked CN 7318 answer key (template v2.1). Inputs transcribed from the operator-entered cells; expected outputs from Summary_Products / InputOutput. See schema/cbam_template_map.yaml for coordinates. All emissions in tCO2e; period = one calendar year.",
+  "reporting_period": {"start": "2023-01-01", "end": "2023-12-31"},
+  "inputs": {
+    "source_streams": [
+      {
+        "method": "Combustion",
+        "name": "Natural gas",
+        "activity_data_t": 1837.5,
+        "ncv_gj_per_t": 48,
+        "ef_tco2_per_tj": 56.1,
+        "_derivation": "activity = (17000+8200) t products * 3.5 GJ/t heat demand / 48 GJ/t NCV"
+      }
+    ],
+    "production_processes": [
+      {
+        "name": "Carbon steel screws and nuts",
+        "goods_category": "Iron or steel products",
+        "production_level_t": 17000,
+        "direct_attributed_emissions_tco2e": 3337.95,
+        "_dir_em_derivation": "17000 t * 3.5 GJ/t * 56.1 tCO2/TJ / 1000",
+        "electricity_consumption_mwh": 3400,
+        "_elec_derivation": "17000 t * 200 kWh/t / 1000",
+        "electricity_ef_tco2_per_mwh": 0.833,
+        "electricity_ef_source": "D.4(b)",
+        "electricity_exported_mwh": 0,
+        "measurable_heat": false,
+        "waste_gases": false
+      },
+      {
+        "name": "High alloy steel screws and nuts",
+        "goods_category": "Iron or steel products",
+        "production_level_t": 8200,
+        "direct_attributed_emissions_tco2e": 1610.07,
+        "electricity_consumption_mwh": 1640,
+        "electricity_ef_tco2_per_mwh": 0.833,
+        "electricity_ef_source": "D.4(b)",
+        "electricity_exported_mwh": 0,
+        "measurable_heat": false,
+        "waste_gases": false
+      }
+    ],
+    "purchased_precursors": [
+      {
+        "name": "Carbon steel",
+        "goods_category": "Iron or steel products",
+        "country": "CN",
+        "purchased_t": 20000,
+        "consumed_in_process_t": {"Carbon steel screws and nuts": 20000},
+        "consumed_other_t": 0,
+        "see_direct_tco2e_per_t": 1.539,
+        "see_direct_source": "Measured",
+        "spec_electricity_mwh_per_t": 0.3455925,
+        "electricity_ef_tco2e_per_mwh": 0.5902905879033833,
+        "see_indirect_tco2e_per_t": 0.204
+      },
+      {
+        "name": "High alloy steel",
+        "goods_category": "Iron or steel products",
+        "country": "US",
+        "purchased_t": 10000,
+        "consumed_in_process_t": {"High alloy steel screws and nuts": 10000},
+        "consumed_other_t": 0,
+        "see_direct_tco2e_per_t": 1.44,
+        "see_direct_source": "Measured",
+        "spec_electricity_mwh_per_t": 2.0786092594604715,
+        "electricity_ef_tco2e_per_mwh": 0.833249439314805,
+        "see_indirect_tco2e_per_t": 1.732
+      }
+    ]
+  },
+  "expected": {
+    "installation_totals": {
+      "total_direct_emissions_tco2e": 4948.02,
+      "total_indirect_emissions_tco2e": 4198.32,
+      "total_emissions_tco2e": 9146.34,
+      "fuel_input_tj": 88.2
+    },
+    "process_intermediate": {
+      "Carbon steel screws and nuts": {
+        "se_direct_own": 0.19635000000000002,
+        "se_indirect_own": 0.1666,
+        "elec_own_mwh_per_t": 0.2
+      },
+      "High alloy steel screws and nuts": {
+        "se_direct_own": 0.19635000000000002,
+        "se_indirect_own": 0.1666,
+        "elec_own_mwh_per_t": 0.2
+      }
+    },
+    "products": [
+      {
+        "product_name": "Carbon steel screws and nuts",
+        "cn_code": "73181542",
+        "invoice_name": "Screws and Nuts Art. C1",
+        "see_direct": 2.0069382352941174,
+        "see_indirect": 0.4066,
+        "see_total": 2.4135382352941175,
+        "unit": "tCO2e/t",
+        "share_default_values": 0,
+        "embedded_electricity_mwh_per_t": 0.6065794117647059,
+        "elec_ef_source": "D.4(b)"
+      },
+      {
+        "product_name": "High alloy steel screws and nuts",
+        "cn_code": "73181535",
+        "invoice_name": "Screws and Nuts Art. A1",
+        "see_direct": 1.9524475609756098,
+        "see_indirect": 2.2787951219512195,
+        "see_total": 4.23124268292683,
+        "unit": "tCO2e/t",
+        "share_default_values": 0,
+        "embedded_electricity_mwh_per_t": 2.734889340805453,
+        "elec_ef_source": "D.4(b)"
+      }
+    ]
+  }
+}

@@ -1,0 +1,195 @@
+# CBAM Communication Template for installations — cell map
+#
+# Transcribed from:
+#   blank:   data/cbam_official/communication_template.xlsx           (v2.1, 18 Dec 2024)
+#   example: data/cbam_official/template_examples/
+#            "4 CBAM SEE V2.1_Example Steel 3 Screws and nuts_final.xlsx"  (CN 7318 answer key)
+#
+# This file is the CONTRACT for src/carbonpass/writer: it lists exactly which cells the
+# operator (i.e. our writer) fills, and which cells the workbook computes itself.
+# RULE: the writer writes `input` cells ONLY. `computed` cells hold workbook formulas
+# (incl. hidden-sheet array formulas that solve the precursor recursion); openpyxl must
+# never overwrite them — Excel/LibreOffice recomputes SEE on open. Our rules engine
+# reproduces the same math independently for flags, tests and the cost-delta screen.
+#
+# Verified computation chain (golden example, reproduced by carbonpass.rules):
+#   SE_dir(p)   = DirEm(p) / ActivityLevel(p)                       # D_Processes (g)/(a)
+#   SE_ind(p)   = ElecMWh(p) * ElecEF(p) / ActivityLevel(p)         # D_Processes (j)
+#   SEE_ind(prec i) = SpecElec(i) * ElecEF(i)                       # E_PurchPrec (e)ii*(e)iii
+#   SEE_dir(good)   = SE_dir + Σ_i mass(i,p)/AL(p) * SEE_dir(i)     # InputOutput matrix
+#   SEE_ind(good)   = SE_ind + Σ_i mass(i,p)/AL(p) * SEE_ind(i)
+#   EmbeddedElec(good) = ElecMWh(p)/AL(p) + Σ_i mass(i,p)/AL(p) * SpecElec(i)
+#
+# NOTE on scope (docs/10 §2A): SEE is per CN good per determination period (calendar
+# year). Indirect SEE is recorded here but is NOT part of the CN 7318 certificate.
+
+meta:
+  template_version: "2.1"
+  sheets_total: 19
+  sheets: [0_Versions, a_Contents, "b_Guidelines&Conditions", c_CodeLists, A_InstData,
+           B_EmInst, "C_Emissions&Energy", D_Processes, E_PurchPrec, F_Tools,
+           G_FurtherGuidance, Summary_Processes, Summary_Products, Summary_Communication,
+           InputOutput, Parameters_Constants, Parameters_CNCodes, Translations,
+           VersionDocumentation]
+  hidden_sheets: [InputOutput, Parameters_Constants, Parameters_CNCodes, Translations,
+                  VersionDocumentation]
+  # Capacity limits of the template's repeating tables:
+  max_goods_categories: 10        # A_InstData D62:D71 (G1..G10)
+  max_production_processes: 10    # A_InstData D83:D92 (P1..P10)
+  max_purchased_precursors: 10    # A_InstData D102:D111 (PP1..PP10)
+  max_source_streams: 30          # B_EmInst rows 17..46
+
+A_InstData:
+  reporting_period:
+    start: {cell: I9,  kind: input, type: date, note: "determination period start (calendar year)"}
+    end:   {cell: L9,  kind: input, type: date}
+  installation:
+    name_local:    {cell: I19, kind: input, optional: true}
+    name_english:  {cell: I20, kind: input}
+    street_number: {cell: I21, kind: input}
+    economic_activity: {cell: I22, kind: input}
+    post_code:     {cell: I23, kind: input}
+    po_box:        {cell: I24, kind: input, optional: true}
+    city:          {cell: I25, kind: input}
+    country:       {cell: I26, kind: input, enum_from: c_CodeLists}
+    unlocode:      {cell: I27, kind: input}
+    latitude:      {cell: I28, kind: input}
+    longitude:     {cell: I29, kind: input}
+    authorized_representative: {cell: I30, kind: input, optional: true}
+  aggregated_goods:            # section 4(a): one row per aggregated goods category
+    rows: {first: 62, last: 71, id_col: D}      # IDs G1..G10 preprinted
+    category:  {col: E, kind: input, enum: "aggregated goods categories (c_CodeLists)"}
+    route:     {col: G, kind: input, note: "'All production routes' typical; routes 1-6 in I..N"}
+  production_processes:        # section 4(b): one row per process
+    rows: {first: 83, last: 92, id_col: D}      # IDs P1..P10 preprinted
+    category:       {col: E, kind: input}
+    included_goods: {col: F, kind: input, note: "'Only direct production' unless bubble"}
+    name:           {col: L, kind: input, note: "free text; keys D_Processes + Summaries"}
+  purchased_precursors:        # section 5: one row per precursor bought from outside
+    rows: {first: 102, last: 111, id_col: D}    # IDs PP1..PP10 preprinted
+    process_category: {col: E, kind: input, note: "goods category of the precursor"}
+    country_code:     {col: F, kind: input, note: "ISO 2-letter of producing country"}
+    name:             {col: L, kind: input, note: "free text; keys E_PurchPrec blocks"}
+
+B_EmInst:  # section (a): calculation-based source streams (fuels & materials)
+  source_streams:
+    rows: {first: 17, last: 46, index_col: C}   # examples occupy 14-16; real entries from 17
+    method:        {col: D, kind: input, enum: [Combustion, Process Emissions, Mass balance]}
+    name:          {col: E, kind: input, note: "fuel/material name, free text"}
+    activity_data: {col: F, kind: input, note: "annual amount over the period"}
+    ad_unit:       {col: G, kind: input, enum: [t, 1000 Nm3, t (CaCO3), ...]}
+    ncv:           {col: H, kind: input, note: "net calorific value, GJ/t or GJ/1000Nm3"}
+    ncv_unit:      {col: I, kind: computed}
+    ef:            {col: J, kind: input, note: "tCO2/TJ for combustion; tCO2/t for process"}
+    ef_unit:       {col: K, kind: input}
+    carbon_content: {col: L, kind: input, note: "mass-balance only, tC/t"}
+    oxidation_factor: {col: N, kind: input, default: 100, unit: "%"}
+    biomass_content:  {col: R, kind: input, default: 0, unit: "%"}
+    co2e_fossil:   {col: AU, kind: computed, note: "= AD*NCV*EF etc. — never write"}
+  totals:
+    total_co2e_fossil: {cell: AU47, kind: computed, note: "feeds C_Emissions&Energy H25"}
+
+C_Emissions&Energy:
+  fuel_balance:
+    total_from_b_eminst: {cell: H15, kind: computed, unit: TJ}
+    direct_fuel_cbam:    {cell: I16, kind: computed_in_example, note: "manual in blank; example wires =H15"}
+    fuel_for_electricity: {cell: J16, kind: input, unit: TJ, note: "0 if no own generation"}
+    fuel_non_cbam:        {cell: K16, kind: input, unit: TJ}
+  ghg_balance:
+    direct_from_b_eminst: {cell: L25, kind: computed, unit: tCO2e}
+    total_indirect_manual: {cell: M26, kind: input, unit: tCO2e,
+                            note: "MUST be entered manually = Σ process ElecMWh × EF (golden: 4198.32)"}
+    total_emissions:       {cell: N27, kind: computed}
+  data_quality:
+    general:       {cell: H40, kind: input, enum_hierarchical: true,
+                    example: "Mostly measurements & international standard factors for e.g. the emission factor"}
+    default_justification: {cell: H41, kind: input, optional: true}
+    quality_assurance:     {cell: H42, kind: input, example: "Four eyes principle"}
+
+D_Processes:  # one block of 65 rows per production process; block 1 starts at row 11
+  block_layout:
+    process_1_header_row: 11      # name/category are COMPUTED from A_InstData 4(b)
+    process_2_header_row: 76      # stride = 65 rows per block
+    row_stride: 65
+  per_block:   # offsets relative to the block's header row (h = 11 for P1, 76 for P2)
+    production_level:   {cell: "L(h+5)",  kind: input, unit: t, golden: {P1: 17000, P2: 8200},
+                         note: "(a) row 1 'All production routes'; rows +6..+12 for other routes"}
+    total_production:   {cell: "L(h+13)", kind: computed, note: "denominator for SEE"}
+    consumed_in_other_processes: {rows: "L(h+21)..L(h+29)", kind: input, unit: t,
+                         note: "(c) internal consumption as precursor to other processes"}
+    consumed_non_cbam:  {cell: "L(h+30)", kind: input, unit: t}
+    applicable_heat:    {cell: "K(h+39)", kind: input, type: bool, golden: false}
+    applicable_wastegas: {cell: "L(h+39)", kind: input, type: bool, golden: false}
+    direct_attributed_emissions: {cell: "L(h+43)", kind: input, unit: tCO2e,
+                         golden: {P1: 3337.95, P2: 1610.07},
+                         note: "(g) DirEm* — OUR ALLOCATION ENGINE'S OUTPUT lands here"}
+    heat_imported:      {cell: "L(h+46)", kind: input, unit: TJ, optional: true}
+    heat_ef:            {cell: "L(h+47)", kind: input, unit: tCO2/TJ, optional: true}
+    wastegas_amount:    {cell: "L(h+50)", kind: input, unit: TJ, optional: true}
+    electricity_consumption: {cell: "L(h+54)", kind: input, unit: MWh,
+                         golden: {P1: 3400, P2: 1640}}
+    electricity_ef:     {cell: "L(h+55)", kind: input, unit: tCO2/MWh, golden: 0.833,
+                         note: "Taiwan: 0.474 (MOEA 2024)"}
+    electricity_ef_source: {cell: "L(h+56)", kind: input, enum: ["D.4.1", "D.4(b)", ...],
+                         golden: "D.4(b)"}
+    electricity_exported:  {cell: "L(h+60)", kind: input, unit: MWh, golden: 0}
+
+E_PurchPrec:  # one block of 44 rows per purchased precursor; block 1 starts at row 14
+  block_layout:
+    precursor_1_header_row: 14    # name/category COMPUTED from A_InstData section 5
+    precursor_2_header_row: 58    # stride = 44 rows per block
+    row_stride: 44
+  per_block:   # offsets relative to block header row (h = 14 for PP1, 58 for PP2)
+    purchased_amount:   {cell: "L(h+3)", kind: input, unit: t, golden: {PP1: 20000, PP2: 10000},
+                         note: "(a) row 1; rows +4..+10 for other routes"}
+    consumed_in_process: {rows: "L(h+14)..L(h+23)", kind: input, unit: t,
+                         note: "(b) one row per production process, in A_InstData 4(b) order;
+                                golden: PP1→P1 20000 (row h+14), PP2→P2 10000 (row h+15)"}
+    consumed_other:     {cell: "L(h+24)", kind: input, unit: t, golden: 0}
+    see_direct:         {cell: "L(h+35)", kind: input, unit: tCO2e/t,
+                         golden: {PP1: 1.539, PP2: 1.44},
+                         note: "from mill EPD (source=actual) or CBAM default (source=default)"}
+    see_direct_source:  {cell: "M(h+35)", kind: input, enum: [Measured, Default value, ...]}
+    spec_electricity:   {cell: "L(h+36)", kind: input, unit: MWh/t,
+                         golden: {PP1: 0.3455925, PP2: 2.0786092594604715}}
+    spec_electricity_source: {cell: "M(h+36)", kind: input}
+    electricity_ef:     {cell: "L(h+37)", kind: input, unit: tCO2e/MWh,
+                         golden: {PP1: 0.5902905879033833, PP2: 0.833249439314805},
+                         note: "input cell in blank (example wired a 'Mix' formula)"}
+    electricity_ef_source: {cell: "M(h+37)", kind: input, golden: Mix}
+    see_indirect:       {cell: "L(h+38)", kind: computed, formula: "=L(h+36)*L(h+37)",
+                         golden: {PP1: 0.204, PP2: 1.732}}
+    default_justification: {cell: "E(h+40)", kind: input, optional: true,
+                         note: "REQUIRED text when see_direct_source is a default value"}
+
+Summary_Products:   # per-CN-code rows; row 9 = 'Ex.' example, real rows from 10
+  rows: {first: 10, last: 111, index_col: C}
+  product_name:   {col: D, kind: input, note: "must equal a production-process name (dropdown)"}
+  goods_category: {col: E, kind: computed}
+  cn_code:        {col: F, kind: input, enum_from: Parameters_CNCodes, golden: [73181542, 73181535]}
+  cn_name:        {col: G, kind: computed}
+  invoice_name:   {col: H, kind: input, note: "product name used with the reporting declarant"}
+  see_direct:     {col: I, kind: computed, golden: {row10: 2.0069382352941174, row11: 1.9524475609756098}}
+  see_indirect:   {col: J, kind: computed, golden: {row10: 0.4066, row11: 2.2787951219512195}}
+  see_total:      {col: K, kind: computed, golden: {row10: 2.4135382352941175, row11: 4.23124268292683}}
+  unit:           {col: L, kind: computed, value: tCO2e/t}
+  share_default:  {col: M, kind: computed, note: "share of emissions from default values"}
+  elec_ef_source: {col: N, kind: computed}
+  embedded_electricity: {col: O, kind: computed, unit: MWh/t,
+                         golden: {row10: 0.6065794117647059, row11: 2.734889340805453}}
+  reducing_agent: {col: P, kind: input, optional: true}
+  steel_mill_id:  {col: Q, kind: input, optional: true}
+  alloy_shares:   {cols: "R..X", kind: input, optional: true, note: "%Mn %Cr %Ni %other %C scrap..."}
+  carbon_price:   {cols: "AL..AZ", kind: input, optional: true, note: "carbon price due in origin country"}
+
+Summary_Communication:
+  note: "Fully derived from the other sheets — no writer inputs. This is the sheet the
+         importer reads; verify it renders after fill."
+
+Summary_Processes:
+  note: "Fully computed (SEE aggregation per process). No writer inputs."
+
+InputOutput:
+  note: "HIDDEN. Array-formula matrix solver for internal precursor recursion.
+         AK71:AK80 = SEE(direct), AM71:AM80 = SEE(indirect), AO71:AO80 = embedded
+         electricity per good. NEVER write here."
