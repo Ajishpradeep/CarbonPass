@@ -1,0 +1,160 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "carbonpass/activity_data.schema.json",
+  "title": "CarbonPass activity data (one installation, one determination period)",
+  "description": "Output of the ingestion layer; input to allocation + rules. Period is a calendar year (per-product-per-YEAR, never per-shipment). Every extracted figure carries source + confidence.",
+  "type": "object",
+  "required": ["installation", "period", "documents", "aggregated"],
+  "properties": {
+    "installation": {
+      "type": "object",
+      "required": ["name_en", "country"],
+      "properties": {
+        "name_zh": {"type": "string"},
+        "name_en": {"type": "string"},
+        "ban": {"type": "string", "description": "統一編號 (8 digits)"},
+        "street": {"type": "string"},
+        "city": {"type": "string"},
+        "post_code": {"type": "string"},
+        "country": {"type": "string"},
+        "unlocode": {"type": "string"},
+        "latitude": {"type": "string"},
+        "longitude": {"type": "string"},
+        "economic_activity": {"type": "string"},
+        "electricity_no": {"type": "string", "description": "Taipower 電號"},
+        "contract_capacity_kw": {"type": "number"}
+      }
+    },
+    "period": {
+      "type": "object",
+      "required": ["start", "end"],
+      "properties": {
+        "start": {"type": "string", "format": "date"},
+        "end": {"type": "string", "format": "date"},
+        "year": {"type": "integer"}
+      }
+    },
+    "documents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type", "file", "parser", "fields"],
+        "properties": {
+          "type": {"enum": ["taipower_bill", "egui_invoice", "production_log", "epd", "other"]},
+          "file": {"type": "string"},
+          "parser": {"enum": ["mig_xml", "vlm", "csv", "manual"]},
+          "fields": {"type": "object"},
+          "confidence": {
+            "type": "object",
+            "additionalProperties": {"type": "number", "minimum": 0, "maximum": 1}
+          },
+          "validation": {
+            "type": "object",
+            "description": "cross-field sanity checks (sums, totals) run by the pipeline",
+            "properties": {
+              "passed": {"type": "boolean"},
+              "checks": {"type": "array", "items": {"type": "string"}}
+            }
+          }
+        }
+      }
+    },
+    "aggregated": {
+      "type": "object",
+      "description": "Annual totals the allocation + rules engines consume. Each quantity carries source ('actual' from documents, 'default' fallback) and an uncertainty (relative, 1-sigma).",
+      "required": ["electricity_mwh", "production"],
+      "properties": {
+        "electricity_mwh": {"$ref": "#/$defs/quantity"},
+        "electricity_kwh_by_month": {
+          "type": "array", "items": {"type": "number"}, "minItems": 12, "maxItems": 12
+        },
+        "fuels": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "amount", "unit"],
+            "properties": {
+              "name": {"type": "string"},
+              "method": {"enum": ["Combustion", "Process Emissions", "Mass balance"]},
+              "amount": {"$ref": "#/$defs/quantity"},
+              "unit": {"type": "string", "description": "t | 1000 Nm3"},
+              "ncv_gj_per_unit": {"type": "number"},
+              "ef_tco2_per_tj": {"type": "number"},
+              "ef_source": {"type": "string"}
+            }
+          }
+        },
+        "steel_inputs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "mass_t"],
+            "properties": {
+              "name": {"type": "string"},
+              "grade": {"type": "string"},
+              "cn_code_precursor": {"type": "string"},
+              "country": {"type": "string"},
+              "supplier": {"type": "string"},
+              "supplier_ban": {"type": "string"},
+              "mass_t": {"$ref": "#/$defs/quantity"},
+              "epd": {
+                "type": ["object", "null"],
+                "description": "mill EPD if supplied -> actual precursor SEE",
+                "properties": {
+                  "see_direct": {"type": "number"},
+                  "spec_electricity_mwh_per_t": {"type": "number"},
+                  "electricity_ef": {"type": "number"},
+                  "document": {"type": "string"}
+                }
+              }
+            }
+          }
+        },
+        "production": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["cn_code", "tonnes"],
+            "properties": {
+              "process_name": {"type": "string"},
+              "cn_code": {"type": "string"},
+              "invoice_name": {"type": "string"},
+              "tonnes": {"$ref": "#/$defs/quantity"}
+            }
+          }
+        },
+        "machines": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "kw", "hours"],
+            "properties": {
+              "name": {"type": "string"},
+              "kw": {"type": "number"},
+              "hours": {"type": "number"},
+              "process": {"type": "string", "description": "process name or 'shared'"}
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "quantity": {
+      "type": "object",
+      "required": ["value", "source"],
+      "properties": {
+        "value": {"type": "number"},
+        "unit": {"type": "string"},
+        "source": {"enum": ["actual", "default", "estimate"]},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "uncertainty_rel": {
+          "type": "number", "minimum": 0,
+          "description": "relative 1-sigma uncertainty, e.g. 0.02 = ±2%"
+        },
+        "n_documents": {"type": "integer"},
+        "document_refs": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  }
+}
