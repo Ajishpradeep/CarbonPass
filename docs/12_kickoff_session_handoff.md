@@ -128,6 +128,21 @@ docs/10 §3) to confirm the xlsx transcription, and re-verify the certificate pr
 product value" for Taiwan-origin CN 7318.** Use regulation-derived numbers from
 `rules/defaults.py`. (Saved to agent memory as `taiwan-default-value-gap` too.)
 
+### 4b. The competitor inversion (added 17 Jul — now in docs/09 Rev. 2)
+
+Defaults are **per-country**. CN 7318 direct SEE by origin (base, before mark-up):
+Taiwan **2.707** · Thailand 2.408 · US 2.580 · Vietnam 2.750 · Japan 2.800 · S. Korea 3.474 ·
+fallback "other countries" 4.801 · Türkiye 5.430 · India 5.720 · China **6.375** · Indonesia 8.230.
+So the €450–750/t folklore was *true for China/India/Türkiye*, not Taiwan → **CBAM is a tariff
+on Taiwan's competitors**: TW no-data €224/t vs China no-data €528/t (2026) = ~€300/t legislated
+advantage; ~€364/t with the mill EPD. Wire-rod precursor defaults also favour TW (7213: 2.298 vs
+CN 3.169; 7227: 2.17 vs CN 6.12). Benchmarks workbook (Reg 2025/2620, in repo): CN 7318 deduction
+1.364 (carbon)/1.154 (stainless) tCO2e/t — additive + identical across default/actual paths →
+cuts levels during free-allocation phase-in (to 2034) but **preserves every delta**; exact
+phase-in factor still to verify against the legal text. **docs/09 Rev. 2 (17 Jul) rebuilt
+§2.3/§3.1/§5.2/§7.x/§8/§9 + refs [32][33][34] on these numbers — the proposal is the
+submission-facing artifact; keep it consistent with `rules/defaults.py` output if data updates.
+
 ## 5. Known caveats / honest limits
 
 - openpyxl drops some conditional-formatting extensions of the template on save (cosmetic).
