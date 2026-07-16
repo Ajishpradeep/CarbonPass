@@ -5,6 +5,50 @@ rules), docs/09 Rev.2 (proposal). Everything below is reproducible from the repo
 
 ---
 
+## 0. ⏯ RESUME HERE (next session, any model): three downloads were in flight
+
+Background-task logs do not survive the session — **check the artifacts below, not logs.**
+Everything else in this sprint is DONE and committed (25/25 tests green; commits: `2b5ef20`
+module2, `0a87efe` bakeoff+backstop **and module3** — the two blocks merged into one commit
+by a background-shell race, all files present — `d8b2582` docs). As of 17 Jul
+~01:45 the following were still downloading on a slow link; for each: how to check, how to
+restart, and exactly what to run when it lands.
+
+**R1 — LibreOffice 26.2.4 (for §6.1 recompute verification).**
+- Check: `ls /Applications/LibreOffice.app/Contents/MacOS/soffice` (or a ~295 MB
+  `/tmp/libreoffice.dmg` mid-download; full size 295,019,039 bytes).
+- Restart if needed (official host resets connections; brew cask fails — use the Taiwan TDF
+  mirror the redirector itself points to, with resume):
+  `curl -fL -C - -o /tmp/libreoffice.dmg https://mirror.twds.com.tw/tdf/libreoffice/stable/26.2.4/mac/aarch64/LibreOffice_26.2.4_MacOS_aarch64.dmg`
+  then `hdiutil attach /tmp/libreoffice.dmg -nobrowse && cp -R "/Volumes/LibreOffice/LibreOffice.app" /Applications/ && hdiutil detach /Volumes/LibreOffice`.
+- When installed: `uv run python scripts/verify_workbook_recalc.py` (needs
+  `out/firm_a_communication_template.xlsx` + sidecar; regenerate via README step 3 if `out/`
+  is empty). **Paste the PASS/FAIL verdict into §6.1 below** and update the README caveat.
+
+**R2 — qwen3-vl:4b-instruct (CPU/edge path row of the bake-off).**
+- Check: `ollama list | grep 4b-instruct` · restart: `ollama pull qwen3-vl:4b-instruct`.
+- When present:
+  `uv run python scripts/vlm_bakeoff.py --models qwen3-vl:4b-instruct --bills 4 --with-context both`
+  (the ±context axis matters on the weaker model; results append resumably to
+  `out/bakeoff/results.json`, table regenerates in `out/bakeoff/summary.md`).
+  **Add the rows to §2** — the interesting question: does the 4B + docling context reach the
+  8B's 100%, unlocking the CPU-only smallest-factory tier (G10)?
+
+**R3 — InternVL3.5-8B, the approved challenger (`blaifa/InternVL3_5:8b`, community GGUF).**
+- Check: `ollama list | grep -i internvl` · restart: `ollama pull blaifa/InternVL3_5:8b`.
+- When present: `uv run python scripts/vlm_bakeoff.py --models blaifa/InternVL3_5:8b --bills 4`
+  → **fill the challenger row in §2**. Caveats to note with the result: community quantization
+  (not OpenGVLab-official weights) and whether `format:json` holds; a GPU-box rerun with
+  official weights remains the definitive comparison (docs/10 §6.2).
+- Prereqs that ARE done: degraded corpus exists under `data/mock_corpus/degraded/firm_a/`
+  (regenerate: `uv run python scripts/degrade_corpus.py`); ground truth committed via the
+  corpus generator; Ollama serves at :11434.
+
+Baseline to beat in all three: **qwen3-vl:8b-instruct = 288/288 (100%) across all variants**
+(§2). If a follow-up model row also hits 100%, the tiebreakers are s/doc and RAM.
+
+---
+
 ## 1. What this sprint did
 
 | Block | Deliverable | Status |
@@ -27,12 +71,14 @@ peak/half/off/total kWh, total NT$, contract kW) vs ground truth; resumable matr
 
 | variant | field accuracy | avg s/doc |
 |---|---|---|
-| clean | 24/24 (100%) | 25 |
-| rot / blur / dark / warp | 24/24 (100%) each | 25–29 |
-| jpeg (q30) | 24/24 (100%) | 48 |
-| combo (rot+dark+jpeg) | 24/24 (100%) | 34 |
+| clean | 54/54 (100%) | 25 |
+| dark | 54/54 (100%) | 28 |
+| jpeg (q30) | 54/54 (100%) | 38 |
+| combo (rot+dark+jpeg) | 54/54 (100%) | 33 |
+| rot / blur / warp | 24/24 (100%) each | 25–29 |
 
-**168/168 fields correct across every degradation** at ~25–48 s/doc. The model's robustness
+**288/288 fields correct across every degradation** (9 bills on the four key
+variants, 4 on the rest) at ~25–48 s/doc. The model's robustness
 claims (blur/tilt/low-light, docs/10 §6.2) hold on this corpus. Note the honest caveat: these
 are synthetic renders degraded synthetically — real consented bills at the pilot remain the
 decisive test (gaps G2/G3). *(Extended 8-bill run + challenger results appended below when
