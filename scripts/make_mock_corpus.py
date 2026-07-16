@@ -68,12 +68,8 @@ NG_EF_TCO2_PER_TJ = 56.1   # IPCC / template example value
 DEFAULT_SEE_WIRE_ROD_7213_2026 = 2.5276120606   # bars & rods, iron/non-alloy (base 2.297829146)
 DEFAULT_SEE_WIRE_ROD_7227_2026 = 2.387          # bars & rods, alloy/stainless (base 2.17)
 
-# TOU rates, NT$/kWh — stylized 高壓三段式 (verify current table before submission)
-RATES = {
-    "summer": {"peak": 9.39, "half": 5.85, "off": 2.53},
-    "nonsummer": {"peak": 8.63, "half": 5.44, "off": 2.32},
-    "capacity_ntd_per_kw": 236.2,
-}
+# TOU rates, NT$/kWh — single source of truth in the scheduler module
+from carbonpass.scheduler.tariffs import RATES  # noqa: E402
 
 
 # ---------------------------------------------------------------------------

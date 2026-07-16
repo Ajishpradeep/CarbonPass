@@ -27,6 +27,15 @@ def main(argv: list[str] | None = None) -> int:
     p_cost = sub.add_parser("costdelta", help="Default-vs-actual buyer cost screen")
     p_cost.add_argument("activity_json")
 
+    p_sched = sub.add_parser("schedule", help="Module 2: grid-aware TOU shift plan + ledger")
+    p_sched.add_argument("firm_dir")
+    p_sched.add_argument("-o", "--output", default=None)
+    p_sched.add_argument("--month", type=int, default=7, help="tariff month (season)")
+
+    p_serve = sub.add_parser("serve", help="Module 3: FastAPI server (incl. LINE webhook)")
+    p_serve.add_argument("--host", default="127.0.0.1")
+    p_serve.add_argument("--port", type=int, default=8787)
+
     args = parser.parse_args(argv)
     if args.command is None:
         parser.print_help()
@@ -44,6 +53,17 @@ def main(argv: list[str] | None = None) -> int:
         from carbonpass.costdelta.screen import run_costdelta_cli
 
         return run_costdelta_cli(args.activity_json)
+    if args.command == "schedule":
+        from carbonpass.scheduler.ledger import run_schedule_cli
+
+        return run_schedule_cli(args.firm_dir, args.output, month=args.month)
+    if args.command == "serve":
+        import uvicorn
+
+        from carbonpass.api.app import app
+
+        uvicorn.run(app, host=args.host, port=args.port)
+        return 0
     return 1
 
 

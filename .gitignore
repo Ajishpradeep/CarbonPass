@@ -21,3 +21,4 @@ out/
 
 # redundant archive (unzipped copy is committed)
 data/cbam_official/template_examples.zip
+data/grid/
