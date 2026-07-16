@@ -40,7 +40,23 @@ uv run python -m carbonpass pack out/firm_a_activity.json -o out/firm_a_communic
 
 # 4. the buyer screen: what your data is worth to the EU importer
 uv run python -m carbonpass costdelta out/firm_a_activity.json
+
+# 5. Module 2 — grid-aware shift plan (live Taipower #8931 feed + TOU tariffs)
+uv run python -m carbonpass schedule data/mock_corpus/firm_a
+
+# 6. Module 3 — local API + LINE webhook (simulator needs no LINE channel)
+uv run python -m carbonpass serve &
+uv run python scripts/line_simulator.py --fast
 ```
+
+## Sprint-1 extras
+
+```bash
+uv run python scripts/degrade_corpus.py          # phone-photo degradations of the corpus
+uv run python scripts/vlm_bakeoff.py --models qwen3-vl:8b-instruct   # accuracy matrix
+uv run python scripts/verify_workbook_recalc.py  # LibreOffice recompute vs engine sidecar
+```
+Results and findings: `docs/13_sprint1_report.md`.
 
 Firms B (two product lines sharing one meter — the allocation case) and C
 (mill EPD supplied — the actual-precursor case) run identically.
@@ -94,5 +110,7 @@ Known caveats: openpyxl drops some conditional-formatting extensions of the
 template on save (cosmetic); SEE cells in the output workbook are recomputed by
 Excel/LibreOffice on open (openpyxl does not evaluate formulas) — the engine's
 numbers, which the golden tests pin to the Commission's example, are in the
-`.flags.json` sidecar. PaddleOCR-VL numeric backstop and the InternVL3.5-8B
-bake-off are Sprint-1 tasks, not part of this kickoff.
+`.flags.json` sidecar, and `scripts/verify_workbook_recalc.py` proves the
+workbook independently recomputes them. Sprint-1 status (bake-off, PP-OCRv4
+numeric backstop, Module 2 scheduler, Module 3 LINE surface):
+`docs/13_sprint1_report.md`.

@@ -156,6 +156,11 @@ submission-facing artifact; keep it consistent with `rules/defaults.py` output i
 - Allocation LP currently collapses to engineering priors (bill-level data only — honest per
   G4); sub-meter/AMI constraints attach without restructuring.
 
+> **Update 17 Jul 2026:** Sprint 1 executed — items 1, 3(partly), 4(backstop), 5 and 6(FastAPI/
+> LINE + Module 2) below are done; see **docs/13_sprint1_report.md** for results (8B bake-off
+> 100% across degradations, PP-OCRv4 backstop catch-rate, NT$399,800/yr firm_a shift plan,
+> LINE simulator e2e, workbook-recompute verification).
+
 ## 6. Next steps (in order of value)
 
 1. **Sprint-1 bake-off** (docs/10 §6.2): qwen3-vl:8b vs **InternVL3.5-8B**, ±docling,
