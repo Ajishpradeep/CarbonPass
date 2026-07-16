@@ -59,7 +59,8 @@ A_InstData:
   aggregated_goods:            # section 4(a): one row per aggregated goods category
     rows: {first: 62, last: 71, id_col: D}      # IDs G1..G10 preprinted
     category:  {col: E, kind: input, enum: "aggregated goods categories (c_CodeLists)"}
-    route:     {col: G, kind: input, note: "'All production routes' typical; routes 1-6 in I..N"}
+    route:     {col: G, kind: computed, note: "formula -> 'All production routes' when no route
+                 ticked; specific routes are ticked in I..N (input)"}
   production_processes:        # section 4(b): one row per process
     rows: {first: 83, last: 92, id_col: D}      # IDs P1..P10 preprinted
     category:       {col: E, kind: input}
@@ -159,8 +160,9 @@ E_PurchPrec:  # one block of 44 rows per purchased precursor; block 1 starts at 
     electricity_ef_source: {cell: "M(h+37)", kind: input, golden: Mix}
     see_indirect:       {cell: "L(h+38)", kind: computed, formula: "=L(h+36)*L(h+37)",
                          golden: {PP1: 0.204, PP2: 1.732}}
-    default_justification: {cell: "E(h+40)", kind: input, optional: true,
-                         note: "REQUIRED text when see_direct_source is a default value"}
+    default_justification: {cell: "K(h+40)", kind: input, optional: true, merged: "K:M",
+                         note: "REQUIRED text when see_direct_source is a default value;
+                                E(h+40) is the label (Translations formula)"}
 
 Summary_Products:   # per-CN-code rows; row 9 = 'Ex.' example, real rows from 10
   rows: {first: 10, last: 111, index_col: C}
