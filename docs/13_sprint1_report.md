@@ -5,47 +5,16 @@ rules), docs/09 Rev.2 (proposal). Everything below is reproducible from the repo
 
 ---
 
-## 0. ⏯ RESUME HERE (next session, any model): three downloads were in flight
+## 0. ✅ Sprint 1 COMPLETE — nothing in flight
 
-Background-task logs do not survive the session — **check the artifacts below, not logs.**
-Everything else in this sprint is DONE and committed (25/25 tests green; commits: `2b5ef20`
-module2, `0a87efe` bakeoff+backstop **and module3** — the two blocks merged into one commit
-by a background-shell race, all files present — `d8b2582` docs). As of 17 Jul
-~01:45 the following were still downloading on a slow link; for each: how to check, how to
-restart, and exactly what to run when it lands.
-
-**R1 — LibreOffice 26.2.4 (for §6.1 recompute verification).**
-- Check: `ls /Applications/LibreOffice.app/Contents/MacOS/soffice` (or a ~295 MB
-  `/tmp/libreoffice.dmg` mid-download; full size 295,019,039 bytes).
-- Restart if needed (official host resets connections; brew cask fails — use the Taiwan TDF
-  mirror the redirector itself points to, with resume):
-  `curl -fL -C - -o /tmp/libreoffice.dmg https://mirror.twds.com.tw/tdf/libreoffice/stable/26.2.4/mac/aarch64/LibreOffice_26.2.4_MacOS_aarch64.dmg`
-  then `hdiutil attach /tmp/libreoffice.dmg -nobrowse && cp -R "/Volumes/LibreOffice/LibreOffice.app" /Applications/ && hdiutil detach /Volumes/LibreOffice`.
-- When installed: `uv run python scripts/verify_workbook_recalc.py` (needs
-  `out/firm_a_communication_template.xlsx` + sidecar; regenerate via README step 3 if `out/`
-  is empty). **Paste the PASS/FAIL verdict into §6.1 below** and update the README caveat.
-
-**R2 — qwen3-vl:4b-instruct (CPU/edge path row of the bake-off).**
-- Check: `ollama list | grep 4b-instruct` · restart: `ollama pull qwen3-vl:4b-instruct`.
-- When present:
-  `uv run python scripts/vlm_bakeoff.py --models qwen3-vl:4b-instruct --bills 4 --with-context both`
-  (the ±context axis matters on the weaker model; results append resumably to
-  `out/bakeoff/results.json`, table regenerates in `out/bakeoff/summary.md`).
-  **Add the rows to §2** — the interesting question: does the 4B + docling context reach the
-  8B's 100%, unlocking the CPU-only smallest-factory tier (G10)?
-
-**R3 — InternVL3.5-8B, the approved challenger (`blaifa/InternVL3_5:8b`, community GGUF).**
-- Check: `ollama list | grep -i internvl` · restart: `ollama pull blaifa/InternVL3_5:8b`.
-- When present: `uv run python scripts/vlm_bakeoff.py --models blaifa/InternVL3_5:8b --bills 4`
-  → **fill the challenger row in §2**. Caveats to note with the result: community quantization
-  (not OpenGVLab-official weights) and whether `format:json` holds; a GPU-box rerun with
-  official weights remains the definitive comparison (docs/10 §6.2).
-- Prereqs that ARE done: degraded corpus exists under `data/mock_corpus/degraded/firm_a/`
-  (regenerate: `uv run python scripts/degrade_corpus.py`); ground truth committed via the
-  corpus generator; Ollama serves at :11434.
-
-Baseline to beat in all three: **qwen3-vl:8b-instruct = 288/288 (100%) across all variants**
-(§2). If a follow-up model row also hits 100%, the tiebreakers are s/doc and RAM.
+All three formerly-pending items landed on 17 Jul: LibreOffice recompute verification
+**PASS** (§6.1), 4B bake-off **336/336** (§2), InternVL3.5-8B challenger **66% → qwen3-vl
+stays** (§2 verdict). 25/25 tests green; every artifact regenerable from committed scripts.
+Environment facts a fresh session needs: Ollama serves `qwen3-vl:8b-instruct`,
+`qwen3-vl:4b-instruct`, `blaifa/InternVL3_5:8b`; LibreOffice 26.2.4 in /Applications
+(installed from `mirror.twds.com.tw` — official TDF host resets long downloads, brew cask
+unusable on this link); degraded corpus regenerates via `scripts/degrade_corpus.py`;
+bake-off matrix is resumable (`out/bakeoff/results.json`). **Next work = §8.**
 
 ---
 
@@ -54,7 +23,7 @@ Baseline to beat in all three: **qwen3-vl:8b-instruct = 288/288 (100%) across al
 | Block | Deliverable | Status |
 |---|---|---|
 | A | Workbook-recompute caveat closure (LibreOffice headless) | ✅ **PASS** (§6.1) |
-| B | VLM bake-off (degraded corpus) + PP-OCRv4 numeric backstop | ✅ 8B done · challenger ⬜ |
+| B | VLM bake-off (degraded corpus) + PP-OCRv4 numeric backstop | ✅ **verdict: qwen3-vl stays** (8B 100%, 4B 100%, InternVL 66%) |
 | C | Module 2: grid-aware MILP scheduler, live #8931 feed | ✅ |
 | D | Module 3: FastAPI + LINE webhook + credential-free simulator | ✅ |
 | E | This report + README/docs/12 updates | ✅ |
@@ -84,11 +53,45 @@ are synthetic renders degraded synthetically — real consented bills at the pil
 decisive test (gaps G2/G3). *(Extended 8-bill run + challenger results appended below when
 their downloads complete.)*
 
-- **InternVL3.5-8B (approved challenger):** servable via the community Ollama build
-  `blaifa/InternVL3_5:8b` — ⬜ result pending pull.
-- **qwen3-vl:4b-instruct (CPU/edge path):** ⬜ result pending pull.
-- **±docling context:** deferred for 8B (100% without context ⇒ context can only help weaker
-  models; will be measured on the 4B).
+**Result — qwen3-vl:4b-instruct (the CPU/edge tier, G10):**
+
+| variant (4 bills each) | noctx | +docling ctx | s/doc |
+|---|---|---|---|
+| clean / rot / blur / dark / jpeg / warp / combo | **24/24 (100%) each** | **24/24 (100%) each** | 18–31 |
+
+**336/336 (100%)** — the 4B matches the 8B on every degradation, with or without the docling
+pre-pass, and runs *faster* (18–31 vs 25–48 s/doc). Consequences: (a) the smallest-factory
+CPU-only tier is validated on this corpus — the local-first story holds down-market;
+(b) the docling context adds no accuracy on this corpus (it still powers the PP-OCRv4
+backstop, which is its real job); (c) the corpus is now officially too easy to discriminate
+models — the pilot's real bills are the decisive test.
+
+**Result — InternVL3.5-8B (approved challenger; community Ollama build `blaifa/InternVL3_5:8b`):**
+
+| variant (4 bills each) | field accuracy | s/doc |
+|---|---|---|
+| clean | 11/24 (46%) | 35 |
+| jpeg | 11/24 (46%) | 44 |
+| dark / warp | 15/24 (62%) each | 40–42 |
+| blur | 18/24 (75%) | 39 |
+| rot | 20/24 (83%) | 42 |
+| combo | 21/24 (88%) | 42 |
+| **total** | **111/168 (66%)** | 35–44 |
+
+No API errors — the model simply misreads the numbers, and its misses concentrate on the
+TOU table (kwh_half_peak ×17, kwh_off_peak ×19, kwh_total ×19 of 57 misses): exactly the
+verifier-relevant fields. It is also slower than both qwen3-vl sizes. Caveat recorded: this
+is a community quantization, not OpenGVLab-official weights — but a 34-point gap is beyond
+what quantization noise plausibly explains on an OCR-bound task.
+
+### Bake-off verdict (Sprint-1 decision rule, docs/10 §6.2 — executed)
+
+**qwen3-vl stays, at both sizes.** 8B = 288/288, 4B = 336/336 (±context), InternVL3.5-8B =
+66%. The 4B's parity-at-lower-latency validates the CPU/edge tier for the smallest factories
+(G10). The docling pre-pass adds no accuracy on this corpus but remains in the pipeline as
+the independent text source for the PP-OCRv4 numeric backstop (§3). Re-run the InternVL cell
+with official weights on a GPU box before finals if anyone challenges the comparison; the
+matrix is one command per row and resumable.
 
 ## 3. Numeric backstop (PP-OCRv4)
 
@@ -171,8 +174,11 @@ tCO2e/年（屬用電間接排放；不影響 CBAM 憑證金額）”. Wiring a 
 
 ## 7. Findings & watch-items (this sprint)
 
-- **F1 — 8B robustness:** 100% field accuracy through every synthetic degradation; the
-  bake-off's discriminating power now depends on real pilot bills, not harsher synthetic noise.
+- **F1 — the corpus discriminates models, not qwen sizes:** both qwen3-vl sizes hit 100%
+  through every degradation (and the 4B is faster), yet the same corpus dropped
+  InternVL3.5-8B to 66% with misses clustered on the TOU table — so the benchmark is
+  meaningful, the qwen family is simply strong on zh-Hant documents, and size can be chosen
+  by hardware tier rather than accuracy. Real pilot bills remain the final check.
 - **F2 — #8931 feed quirks:** rows are dicts keyed 機組類型/淨發電量(MW) with a UTF-8 BOM;
   night-time intensity ~0.52 kg/kWh vs 0.474 annual mean — the diurnal spread is real and
   worth money to shift against.
@@ -187,11 +193,14 @@ tCO2e/年（屬用電間接排放；不影響 CBAM 憑證金額）”. Wiring a 
 
 ## 8. Remaining blockers / next steps
 
-1. ⬜ Append challenger (InternVL3.5-8B) + 4B rows to §2 when pulls land; extend to invoices.
-2. ⬜ §6.1 recompute verdict when LibreOffice lands.
+1. ✅ ~~Challenger + 4B rows~~ (done — §2; invoice-task bake-off still open as a nice-to-have).
+2. ✅ ~~Recompute verdict~~ (PASS — §6.1).
 3. Pilot (mentorship window): real consented bills; verifier/MIRDC review of a generated pack;
    one real load shifted & measured (before/after ledger is ready for it).
-4. PaddleOCR-VL full backstop + InternVL on a GPU box; bbox-grounded numeric matching.
+4. PaddleOCR-VL full backstop + InternVL official weights on a GPU box; bbox-grounded
+   numeric matching.
 5. LINE production channel + onboarding Q&A flow (replaces the seeded firm.json).
 6. Module 2: integrate logged 10-min feed into a true historical curve; real AMI CSV import.
 7. Demo video for 31 Jul submission (simulator makes it recordable today).
+8. Verify IR 2025/2621 legal text vs the parsed xlsx + the 2025/2620 phase-in factor
+   (15 min; flagged in docs/09 Rev.2 and docs/12 §4b).
