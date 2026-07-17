@@ -53,7 +53,7 @@ Baseline to beat in all three: **qwen3-vl:8b-instruct = 288/288 (100%) across al
 
 | Block | Deliverable | Status |
 |---|---|---|
-| A | Workbook-recompute caveat closure (LibreOffice headless) | ⬜ *(fills in below)* |
+| A | Workbook-recompute caveat closure (LibreOffice headless) | ✅ **PASS** (§6.1) |
 | B | VLM bake-off (degraded corpus) + PP-OCRv4 numeric backstop | ✅ 8B done · challenger ⬜ |
 | C | Module 2: grid-aware MILP scheduler, live #8931 feed | ✅ |
 | D | Module 3: FastAPI + LINE webhook + credential-free simulator | ✅ |
@@ -149,13 +149,23 @@ tCO2e/年（屬用電間接排放；不影響 CBAM 憑證金額）”. Wiring a 
 
 ## 6. Caveat closure
 
-1. **“SEE cells recompute in Excel/LibreOffice” — ⬜ verification pending LibreOffice install**
-   (first download attempt died on a connection reset; retry running).
-   `scripts/verify_workbook_recalc.py` exports Summary_Products headlessly and diffs the
-   workbook-computed SEE against the engine's sidecar at rel 1e-6. The test is decisive by
-   construction: openpyxl saves formulas *without* cached values, so the exporter is forced to
-   evaluate the Commission's formula chain (incl. the hidden InputOutput array-formula matrix).
-   *(Result appended below when the install lands.)*
+1. **“SEE cells recompute in Excel/LibreOffice” — ✅ VERIFIED (PASS, 17 Jul).**
+   `scripts/verify_workbook_recalc.py` round-trips the filled workbook through headless
+   LibreOffice 26.2.4 (xlsx→xlsx forces a full recalculation, because openpyxl saves formulas
+   *without* cached values) and diffs the workbook-computed SEE against the engine sidecar:
+
+   | Summary_Products row 10 (CN 73181542) | workbook (LO recalc) | engine | verdict |
+   |---|---|---|---|
+   | SEE direct | 2.92436398666 | 2.924363986610001 | OK |
+   | SEE indirect | 0.094799842 | 0.094799842 | OK |
+   | SEE total | 3.01916382866 | 3.019163828610001 | OK |
+   | embedded electricity | 0.199999666666667 | 0.1999996666666667 | OK |
+
+   The Commission's own formula chain — including the hidden `InputOutput` array-formula
+   matrix — independently reproduces the engine's numbers at rel 1e-6 (agreement is actually
+   ~1e-11; the last digits differ only by LO's binary float serialization). Method notes:
+   CSV export was unusable for this check (it rounds to displayed precision); the xlsx
+   round-trip preserves full precision.
 2. **Conditional-formatting extensions dropped by openpyxl** — unchanged, cosmetic; the
    dropped bits are Excel “extLst” conditional-formatting extras, not formulas or values.
 

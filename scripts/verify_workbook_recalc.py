@@ -17,7 +17,6 @@ Exit 0 on match (rel tol 1e-6), 1 on mismatch/failure.
 """
 from __future__ import annotations
 
-import csv
 import json
 import shutil
 import subprocess
@@ -39,16 +38,16 @@ def find_soffice() -> str | None:
     return None
 
 
-def export_sheet_csv(soffice: str, xlsx: Path, sheet_index_1based: int, outdir: Path) -> Path:
-    """Export one sheet to CSV. Token 5 of the CSV filter = sheet number (1-based)."""
-    filter_opts = f'44,34,76,1,,0,false,true,true,false,false,{sheet_index_1based}'
+def recalc_via_roundtrip(soffice: str, xlsx: Path, outdir: Path) -> Path:
+    """xlsx -> (LibreOffice load: full recalculation, since openpyxl saved the
+    formulas without cached values) -> xlsx with cached values at full precision."""
     cmd = [soffice, "--headless", "--norestore",
-           "--convert-to", f"csv:Text - txt - csv (StarCalc):{filter_opts}",
+           "--convert-to", "xlsx:Calc MS Excel 2007 XML",
            "--outdir", str(outdir), str(xlsx)]
     r = subprocess.run(cmd, capture_output=True, text=True, timeout=600)
-    out = outdir / (xlsx.stem + ".csv")
+    out = outdir / xlsx.name
     if not out.exists():
-        raise RuntimeError(f"soffice export failed: {r.stdout}\n{r.stderr}")
+        raise RuntimeError(f"soffice convert failed: {r.stdout}\n{r.stderr}")
     return out
 
 
@@ -66,50 +65,39 @@ def main() -> int:
 
     expected = json.loads(sidecar.read_text(encoding="utf-8"))["products"]
 
-    # Sheet order is fixed by the template: Summary_Products is sheet 13 (1-based).
     import openpyxl
-    wb = openpyxl.load_workbook(xlsx, read_only=True)
-    sheet_no = wb.sheetnames.index("Summary_Products") + 1
-    n_sheets = len(wb.sheetnames)
-    wb.close()
 
     with tempfile.TemporaryDirectory() as td:
-        csv_path = export_sheet_csv(soffice, xlsx, sheet_no, Path(td))
-        rows = list(csv.reader(csv_path.open(encoding="utf-8")))
+        recalced = recalc_via_roundtrip(soffice, xlsx, Path(td))
+        wb = openpyxl.load_workbook(recalced, data_only=True)  # cached values = LO's recalc
+        n_sheets = len(wb.sheetnames)
+        ws = wb["Summary_Products"]
 
-    # Row 10 in the workbook == rows[9]; columns: D=3 name, F=5 CN, I=8 dir, J=9 ind,
-    # K=10 total, O=14 embedded electricity (0-based CSV indices).
-    def num(row, col):
-        try:
-            return float(rows[row][col])
-        except (ValueError, IndexError):
-            return None
-
-    print(f"[recalc] {xlsx.name}: {n_sheets} sheets; Summary_Products exported via LibreOffice")
-    failures = 0
-    for i, prod in enumerate(expected):
-        r = 9 + i
-        got = {
-            "product": rows[r][3] if len(rows[r]) > 3 else "",
-            "cn": rows[r][5] if len(rows[r]) > 5 else "",
-            "see_direct": num(r, 8),
-            "see_indirect": num(r, 9),
-            "see_total": num(r, 10),
-            "embedded_elec": num(r, 14),
-        }
-        want = {
-            "see_direct": prod["see_direct"]["value"],
-            "see_indirect": prod["see_indirect"]["value"],
-            "see_total": prod["see_total"]["value"],
-            "embedded_elec": prod["embedded_electricity_mwh_per_t"]["value"],
-        }
-        print(f"  row {10 + i}: {got['product']!r} CN {got['cn']}")
-        for k, w in want.items():
-            g = got[k]
-            ok = g is not None and (abs(g - w) <= REL_TOL * max(abs(w), 1e-12))
-            status = "OK " if ok else "FAIL"
-            print(f"    {status} {k:14} workbook={g!r:<24} engine={w!r}")
-            failures += 0 if ok else 1
+        print(f"[recalc] {xlsx.name}: {n_sheets} sheets; recalculated via LibreOffice round-trip")
+        failures = 0
+        for i, prod in enumerate(expected):
+            r = 10 + i
+            got = {
+                "product": ws[f"D{r}"].value or "",
+                "cn": ws[f"F{r}"].value or "",
+                "see_direct": ws[f"I{r}"].value,
+                "see_indirect": ws[f"J{r}"].value,
+                "see_total": ws[f"K{r}"].value,
+                "embedded_elec": ws[f"O{r}"].value,
+            }
+            want = {
+                "see_direct": prod["see_direct"]["value"],
+                "see_indirect": prod["see_indirect"]["value"],
+                "see_total": prod["see_total"]["value"],
+                "embedded_elec": prod["embedded_electricity_mwh_per_t"]["value"],
+            }
+            print(f"  row {r}: {got['product']!r} CN {got['cn']}")
+            for k, w in want.items():
+                g = got[k]
+                ok = g is not None and (abs(g - w) <= REL_TOL * max(abs(w), 1e-12))
+                status = "OK " if ok else "FAIL"
+                print(f"    {status} {k:14} workbook={g!r:<24} engine={w!r}")
+                failures += 0 if ok else 1
 
     if failures:
         print(f"[recalc] MISMATCH: {failures} value(s) differ — writer or engine bug", file=sys.stderr)
