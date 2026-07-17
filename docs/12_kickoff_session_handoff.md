@@ -163,6 +163,12 @@ submission-facing artifact; keep it consistent with `rules/defaults.py` output i
 
 ## 6. Next steps (in order of value)
 
+> ⚠️ **POINTER (17 Jul 2026):** superseded by **`docs/14_scope_extension.md`** §6. The §4 finding below
+> still stands and got bigger: the atlas scan shows **33 countries have a CN 7318 15 row and 87 have
+> none**, and the "same factory, moved" table prices proving at **€4/t in Taiwan vs €177/t with no
+> book**. Item 2 below (verify IR 2025/2621 legal text) is now **critical and unresolved** —
+> see `docs/15` §8.1. Kill-list additions: `docs/15` §5.
+
 1. **Sprint-1 bake-off** (docs/10 §6.2): qwen3-vl:8b vs **InternVL3.5-8B**, ±docling,
    ±PaddleOCR-VL backstop, on degraded photos (tilt/blur/low-light augmentation of the corpus).
    Also `ollama pull qwen3-vl:4b-instruct` for the CPU/edge path.

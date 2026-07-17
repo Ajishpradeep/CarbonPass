@@ -34,6 +34,14 @@ Entry preparation for the **2026 Presidential Hackathon International Track (PHI
 
 ## 4. Kill-list — claims that are WRONG (never reuse)
 
+> ⚠️ **EXTENDED 17 Jul 2026 — see `docs/15_evidence_dossier.md` §5 for 10 further dead claims**, incl.
+> the **"≥80% actual verified data"** rule and the **"5% variance threshold"** (both in *no* Commission
+> document) and the fact that the **guidance PDFs are expired** (8 Dec 2023, transitional, repealed
+> Reg. 2023/1773). **§2 and §3 of THIS file are themselves now on the kill-list**: the "€450–750/t and
+> rising" demo screen (§2) and "30–50% of product value" (§3) describe the *fallback*, India and
+> Indonesia — **never Taiwan**, whose real marked-up default is ≈€224/t. New direction:
+> `docs/14_scope_extension.md`.
+
 1. ~~"1.71M SMEs need carbon reporting"~~ → real compelled core = **2,600** (+ est. 10k–15k under customer Scope-3 pressure).
 2. ~~"SMEs can submit ISO 14064-2 plans for preferential rates"~~ → preferential rates are **only for regulated large emitters** and depend on **their own Scope 1+2**, not supplier data. SME incentives = customer retention, cost pass-through, energy savings, readiness. (Voluntary Reduction Mechanism exists: credits 1.2:1 offset, 10% cap, hard eligibility/additionality — multi-year path, not an app feature.)
 3. ~~"CBAM no longer accepts default values"~~ → legal but punitive (markups above).

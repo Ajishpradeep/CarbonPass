@@ -4,6 +4,13 @@
 
 *This document is the single consolidated proposal. It supersedes files 1–7 in this project folder: all verified facts, adjudicated conflicts (Claude audit × Gemini audit), handbook-fit analysis, and technical planning are integrated here. Every load-bearing figure is cited with source and date in the References section; claims that are estimates or pending legislation are marked as such in the text.*
 
+> ⚠️ **POINTER (17 Jul 2026) — a scope extension supersedes parts of this document.** See
+> **`docs/14_scope_extension.md`** ("The Provability Divide") for the extended thesis and
+> **`docs/15_evidence_dossier.md`** §5 for the kill-list. Specifically dead here: the **"≥80% must be
+> actual verified data"** claim (§2.3, §3.1 — it is in no Commission document) and the **ISO 14067
+> by-product** claim (§5.3, §3.1 — LCA emission factors are not accepted for CBAM, QA §4.24). A Rev. 3
+> should rebuild §2.3/§3.1/§5.2/§5.3 on `docs/14`.
+
 *Rev. 2 — 17 Jul 2026. The default-value economics (§2.3, §3.1, §5.2, §8, §9) have been rebuilt from the **adopted** Commission files — the default-values workbook "DVs as adopted v20260204" (machine-readable Reg. 2025/2621) and the CBAM benchmarks workbook (Reg. 2025/2620) — parsed and unit-tested by our own working pipeline [32][33]. The earlier industry-estimate figures (€450–750/t; "30–50% of product value") turn out to describe high-intensity origins such as China and India, **not Taiwan**, whose adopted default is among the lowest in the world. That correction reshapes the pitch (§3.1) and is itself evidence of what the tool does: it reads the regulation so the owner doesn't have to.*
 
 ---

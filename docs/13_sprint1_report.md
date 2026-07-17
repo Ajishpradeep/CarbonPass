@@ -193,6 +193,11 @@ tCO2e/年（屬用電間接排放；不影響 CBAM 憑證金額）”. Wiring a 
 
 ## 8. Remaining blockers / next steps
 
+> ⚠️ **POINTER (17 Jul 2026):** this list is superseded by **`docs/14_scope_extension.md`** §6, which
+> re-aims the project on the *provability divide* thesis. Item 8 below is now **closed in part** —
+> `docs/15` §2.8 confirms the phase-in factors are in **neither** official workbook. Item 8's other
+> half (IR 2025/2547) is now **critical**: see `docs/15` §8.1.
+
 1. ✅ ~~Challenger + 4B rows~~ (done — §2; invoice-task bake-off still open as a nice-to-have).
 2. ✅ ~~Recompute verdict~~ (PASS — §6.1).
 3. Pilot (mentorship window): real consented bills; verifier/MIRDC review of a generated pack;

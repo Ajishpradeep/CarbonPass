@@ -6,6 +6,15 @@
 **Scope of this document:** what the data pack actually is, the exact EU material to reproduce it, the Taiwan data to feed it, the open-source AI/tool stack to build it, the reference architecture, a sprint plan to a working PoC by 31 Jul 2026, and an honest gap list.
 **Date compiled:** 16 Jul 2026. **Beachhead:** fasteners, CN 7318, Gangshan–Luzhu cluster.
 
+> ⚠️ **POINTER (17 Jul 2026) — rules text below is partly superseded.** See
+> **`docs/15_evidence_dossier.md`** §5. Dead: the **"≥80% actual / 20% default cap"** rule (§2, §2A —
+> a *transitional* cap on *estimations* under **repealed** Reg. 2023/1773; the live 2026 Q&A permits
+> defaults for 100% of a complex good) and the **"5% variance threshold"** (§2A — in no source
+> document). Also: **C8 (the guidance PDFs) is NOT a rule source** — dated 8 Dec 2023, non-binding,
+> transitional-period, and its €150/consignment de-minimis contradicts the live 50 t rule; keep it for
+> mechanics and worked examples only. **C3 (IR 2025/2547) is now a critical download** (`docs/15` §8.1).
+> New direction: **`docs/14_scope_extension.md`**.
+
 ---
 
 ## 0. TL;DR — the shape of the build

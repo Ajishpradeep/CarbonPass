@@ -13,6 +13,13 @@ declaration; the dominant input is the **purchased steel precursor**; indirect
 every figure carries a source flag (actual/default) + per-line uncertainty; the
 tool **prepares** verification — it never certifies.
 
+> ⚠️ **Read first (17 Jul 2026): `docs/14_scope_extension.md`** — "The Provability Divide", the
+> owner-approved scope extension (Taiwan = lab, not market; ASEAN + South Asia foreground), and
+> **`docs/15_evidence_dossier.md`** — every source behind it, the **kill-list** (the "≥80% actual
+> verified" and "5% variance" rules are in **no** Commission document; the guidance PDFs are expired),
+> and **recorded engine defects** (the mark-up basis is wrong outside steel/aluminium — do not publish
+> cement or fertiliser numbers yet). Atlas: `uv run python scripts/atlas_scan.py`.
+
 ## Setup
 
 ```bash
