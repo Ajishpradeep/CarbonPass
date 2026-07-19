@@ -60,7 +60,7 @@ class ProcessInput:
     direct_unc_rel: float
     electricity_mwh: float
     electricity_unc_rel: float
-    electricity_ef: float              # tCO2/MWh (Taiwan grid: 0.474)
+    electricity_ef: float              # tCO2/MWh (from rules/gridef.py — dated config)
     electricity_ef_source: str = "D.4.1"
     precursors: list[PrecursorInput] = field(default_factory=list)
     invoice_name: str = ""

@@ -256,6 +256,8 @@ FIRMS = {
                     "document": "CSC_EPD_wire_rod_2025.pdf (mill environmental product declaration)",
                     "see_direct": 1.85,
                     "spec_electricity_mwh_per_t": 0.42,
+                    # the EPD document's OWN stated factor: a 2025-issued EPD cites the
+                    # then-current 2024 grid EF — document data, not the engine's EF
                     "electricity_ef": 0.474,
                 },
             },
