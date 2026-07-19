@@ -12,7 +12,7 @@ documented sources; refine with MOENV data at pilot):
     nuclear, hydro, wind, solar, geothermal, storage ~ 0 (combustion basis)
     co-gen 0.60 (mixed fuels)  / IPP coal & gas same as fuel class
 Sanity anchor: the demand-weighted mean of our curve must land in the same
-range as the official 2024 average grid EF 0.474 kgCO2e/kWh (MOEA) [docs/10 §5.1].
+range as the official annual average grid EF (data/ef/grid_ef.yaml; 2025 overall 0.467).
 
 Offline-safe: every successful fetch is cached to data/grid/; tests and offline
 runs read the cache (or the committed fixture in tests/fixtures/).
@@ -102,11 +102,19 @@ def fetch_snapshot(timeout: float = 20.0) -> dict | None:
     return None
 
 
+def _official_annual_ef() -> "GridEF":
+    """Offline fallback / sanity comparator: the official annual OVERALL factor
+    (the generation-mix comparator; the industrial split is for factory Scope-2)."""
+    from carbonpass.rules.gridef import load_grid_ef
+    sel = load_grid_ef()          # default year from config
+    return load_grid_ef(sel.year, "overall")
+
+
 def intensity_of(mw_by_fuel: dict[str, float]) -> float:
     """kgCO2e/kWh of a generation mix."""
     total = sum(mw_by_fuel.values())
     if total <= 0:
-        return 0.474
+        return _official_annual_ef().kgco2e_per_kwh
     return sum(mw * FUEL_EF.get(b, 0.5) for b, mw in mw_by_fuel.items()) / total
 
 
@@ -121,24 +129,27 @@ DIURNAL_SHAPE = [1.06, 1.07, 1.07, 1.07, 1.06, 1.04, 1.00, 0.94, 0.88, 0.83,
 def hourly_curve(hours: int = 168) -> dict:
     """Hourly intensity curve (kgCO2e/kWh) for the scheduling horizon.
 
-    Anchor = live snapshot intensity if reachable, else cached, else the 0.474
-    national average; shaped by the diurnal profile. At pilot this is replaced
-    by a curve integrated from continuously logged 10-min feeds (#37331 backfill).
+    Anchor = live snapshot intensity if reachable, else cached, else the official
+    annual overall EF from data/ef/grid_ef.yaml; shaped by the diurnal profile.
+    At pilot this is replaced by a curve integrated from continuously logged
+    10-min feeds (#37331 backfill).
     """
     snap = fetch_snapshot()
     if snap is None:
         cache = GRID_CACHE / "latest_snapshot.json"
         if cache.exists():
             snap = json.loads(cache.read_text(encoding="utf-8"))
-    anchor = intensity_of(snap["mw_by_fuel"]) if snap else 0.474
+    official = _official_annual_ef()
+    anchor = intensity_of(snap["mw_by_fuel"]) if snap else official.kgco2e_per_kwh
     mean_shape = sum(DIURNAL_SHAPE) / 24
     curve = [round(anchor * DIURNAL_SHAPE[h % 24] / mean_shape, 4) for h in range(hours)]
     return {
         "anchor_kgco2_per_kwh": round(anchor, 4),
-        "anchor_source": (snap or {}).get("source", "national annual average 0.474 (offline)"),
+        "anchor_source": (snap or {}).get("source", f"offline fallback: {official.provenance}"),
         "anchor_ts": (snap or {}).get("ts"),
         "hourly_kgco2_per_kwh": curve,
         "note": "single-snapshot anchor × diurnal shape; pilot upgrade = integrate "
                 "logged 10-min feed (#8931/#37331) into a true historical curve",
-        "sanity_vs_official_0474": round(anchor / 0.474, 3),
+        "sanity_vs_official_annual": {"ratio": round(anchor / official.kgco2e_per_kwh, 3),
+                                      "reference": official.provenance},
     }

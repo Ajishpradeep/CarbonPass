@@ -37,7 +37,7 @@ def schedule_firm(firm_dir: str | Path, month: int = 7) -> dict:
         "horizon": "one week, hourly (Mon 00:00 anchor)",
         "grid_intensity": {k: curve[k] for k in
                            ("anchor_kgco2_per_kwh", "anchor_source", "anchor_ts",
-                            "sanity_vs_official_0474", "note")},
+                            "sanity_vs_official_annual", "note")},
         "tariff": {"month": month, "season": tariffs.season_of_month(month),
                    "rates_ntd_per_kwh": tariffs.RATES[tariffs.season_of_month(month)],
                    "source": "Taipower rate table (re-verify current schedule pre-submission)"},

@@ -70,15 +70,18 @@ def pack(req: PackRequest) -> dict:
             "products": sidecar["products"], "needs_attention": sidecar["needs_attention"]}
 
 
-@app.get("/costdelta")
-def costdelta(activity_json: str) -> dict:
-    from carbonpass.costdelta.screen import cost_delta
-    from carbonpass.pack import load_activity
+@app.get("/fixlist")
+def fixlist_route(activity_json: str, firm_dir: str) -> dict:
+    """Ranked fix-list (replaces /costdelta): yield → mill EPD → process energy →
+    load shifting, each able to answer 'not worth it this year'."""
+    from carbonpass.costdelta.fixlist import fixlist
 
     src = Path(activity_json)
     if not src.exists():
         raise HTTPException(404, f"{src} not found")
-    return cost_delta(load_activity(src))
+    if not Path(firm_dir).exists():
+        raise HTTPException(404, f"{firm_dir} not found")
+    return fixlist(str(src), firm_dir)
 
 
 class WasteRequest(BaseModel):

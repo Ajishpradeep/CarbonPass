@@ -103,7 +103,9 @@ def _fetch_line_content(message_id: str) -> bytes:
 
 
 def _handle_report(session: Path) -> list[str]:
-    from carbonpass.costdelta.screen import cost_delta, render_text
+    import json as _json
+
+    from carbonpass.costdelta.fixlist import fixlist, render_fixlist_zh
     from carbonpass.ingestion.pipeline import ingest_firm
     from carbonpass.writer.fill import fill_template
 
@@ -114,14 +116,17 @@ def _handle_report(session: Path) -> list[str]:
     activity = ingest_firm(session, use_vlm=True)
     xlsx = session / "communication_template.xlsx"
     sidecar = fill_template(activity, xlsx)
-    delta = cost_delta(activity)
     lines = [f"✅ 報告完成！CBAM 資料包已產生（{xlsx.name}）"]
     for p in sidecar["products"]:
         lines.append(f"CN {p['cn_code']}：每噸碳含量 {p['see_total']['value']:.2f} tCO2e"
                      f"（預設值占 {p['share_default_values']:.0%}）")
     for n in sidecar["needs_attention"][:2]:
         lines.append(f"⚠️ {n}")
-    return ["\n".join(lines), render_text(delta)]
+    # the ranked fix-list replaces the old cost-delta screen (docs/21 §1.3)
+    act_path = session / "activity.json"
+    act_path.write_text(_json.dumps(activity, ensure_ascii=False), encoding="utf-8")
+    fl = fixlist(str(act_path), str(session))
+    return ["\n".join(lines), render_fixlist_zh(fl)]
 
 
 def _handle_schedule(session: Path) -> list[str]:

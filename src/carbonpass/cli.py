@@ -24,8 +24,14 @@ def main(argv: list[str] | None = None) -> int:
     p_pack.add_argument("activity_json")
     p_pack.add_argument("-o", "--output", default=None)
 
-    p_cost = sub.add_parser("costdelta", help="Default-vs-actual buyer cost screen")
+    p_fix = sub.add_parser("fixlist", help="Ranked fix-list: yield → mill EPD → process "
+                                           "energy → load shifting (replaces costdelta)")
+    p_fix.add_argument("activity_json")
+    p_fix.add_argument("--firm-dir", default=None, help="document folder (for waste/drift)")
+
+    p_cost = sub.add_parser("costdelta", help="[deprecated] now shows the fix-list")
     p_cost.add_argument("activity_json")
+    p_cost.add_argument("--firm-dir", default=None)
 
     p_sched = sub.add_parser("schedule", help="Module 2: grid-aware TOU shift plan + ledger")
     p_sched.add_argument("firm_dir")
@@ -49,10 +55,12 @@ def main(argv: list[str] | None = None) -> int:
         from carbonpass.writer.fill import run_pack_cli
 
         return run_pack_cli(args.activity_json, args.output)
-    if args.command == "costdelta":
-        from carbonpass.costdelta.screen import run_costdelta_cli
+    if args.command in ("fixlist", "costdelta"):
+        from carbonpass.costdelta.fixlist import run_fixlist_cli
 
-        return run_costdelta_cli(args.activity_json)
+        if args.command == "costdelta":
+            print("[deprecated] `costdelta` is now the ranked fix-list (docs/21 §1.3)\n")
+        return run_fixlist_cli(args.activity_json, args.firm_dir)
     if args.command == "schedule":
         from carbonpass.scheduler.ledger import run_schedule_cli
 
