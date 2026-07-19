@@ -65,7 +65,7 @@ def _session_dir(user_id: str) -> Path:
     (d / "invoices").mkdir(parents=True, exist_ok=True)
     if not (d / "firm.json").exists():
         # PoC onboarding stand-in: seed identity/machines from the mock firm, and
-        # the e-invoice XMLs + production log via the e-GUI consent path (docs/10
+        # the e-invoice XMLs + production log via the e-GUI consent path (docs/archive/10
         # G11: steel & fuel arrive as structured XML, not photos; the photo flow
         # is for the Taipower bill).
         seed = Path("data/mock_corpus/firm_a")
@@ -124,7 +124,7 @@ def _handle_report(session: Path) -> list[str]:
                      f"（預設值占 {p['share_default_values']:.0%}）")
     for n in sidecar["needs_attention"][:2]:
         lines.append(f"⚠️ {n}")
-    # the ranked fix-list replaces the old cost-delta screen (docs/21 §1.3)
+    # the ranked fix-list replaces the old cost-delta screen (docs/archive/21 §1.3)
     act_path = session / "activity.json"
     act_path.write_text(_json.dumps(activity, ensure_ascii=False), encoding="utf-8")
     try:

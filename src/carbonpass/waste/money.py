@@ -1,8 +1,8 @@
 """MoneyLoss — money stated gross AND net, enforced by the type.
 
-The Rev-3 mistake (docs/18 §2.3): NT$7.35M/yr was quoted at purchase price when
-scrap is SOLD at ~30–40% recovery — the honest net is NT$4–5M. Rule (docs/20 §2,
-docs/21 §2.5): every headline number ships with its net twin in the same
+The Rev-3 mistake (docs/PROJECT.md §1): NT$7.35M/yr was quoted at purchase price when
+scrap is SOLD at ~30–40% recovery — the honest net is NT$4–5M. Rule (docs/archive/20 §2,
+docs/FACTS.md §8): every headline number ships with its net twin in the same
 sentence. This type makes the gross figure unreachable without the net one:
 construction requires a dated recovery range from data/prices.yaml, and every
 rendering (str, dict) emits both together.

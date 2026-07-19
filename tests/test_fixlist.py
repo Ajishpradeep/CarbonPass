@@ -23,7 +23,7 @@ def test_levers_in_measured_order(firm_a_fixlist):
 
 
 def test_negative_answer_is_pinned(firm_a_fixlist):
-    """The Thailand-row discipline (docs/21 §1.3): firm_a's data is worth €4/t —
+    """The Thailand-row discipline (docs/archive/21 §1.3): firm_a's data is worth €4/t —
     the tool must say 'not worth it this year', and say why."""
     epd = next(lv for lv in firm_a_fixlist["levers"] if lv["id"] == "mill_epd")
     assert epd["verdict"] == "not_worth_it_this_year"
@@ -48,7 +48,7 @@ def test_every_lever_can_answer_and_is_scoped(firm_a_fixlist):
         assert lv["verdict"] in ("worth_it", "not_worth_it_this_year", "insufficient_data")
         assert lv["rationale"]
         assert lv["carbon_scope_note"]
-    # electricity levers carry the not-certificated label (docs/21 §2.2)
+    # electricity levers carry the not-certificated label (docs/FACTS.md §8)
     for lid in ("process_energy", "load_shifting"):
         lv = next(x for x in firm_a_fixlist["levers"] if x["id"] == lid)
         assert "NOT" in lv["carbon_scope_note"]

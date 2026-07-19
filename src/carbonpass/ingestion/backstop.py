@@ -1,6 +1,6 @@
 """Numeric backstop: cross-check VLM-extracted numbers against layout-OCR text.
 
-Defense-in-depth on the figures a verifier scrutinizes (docs/10 §6.1): the VLM
+Defense-in-depth on the figures a verifier scrutinizes (docs/archive/10 §6.1): the VLM
 reads the document as an image; independently, docling's OCR stage (PaddleOCR
 PP-OCRv4 recognition models served via RapidOCR/ONNX) reads it as text. A number
 the VLM returns that appears NOWHERE in the OCR text is suspect — hallucinated,
@@ -8,7 +8,7 @@ misread, or transposed — and gets flagged for human/verifier attention instead
 of flowing silently into the pack.
 
 (The full PaddleOCR-VL model is the blueprint's eventual backstop; it needs a
-GPU environment. Same model family, same role — documented in docs/13.)
+GPU environment. Same model family, same role — documented in docs/archive/13.)
 """
 from __future__ import annotations
 

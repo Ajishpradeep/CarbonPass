@@ -1,6 +1,6 @@
 """Before/after ledger + CLI entry for Module 2.
 
-Output framing is G7-honest by construction (docs/10 §2A): shifting load reduces
+Output framing is G7-honest by construction (docs/archive/10 §2A): shifting load reduces
 the POWER BILL and the indirect-emissions line of the template / the buyer's
 Scope-3 figures. It does NOT reduce the CN 7318 CBAM certificate today (only
 cement & fertiliser include indirect emissions in the certificate). The ledger
@@ -61,7 +61,7 @@ def schedule_firm(firm_dir: str | Path, month: int = 7) -> dict:
         "honesty": [
             "Reduces the electricity bill and the indirect-emissions line (template record / "
             "buyer Scope-3). Does NOT reduce the CN 7318 CBAM certificate today — indirect "
-            "emissions are certificate-relevant only for cement and fertiliser (docs/10 G7).",
+            "emissions are certificate-relevant only for cement and fertiliser (docs/archive/10 G7).",
             "Baseline = flat operation Mon-Sat 06:00-22:00; refine with 15-min AMI data at pilot.",
             "Nothing here is certified; verification is the accredited verifier's act.",
         ],

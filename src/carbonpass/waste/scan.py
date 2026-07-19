@@ -10,12 +10,12 @@ The arithmetic that matters is exact and needs no allocation model:
     ⇒ ΔSEE     = Δ(ratio) × SEE_precursor
 
 Yield improvement moves the declared SEE 1:1 through the precursor term. Legal
-basis (verified in the law, docs/15 §8.1 Gate A): IR 2025/2547 Annex III §F —
+basis (verified in the law, docs/FACTS.md §2 Gate A): IR 2025/2547 Annex III §F —
 activity level = mass of goods LEAVING the process; scrap is excluded from it,
 so the scrap's embodied emissions sit inside the declared SEE whether the owner
 looks or not.
 
-Wording discipline (docs/20 §6): scrap is SOLD, not thrown away — the gap is
+Wording discipline (docs/FACTS.md §7 kill-list): scrap is SOLD, not thrown away — the gap is
 information, not diligence. Gross embodied carbon is "purchased but never
 ships", never "avoided". Money is a MoneyLoss: gross and net travel together.
 """
@@ -90,7 +90,7 @@ def scan(activity_path: str, firm_dir: str,
         cn_right = correct_precursor_cn(name, grade)
         cn_used = (si.get("cn_code_precursor") or "").replace(" ", "")
         # resolve() applies the Annex I country fallback — load-bearing here: Taiwan
-        # has NO CN 7221 value (legal-text verified, docs/15 §8.1 Gate B), so every
+        # has NO CN 7221 value (legal-text verified, docs/FACTS.md §2 Gate B), so every
         # stainless line lands on 'Other countries and territories'.
         dv, used_fallback = defaults.resolve(cn_right, country)
         if dv is None or dv.direct is None:

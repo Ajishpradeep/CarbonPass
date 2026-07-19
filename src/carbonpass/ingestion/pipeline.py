@@ -1,6 +1,6 @@
 """Ingestion pipeline: a firm's document folder -> validated activity_data JSON.
 
-Order of preference per docs/10 §2A:
+Order of preference per docs/archive/10 §2A:
   1. structured e-invoice XML (MIG 4.0) for steel & fuel purchases   [egui.parser]
   2. VLM photo/PDF parse for the Taipower bill (no open schema)      [vlm + docling]
   3. CSV/owner-confirmed data for production log & machine priors

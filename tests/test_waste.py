@@ -11,7 +11,7 @@ from carbonpass.waste.drift import rolling_loss
 
 
 def test_moneyloss_never_renders_gross_alone():
-    """docs/21 §2.5: gross AND net together, enforced in the type."""
+    """docs/FACTS.md §8: gross AND net together, enforced in the type."""
     m = MoneyLoss.from_purchase_value(7_350_000, "carbon_steel")
     s = str(m)
     assert "7,350,000" in s and "net of scrap resale" in s
@@ -95,7 +95,7 @@ def test_scan_output_discipline(firm_a_scan):
 
 
 def test_scan_firm_a_magnitudes(firm_a_scan):
-    """The verified magnitudes (docs/19, docs/20 §4): ~9.1% loss, ~758 t gross embodied."""
+    """The verified magnitudes (docs/FACTS.md, docs/archive/20 §4): ~9.1% loss, ~758 t gross embodied."""
     r = firm_a_scan
     line = r["lines"][0]
     assert line["loss_pct"] == pytest.approx(9.1, abs=0.3)

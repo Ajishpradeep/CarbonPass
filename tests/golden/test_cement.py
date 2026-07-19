@@ -2,7 +2,7 @@
 
 Inputs and expected outputs transcribed from
 data/cbam_official/template_examples/1 CBAM SEE V2.1_Example Cement_final.xlsx
-(docs/21 §1.1.2 — this workbook sat unused while defects 1–2 lived; a non-steel
+(docs/archive/21 §1.1.2 — this workbook sat unused while defects 1–2 lived; a non-steel
 golden would have caught them a sprint earlier).
 
 What it exercises beyond screws & nuts:

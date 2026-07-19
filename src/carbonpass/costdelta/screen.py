@@ -1,6 +1,6 @@
 """Buyer cost-delta screen: what the EU importer pays WITH vs WITHOUT your data.
 
-Honest magnitude (docs/19): Taiwan's default for CN 7318 is mild — data is worth
+Honest magnitude (docs/FACTS.md): Taiwan's default for CN 7318 is mild — data is worth
 ~€4/t to a carbon-steel maker, and we say so first. The delta is real money at
 volume, not a catastrophe averted.
 

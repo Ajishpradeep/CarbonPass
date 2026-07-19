@@ -1,6 +1,6 @@
 """Dated market/regulatory prices — the single reader for data/prices.yaml.
 
-Rule (docs/21 §2.8, kill-list): no undated price anywhere; the engine REFUSES to
+Rule (docs/FACTS.md §8, kill-list): no undated price anywhere; the engine REFUSES to
 quote a certificate quarter whose publication date is not recorded in the file.
 Q3 2026 does not exist until 5 Oct 2026 — asking for it raises, it never
 extrapolates.
@@ -68,7 +68,7 @@ def certificate_price(quarter: str | None = None) -> CertificatePrice:
             raise UnpublishedQuarterError(
                 f"no published CBAM certificate price for {quarter} in data/prices.yaml — "
                 f"published quarters: {sorted(published)}. Never quote an unpublished "
-                f"quarter (docs/20 §6 kill-list; Q3 2026 lands 5 Oct 2026).")
+                f"quarter (docs/FACTS.md §7 kill-list kill-list; Q3 2026 lands 5 Oct 2026).")
         row = published[quarter]
         return CertificatePrice(quarter, float(row["price"]), str(row["published"]),
                                 str(row.get("source", "")))

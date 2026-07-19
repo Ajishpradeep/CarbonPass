@@ -1,18 +1,18 @@
 """The fix-list: one ranked screen per firm — what to fix, what it's worth, and
 whether it's worth it THIS YEAR.
 
-Levers in measured order (docs/18 §4, docs/20 §4): ① yield → ② mill EPD /
+Levers in measured order (docs/PROJECT.md §2, docs/archive/20 §4): ① yield → ② mill EPD /
 precursor route → ③ process energy → ④ load shifting. The order is the
 project's honesty ranking — yield moved 80× what the scheduler did on the same
 synthetic firm — and the screen keeps it fixed rather than re-sorting by NT$.
 
 A lever that answers "not worth it this year" is a FEATURE (the Thailand-row
-discipline, docs/21 §1.3): a tool that can say "don't bother" is a compliance
+discipline, docs/archive/21 §1.3): a tool that can say "don't bother" is a compliance
 instrument, not a sales brochure. Verdicts:
     worth_it | not_worth_it_this_year | insufficient_data
 Materiality thresholds below are CarbonPass product heuristics (dated, stated
 in output) — they are NOT regulatory thresholds; no such thresholds exist in
-the CBAM rules (docs/15 §8.2.3: do not invent one).
+the CBAM rules (docs/archive/15 §8.2.3: do not invent one).
 """
 from __future__ import annotations
 
@@ -82,7 +82,7 @@ def _epd_lever(delta: dict) -> dict:
         verdict = "not_worth_it_this_year"
         rationale = (f"your data is worth €{eur_t:,.2f}/t to the buyer — Taiwan's default "
                      f"is mild and defaults are lawful without limit (IR 2025/2547, "
-                     f"docs/15 §8.1); revisit when the default table or the certificate "
+                     f"docs/FACTS.md §2); revisit when the default table or the certificate "
                      f"price moves")
     return {
         "id": "mill_epd", "title": "Mill EPD / precursor route",
@@ -167,7 +167,7 @@ def fixlist(activity_path: str | Path, firm_dir: str | Path,
         "levers": levers,
         "drift_alerts": drift_alerts,
         "ranking_note": "fixed measured order: yield → mill EPD → process energy → "
-                        "load shifting (docs/18 §4) — on the synthetic firm the yield "
+                        "load shifting (docs/PROJECT.md §2) — on the synthetic firm the yield "
                         "lever moved 80× the scheduler",
         "heuristics_note": HEURISTICS_NOTE,
         "disclaimer": "Prepared for verification — nothing here is certified. "

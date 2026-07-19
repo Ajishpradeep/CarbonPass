@@ -1,4 +1,4 @@
-"""Benchmark row schema — also the open-data give-back spec (docs/21 §1.4).
+"""Benchmark row schema — also the open-data give-back spec (docs/archive/21 §1.4).
 
 A published row is an AGGREGATE over n ≥ 5 firms; nothing below that floor is
 ever exported (k-anonymity). Firm-level observations exist only on-device.

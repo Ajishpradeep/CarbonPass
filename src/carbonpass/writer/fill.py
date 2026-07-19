@@ -11,7 +11,7 @@ Every written value gets:
   * an Excel cell comment: source (actual/default) + relative uncertainty
   * a line in the sidecar flags JSON (machine-readable verifier checklist),
     including needs-attention items (e.g. default-value usage — recorded, never
-    capped: defaults are lawful without limit, docs/15 §8.1).
+    capped: defaults are lawful without limit, docs/FACTS.md §2).
 """
 from __future__ import annotations
 
@@ -28,7 +28,7 @@ from carbonpass.rules.gridef import load_grid_ef
 
 # CN prefix -> the template's own aggregated-goods-category strings (dropdown list
 # CONST_LIST_Goods -> Translations!B; byte-exact — the workbook validates them).
-# Longest prefix wins; unmapped CN raises (docs/15 §6 defect 5).
+# Longest prefix wins; unmapped CN raises (docs/archive/15 §6 defect 5).
 CN_GOODS_CATEGORY = {
     "250700": "Calcined clays ",          # trailing space is the template's own
     "252310": "Cement clinker",

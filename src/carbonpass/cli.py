@@ -59,7 +59,7 @@ def main(argv: list[str] | None = None) -> int:
         from carbonpass.costdelta.fixlist import run_fixlist_cli
 
         if args.command == "costdelta":
-            print("[deprecated] `costdelta` is now the ranked fix-list (docs/21 §1.3)\n")
+            print("[deprecated] `costdelta` is now the ranked fix-list (docs/archive/21 §1.3)\n")
         return run_fixlist_cli(args.activity_json, args.firm_dir)
     if args.command == "schedule":
         from carbonpass.scheduler.ledger import run_schedule_cli

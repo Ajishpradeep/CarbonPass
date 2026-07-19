@@ -1,9 +1,9 @@
 """Percentile screen: where does this firm sit against the modelled band?
 
 Seed = the 3 synthetic corpus firms + the DOCUMENTED whole-chain loss band of
-5–15% (docs/19 §3: defensible synthesis; cold forming runs 85–95% material
+5–15% (docs/FACTS.md §8: defensible synthesis; cold forming runs 85–95% material
 utilization). Every output says "synthetic seed — pilot populates" until real
-rows replace it (docs/21 §2.6: provisional numbers stay labelled provisional).
+rows replace it (docs/FACTS.md §8: provisional numbers stay labelled provisional).
 """
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ import statistics
 from carbonpass.benchmark.schema import BenchmarkRow
 
 SEED_PROVENANCE = ("synthetic seed — 3 corpus firms + documented 5–15% whole-chain "
-                   "loss band (docs/19 §3); the pilot benchmark replaces this")
+                   "loss band (docs/FACTS.md §8); the pilot benchmark replaces this")
 
 # The modelled loss distribution behind the seed screen: the documented band as a
 # triangular-ish spread. NOT survey data — labelled synthetic everywhere.

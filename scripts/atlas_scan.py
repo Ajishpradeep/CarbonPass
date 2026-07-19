@@ -1,7 +1,7 @@
 """Provability Atlas — scan the adopted CBAM default tables across every country.
 
-Produces the evidence for docs/14 §5 (ASEAN + South Asia) and the "who is in the
-book" coverage map (docs/14 §2, claim 9), using the existing rules engine with no
+Produces the evidence for docs/archive/14 §5 (ASEAN + South Asia) and the "who is in the
+book" coverage map (docs/archive/14 §2, claim 9), using the existing rules engine with no
 modifications:
 
     load_country()  -> parses one country sheet (IR 2025/2621, "DVs as adopted")
@@ -9,7 +9,7 @@ modifications:
 
 Two things this script deliberately does NOT do:
   * it reports STEEL and ALUMINIUM only, because the engine's mark-up handling is
-    wrong for cement/fertiliser (docs/15 §6 bugs 1-2: the workbook's marked-up
+    wrong for cement/fertiliser (docs/archive/15 §6 bugs 1-2: the workbook's marked-up
     column is TOTAL-based, and fertiliser carries a flat 1% not 10/20/30);
   * it never claims a country is "unlisted" from a missing VALUE — only from a
     missing ROW, which is how the fallback is actually reached.
@@ -31,7 +31,7 @@ from carbonpass.rules import defaults
 
 FALLBACK_SHEET = "_Other Countries and Territorie"
 
-# Owner decision (docs/14 §1): ASEAN + South Asia foreground — New Southbound.
+# Owner decision (docs/archive/14 §1): ASEAN + South Asia foreground — New Southbound.
 # Taiwan included as the origin/lab; fallback included as the floor everyone
 # without a book falls to.
 FOCUS = [

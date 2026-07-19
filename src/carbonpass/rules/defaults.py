@@ -38,7 +38,7 @@ class DefaultValue:
         """Marked-up default value applicable to a determination period.
 
         ⚠️ The workbook's marked-up column applies to the TOTAL (direct + indirect),
-        not to direct alone (docs/15 §2.7 / §6 defect 1). For iron & steel this is
+        not to direct alone (docs/archive/15 §2.7 / §6 defect 1). For iron & steel this is
         harmless (indirect is N/A, so direct == total); for cement/fertiliser use
         `for_year_direct()` / `for_year_indirect()` for the split figures.
         """
@@ -52,7 +52,7 @@ class DefaultValue:
         """Mark-up implied by the row's own marked-up column: for_year/total − 1.
 
         Never hard-code 10/20/30: iron & steel carries 10/20/30% but fertilisers
-        carry a flat 1% in every year (docs/15 §6 defect 2). The row is the only
+        carry a flat 1% in every year (docs/archive/15 §6 defect 2). The row is the only
         safe source.
         """
         mk = self.for_year(year)
@@ -110,7 +110,7 @@ def load_country(country: str = "Taiwan") -> list[DefaultValue]:
 def lookup(cn_code: str, country: str = "Taiwan") -> DefaultValue | None:
     """Longest-prefix match: '73181542' -> row '731815' if no exact row exists.
 
-    Guard (docs/15 §6 defect 10): a query SHORTER than the stored row used to return
+    Guard (docs/archive/15 §6 defect 10): a query SHORTER than the stored row used to return
     None silently — `lookup("7223")` missed the row "722300" and the caller skipped a
     precursor. Now, when the forward match fails, rows that EXTEND the query are
     considered: exactly one -> use it; several -> raise (ambiguous short code, pass
@@ -142,7 +142,7 @@ def resolve(cn_code: str, country: str = "Taiwan") -> tuple[DefaultValue | None,
     """Country value, else the 'Other countries and territories' table. -> (dv, used_fallback)
 
     Implements the rule in IR (EU) 2025/2621 Annex I preamble (verified in the legal text,
-    docs/15 §8.1 Gate B; same rule in the Commission's Q&A p.37 §4.25):
+    docs/FACTS.md §2 Gate B; same rule in the Commission's Q&A p.37 §4.25):
 
         "Where a country or territory is explicitly listed but no value is provided or the
          relevant field shows '–', the default value for the respective good from the table

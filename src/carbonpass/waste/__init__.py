@@ -1,9 +1,9 @@
-"""Sight ② — the material-waste map (docs/18 §3).
+"""Sight ② — the material-waste map (docs/PROJECT.md §2).
 
 The pile is visible; the information is not. This package turns the same
 documents that file the CBAM pack (steel e-invoices + production log) into
 per-line yield, monthly drift, and money stated gross AND net — enforced in
-types, not in prose (docs/21 §2.5).
+types, not in prose (docs/FACTS.md §8).
 """
 from carbonpass.waste.money import MoneyLoss
 from carbonpass.waste.scan import render, scan

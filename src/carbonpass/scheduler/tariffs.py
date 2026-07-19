@@ -1,7 +1,7 @@
 """Taipower time-of-use tariff model (高壓電力三段式) — shared by scheduler + corpus.
 
 Stylized from the published rate schedule (taipower.com.tw rate-table hub;
-re-verify the current table before submission — flagged in docs/10 §5.2).
+re-verify the current table before submission — flagged in docs/archive/10 §5.2).
 Summer = 16 May – 15 Oct (we approximate by month: Jun–Sep in the corpus).
 
 Weekday banding (three-段式):

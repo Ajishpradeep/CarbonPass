@@ -1,12 +1,12 @@
 """Taiwan grid electricity emission factor — the single reader for data/ef/grid_ef.yaml.
 
-Rule (docs/21 §2.8): no code may hard-code a factor; select by year+series and
+Rule (docs/FACTS.md §8): no code may hard-code a factor; select by year+series and
 carry the provenance string into every output. The file's `default_selection`
 (2025 industrial = 0.466, MOEA announcement 2 Jun 2026) is the engine default —
-0.474 is the 2024 figure and is history (docs/19 §5).
+0.474 is the 2024 figure and is history (docs/FACTS.md §7).
 
 Scope note: this is TAIWAN's public-utility factor. It must never be applied to
-a non-Taiwanese installation (docs/15 §6 defect 3) — callers guard on country.
+a non-Taiwanese installation (docs/archive/15 §6 defect 3) — callers guard on country.
 """
 from __future__ import annotations
 

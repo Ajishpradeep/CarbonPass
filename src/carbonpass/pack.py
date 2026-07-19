@@ -60,7 +60,7 @@ def run_rules(activity: dict, alloc: AllocationResult) -> list[ProductSEE]:
     alloc_by_name = {a.name: a for a in alloc.processes}
 
     # The grid EF in data/ef/grid_ef.yaml is TAIWAN's — refuse to apply it elsewhere
-    # (docs/15 §6 defect 3: it used to be applied regardless of country).
+    # (docs/archive/15 §6 defect 3: it used to be applied regardless of country).
     inst_country = activity["installation"].get("country", "")
     if inst_country not in ("TW", "Taiwan", "台灣", "臺灣"):
         raise ValueError(

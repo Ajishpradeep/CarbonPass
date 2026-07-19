@@ -3,7 +3,7 @@
 Pull the full MOENV carbon-footprint emission-coefficient table (dataset CFP_P_02
 == data.gov.tw #28176) into data/ef/moenv_coefficients.json.
 
-Design notes (see docs/11_setup_kickoff.md B2):
+Design notes (see docs/SOURCES.md §4):
   - Calls the canonical MOENV API directly (NOT the Swagger "Try it out" proxy,
     which 500s). Uppercase DataID, api_key as query param, no `language` param.
   - Paginates with offset/limit until all rows are fetched (the default limit is

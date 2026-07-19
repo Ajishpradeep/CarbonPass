@@ -5,7 +5,7 @@ Clean renders overstate real-world accuracy: owners photograph bills tilted, in
 factory light, with cheap phones. This script produces deterministic degraded
 variants of each PNG so the bake-off measures robustness, not best-case OCR.
 
-Variants (docs/10 §6.2 — blur/tilt/low-light robustness is a selection criterion):
+Variants (docs/archive/10 §6.2 — blur/tilt/low-light robustness is a selection criterion):
     rot    ±3–7° rotation, white fill (tilted photo)
     blur   gaussian radius 1.5–2.5 (focus miss)
     dark   brightness 0.45 × contrast 0.7 (factory-floor light)

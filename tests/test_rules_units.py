@@ -19,7 +19,7 @@ def test_markup_derived_from_row_steel():
 
 
 def test_markup_derived_from_row_fertiliser_flat_1pct():
-    """Fertilisers carry a FLAT 1% in every year (docs/15 §6 defect 2) — the row knows."""
+    """Fertilisers carry a FLAT 1% in every year (docs/archive/15 §6 defect 2) — the row knows."""
     dv = defaults.lookup("28141000", "Vietnam")
     assert dv.direct == pytest.approx(3.46)
     assert dv.total == pytest.approx(3.61)
@@ -52,7 +52,7 @@ def test_grid_ef_from_config_not_literal():
     assert load_grid_ef(2024, "overall").kgco2e_per_kwh == pytest.approx(0.474)
     with pytest.raises(KeyError):
         load_grid_ef(2023)          # not in the file — no silent extrapolation
-    # the old hard-coded constants must stay dead (docs/21 §7.6)
+    # the old hard-coded constants must stay dead (docs/archive/21 §7.6)
     assert not hasattr(config, "GRID_EF_KGCO2_PER_KWH")
     assert not hasattr(config, "CERTIFICATE_PRICE_EUR")
     assert not hasattr(config, "markup_for_year")
@@ -154,7 +154,7 @@ def test_default_precursor_fallback_and_flags():
     r = compute_product_see(p, period_year=2026)
     expected_prec = 2.297829146 * 1.10
     assert r.see_direct.value == pytest.approx(0.15 + 1.1 * expected_prec, rel=1e-9)
-    # share recorded, never capped: defaults are lawful without limit (docs/15 §8.1)
+    # share recorded, never capped: defaults are lawful without limit (docs/FACTS.md §2)
     assert r.share_default_values > 0.9
     assert any("default value used" in n for n in r.needs_attention)
     assert not any("ceiling" in n for n in r.needs_attention)

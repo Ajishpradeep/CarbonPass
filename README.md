@@ -11,9 +11,9 @@ Local-first AI that turns a small Taiwanese factory's photographed paperwork
 | ③ Energy timing | "When should my machines run?" | Grid-aware MILP shift plan (live #8931 feed + TOU) | NT$399,800/yr + ~4 tCO₂e (indirect — recorded, **not** in the CN 7318 certificate) |
 | ④ Peer position | "Am I normal?" | Anonymised percentile screen (k≥5 floor) | synthetic seed on the documented 5–15% band — labelled; the pilot populates it |
 
-**Ground rules baked into the code** (docs/21 §2): one SEE per CN code per
+**Ground rules baked into the code** ([docs/FACTS.md](docs/FACTS.md) §8): one SEE per CN code per
 **calendar year**, never per shipment · defaults are lawful without limit (no
-80/20 rule, no cap — verified against IR 2025/2547 itself, docs/15 §8.1) · mass
+80/20 rule, no cap — verified against IR 2025/2547 itself, [docs/FACTS.md](docs/FACTS.md) §2) · mass
 counts **before cutting** (Annex III §F: scrap sits inside the declared SEE —
 the yield lever's legal basis) · electricity is recorded but **not**
 certificated for iron & steel · money and carbon always gross **and** net,
@@ -22,8 +22,9 @@ enforced in types · prices/factors are dated config (`data/prices.yaml`,
 unpublished certificate quarter · the tool prepares verification, never
 certifies.
 
-Entry point for a fresh session: **`docs/20_master_handoff.md`** (state, doc
-index, kill-list) → **`docs/21_sprint2_blueprint_kickoff.md`** (build order).
+Entry point for a fresh session: **[docs/PROJECT.md](docs/PROJECT.md)** (thesis, state,
+roadmap) → **[docs/FACTS.md](docs/FACTS.md)** (every verified number + the kill-list) →
+**[docs/SOURCES.md](docs/SOURCES.md)** (official sources & data contract). History: `docs/archive/`.
 
 ## Setup
 
@@ -117,7 +118,7 @@ data/ef/              grid_ef.yaml (2025 industrial 0.466 default) + MOENV snaps
 data/mock_corpus/     generated synthetic corpus (gitignored)
 ```
 
-## Status vs Sprint-2 Definition of Done (docs/21 §7)
+## Status vs Sprint-2 Definition of Done (docs/archive/21 §7)
 
 | # | Item | Status |
 |---|------|--------|
@@ -127,7 +128,7 @@ data/mock_corpus/     generated synthetic corpus (gitignored)
 | 4 | Benchmark module + public k≥5 schema + percentile screen | ✅ |
 | 5 | Simulator plays four sights in one session | ✅ (video to record) |
 | 6 | Engine consumes prices.yaml + grid_ef.yaml; refusal pinned; provenance everywhere | ✅ |
-| 6b | Legal-text gates recorded (docs/15 §8.1) | ✅ no estimation cap; CN 7221 hole confirmed in the OJ |
+| 6b | Legal-text gates recorded (docs/FACTS.md §2) | ✅ no estimation cap; CN 7221 hole confirmed in the OJ |
 | 7 | Kill-list grep clean; README current | ✅ this file |
 
 Known caveats: openpyxl drops some conditional-formatting extensions of the
@@ -135,4 +136,4 @@ template on save (cosmetic); SEE cells in the output workbook are recomputed by
 Excel/LibreOffice on open — the engine's numbers are in the `.flags.json`
 sidecar and `scripts/verify_workbook_recalc.py` proves the workbook reproduces
 them (re-verified after the 0.466 grid-EF migration). Sprint-1 history
-(bake-off, backstop, scheduler, LINE): `docs/13_sprint1_report.md`.
+(bake-off, backstop, scheduler, LINE): `docs/archive/13_sprint1_report.md`.

@@ -30,16 +30,16 @@ OUT_DIR = REPO_ROOT / "out"
 OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "http://localhost:11434")
 OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "qwen3-vl:8b-instruct")
 
-# --- CBAM constants (sources: docs/10 §2, docs/00 §3) ------------------------
+# --- CBAM constants (sources: docs/archive/10 §2, docs/archive/00 §3) ------------------------
 # NOTE (Sprint 2): the default-value mark-up is NEVER a constant — it is derived
 # from the workbook row itself (`DefaultValue.derived_markup()`: steel 10/20/30%,
-# fertilisers flat 1% — docs/15 §6 defects 1–2). Certificate prices live in
+# fertilisers flat 1% — docs/archive/15 §6 defects 1–2). Certificate prices live in
 # data/prices.yaml (carbonpass.prices) and the grid EF in data/ef/grid_ef.yaml
-# (carbonpass.rules.gridef): dated config, never literals (docs/21 §2.8).
+# (carbonpass.rules.gridef): dated config, never literals (docs/FACTS.md §8).
 
 # Indirect emissions are recorded in the template but are NOT part of the
 # CN 7318 (iron & steel) certificate obligation — only cement & fertiliser
-# include indirect today (docs/10 §2A, G7). Do not fold indirect into the
+# include indirect today (docs/archive/10 §2A, G7). Do not fold indirect into the
 # certificate cost for fasteners.
 INDIRECT_IN_CERTIFICATE_SECTORS = {"cement", "fertiliser"}
 

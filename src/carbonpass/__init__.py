@@ -5,7 +5,7 @@ Module 1 pipeline:
     -> rules (SEE per IR 2025/2547) -> writer (EU Communication Template .xlsx)
     -> costdelta (default-vs-actual buyer screen)
 
-Non-negotiables (docs/10_poc_blueprint.md §2A):
+Non-negotiables (docs/FACTS.md §1):
     * SEE is per-product-per-YEAR (determination period = calendar year), never per-shipment.
     * Output is the producer->importer Communication Template, not the EU Registry declaration.
     * Indirect (electricity) emissions are recorded but are NOT part of the CN 7318 certificate.

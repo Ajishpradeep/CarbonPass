@@ -1,6 +1,6 @@
 """Allocation engine: installation-level energy -> per-process attribution.
 
-Two-step attribution per IR 2025/2547 (docs/10 §2A):
+Two-step attribution per IR 2025/2547 (docs/archive/10 §2A):
   step 1: installation totals -> production processes (CBAM vs non-CBAM split)
   step 2: process emissions -> CN-code products (here 1:1 process:product)
 

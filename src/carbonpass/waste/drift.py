@@ -1,7 +1,7 @@
 """Monthly loss drift from dated e-invoices + the production log.
 
 Purpose: turn the annual blindness into a weekly control loop — "Line 2 loss
-rose 7%→11% since March; check the die" (docs/21 §1.2). Steel arrives in lumpy
+rose 7%→11% since March; check the die" (docs/archive/21 §1.2). Steel arrives in lumpy
 quarterly invoices, so point-in-time monthly ratios are meaningless; the series
 uses a trailing window (default 3 months) so every point spans at least one
 delivery.

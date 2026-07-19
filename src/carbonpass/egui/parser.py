@@ -1,6 +1,6 @@
 """MIG 4.0 e-invoice (電子發票) XML parser — the structured ingestion path.
 
-Per docs/10 §2A / G11: e-GUI is universal since 2021, so the highest-value inputs
+Per docs/archive/10 §2A / G11: e-GUI is universal since 2021, so the highest-value inputs
 (steel & fuel purchases) can be pulled as clean XML with owner consent instead of
 OCR. This parser reads F0401-style B2B exchange XML. The VLM path stays for the
 rendered 證明聯 (and for firms that only keep paper).

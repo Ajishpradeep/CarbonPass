@@ -10,7 +10,7 @@ Outputs (data/mock_corpus/ — gitignored, regenerate at will):
         firm.json                            installation identity (LINE-onboarding stand-in)
     ground_truth.json                        per-firm expected extractions + hand-computed SEE
 
-Scenario design (docs/10 §2A input priority — steel precursor dominates):
+Scenario design (docs/archive/10 §2A input priority — steel precursor dominates):
     firm_a  carbon-steel screws only, 1 process, NO mill EPD -> precursor from CBAM
             default (Taiwan CN 7213 + 2026 mark-up). The common case.
     firm_b  carbon + stainless lines, 2 processes sharing one meter & furnace ->
@@ -604,7 +604,7 @@ def make_firm(firm_key: str, firm: dict) -> dict:
 
     ident = firm["identity"]
     # firm.json = owner-onboarding data (the LINE Q&A stand-in): identity, the
-    # process map defined at first-time setup (docs/10 §2A), machine priors, and
+    # process map defined at first-time setup (docs/archive/10 §2A), machine priors, and
     # any mill EPD the owner uploaded. Everything else comes from documents.
     onboarding = {
         "identity": ident,
@@ -728,7 +728,7 @@ def make_firm(firm_key: str, firm: dict) -> dict:
     draw_production_log(fdir / "production_log.pdf", firm, monthly_prod)
 
     # Ground truth from the rows the documents ACTUALLY carry, not the intended
-    # totals (docs/15 §6 defect 11): monthly production rounds to 0.1 t, gas m3 and
+    # totals (docs/archive/15 §6 defect 11): monthly production rounds to 0.1 t, gas m3 and
     # bill kWh round to integers — the engine can only ever see the rounded sums,
     # so the golden must be computed from them.
     emitted = {

@@ -3,7 +3,7 @@
 
 Measures field-level extraction accuracy vs corpus ground truth on the Taipower
 bill task (the pure photo-parse path — invoices have the structured XML route).
-Outputs incremental JSON (resumable) + a markdown table for docs/13.
+Outputs incremental JSON (resumable) + a markdown table for docs/archive/13.
 
 Usage:
     python scripts/vlm_bakeoff.py --models qwen3-vl:8b-instruct,qwen3-vl:4b-instruct \

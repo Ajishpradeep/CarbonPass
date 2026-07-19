@@ -3,7 +3,7 @@
 
 Posts fake (but correctly signed, when a secret is set) LINE events against a
 running `carbonpass serve` instance, using the firm_a corpus. One session, in
-sequence (docs/21 §1.5 — this is the demo-video script):
+sequence (docs/archive/21 §1.5 — this is the demo-video script):
 
     (photographs two Taipower bills)      the one photograph
     「狀態」                                what's been received

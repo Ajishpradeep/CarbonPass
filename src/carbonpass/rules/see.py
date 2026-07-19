@@ -10,7 +10,7 @@ per shipment. Verified against the Commission's screws & nuts answer key
 'actual'), else from the CBAM default value for the precursor CN code with the
 period's mark-up derived from the workbook row itself (steel 10/20/30%,
 fertilisers flat 1% — source 'default'). Defaults are lawful without limit
-(IR 2025/2547 Annex II A.1.2, docs/15 §8.1); their share is recorded, not capped.
+(IR 2025/2547 Annex II A.1.2, docs/FACTS.md §2); their share is recorded, not capped.
 
 Indirect SEE is computed and recorded (the template requires it) but is NOT
 part of the CN 7318 certificate obligation (G7) — cost math must use direct only.
@@ -126,7 +126,7 @@ def compute_product_see(p: ProcessInput, period_year: int) -> ProductSEE:
                     f"CN {prec.cn_code!r} ({prec.country}), and none in the "
                     f"'Other countries and territories' table either")
             # Mark-up basis: the workbook's marked-up column is TOTAL-based; split
-            # direct/indirect with the row-derived mark-up (docs/15 §6 defects 1–2).
+            # direct/indirect with the row-derived mark-up (docs/archive/15 §6 defects 1–2).
             psd = dv.for_year_direct(period_year)
             psi = dv.for_year_indirect(period_year) or 0.0
             pse = 0.0                  # defaults carry no specific-electricity figure
@@ -164,7 +164,7 @@ def compute_product_see(p: ProcessInput, period_year: int) -> ProductSEE:
     see_ind = sum(v for v, _ in ind_terms)
     emb_elec = sum(v for v, _ in elec_terms)
     # Recorded, never capped: defaults are lawful without limit (IR 2025/2547 Annex II
-    # A.1.2); the emissions report only discloses this share (Annex IV — docs/15 §8.1).
+    # A.1.2); the emissions report only discloses this share (Annex IV — docs/FACTS.md §2).
     share_default = default_dir_sum / see_dir if see_dir else 0.0
 
     dir_source = "actual" if share_default == 0.0 else ("mixed" if any_actual_prec or se_dir_own else "default")

@@ -1,4 +1,4 @@
-"""Thin CLI wrapper around carbonpass.waste (the productized module — docs/21 §1.2).
+"""Thin CLI wrapper around carbonpass.waste (the productized module — docs/archive/21 §1.2).
 
 Run:  uv run python scripts/waste_scan.py out/firm_a_activity.json data/mock_corpus/firm_a
 Out:  out/waste/<firm>_waste.json (+ drift series) + printed summary

@@ -2,14 +2,14 @@
 
 Ground truth is computed by scripts/make_mock_corpus.py from the rows the
 documents actually carry (rounded monthly production, integer gas m3 / bill kWh
-— docs/15 §6 defect 11), independently of the engine's allocation/rules code.
+— docs/archive/15 §6 defect 11), independently of the engine's allocation/rules code.
 This was blocked while GT came from intended totals: firm_b drifted rel ~7.5e-5,
 firm_c ~1.1e-4. Now the reconciliation must be tight.
 
 The no-VLM ingest skips Taipower-bill photos, so electricity is injected from
 the ground truth's expected bill extractions (the perfect-VLM assumption): the
 test pins the ALLOCATION + RULES math end-to-end; VLM extraction accuracy is
-pinned separately by the bake-off (docs/13).
+pinned separately by the bake-off (docs/archive/13).
 """
 from __future__ import annotations
 
