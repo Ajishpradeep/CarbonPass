@@ -1,0 +1,132 @@
+\documentclass[11pt,a4paper]{article}
+
+% ---------- fonts ----------
+\usepackage{fontspec}
+\setmainfont{DejaVu Serif}[Scale=0.92]
+\setsansfont{DejaVu Sans}[Scale=0.92]
+\newfontfamily\cjk{Noto Serif CJK TC}
+
+% ---------- base ----------
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{colortbl}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{setspace}
+\usepackage{caption}
+\usepackage{ragged2e}
+\usepackage{etoolbox}
+\usepackage[most]{tcolorbox}
+\usepackage[numbers,super,sort&compress]{natbib}
+
+\geometry{a4paper, top=2.4cm, bottom=2.6cm, left=2.4cm, right=2.4cm}
+
+% ---------- colors ----------
+\definecolor{ink}{HTML}{1A3A4A}
+\definecolor{accent}{HTML}{B8433A}
+\definecolor{steel}{HTML}{1A6B8A}
+\definecolor{mist}{HTML}{9DB4C0}
+\definecolor{paper}{HTML}{F7F8F9}
+\definecolor{rowgray}{HTML}{F5F6F7}
+
+% ---------- headings ----------
+\titleformat{\section}{\Large\bfseries\color{ink}}{\thesection}{0.7em}{}[\vspace{1pt}{\color{ink}\titlerule[1.1pt]}]
+\titleformat{\subsection}{\large\bfseries\color{ink}}{\thesubsection}{0.6em}{}
+\titlespacing{\section}{0pt}{16pt}{8pt}
+\titlespacing{\subsection}{0pt}{12pt}{5pt}
+
+% ---------- header/footer ----------
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[C]{\footnotesize\color{gray}CarbonPass --- Proposal for the 2026 Presidential Hackathon International Track}
+\fancyfoot[C]{\footnotesize\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+
+% ---------- captions & tables ----------
+\captionsetup{font=small,labelfont=bf,justification=raggedright,singlelinecheck=false}
+\renewcommand{\arraystretch}{1.25}
+\setlength{\parskip}{4.5pt}
+\setlength{\parindent}{0pt}
+
+% ---------- boxes ----------
+\newtcolorbox{concept}[1]{enhanced,breakable,colback=white,colframe=white,
+  borderline west={2.6pt}{0pt}{steel},left=8pt,right=4pt,top=4pt,bottom=4pt,
+  title={},before upper={\textbf{\textcolor{ink}{#1}}\quad},arc=0pt,boxrule=0pt,
+  frame hidden,before skip=8pt,after skip=8pt}
+\newtcolorbox{keyfact}[1]{enhanced,breakable,colback=white,colframe=white,
+  borderline west={2.6pt}{0pt}{accent},left=8pt,right=4pt,top=4pt,bottom=4pt,
+  before upper={\textbf{\textcolor{accent}{#1}}\quad},arc=0pt,boxrule=0pt,
+  frame hidden,before skip=8pt,after skip=8pt}
+
+% ---------- hyperref last ----------
+\usepackage[colorlinks=true,linkcolor=steel,citecolor=ink,urlcolor=steel,
+  bookmarks=true,bookmarksnumbered=true,unicode=true]{hyperref}
+
+\begin{document}
+
+% ================= COVER =================
+\begin{titlepage}
+\newgeometry{margin=0cm}
+\noindent
+\begin{minipage}{\textwidth}
+\vspace{0cm}
+{\color{ink}\rule{\textwidth}{14mm}}\\[-2.5pt]
+{\color{accent}\rule{\textwidth}{2.6mm}}
+\end{minipage}
+
+\vspace{2.6cm}
+\begin{minipage}{0.82\textwidth}
+\hspace{1.9cm}\begin{minipage}{0.88\textwidth}
+{\sffamily\footnotesize\bfseries\color{accent}\MakeUppercase{P r o j e c t\ \ P r o p o s a l\ \ ·\ \ E d u c a t i o n a l\ \ E d i t i o n}}\\[9mm]
+{\fontsize{30}{34}\selectfont\bfseries\color{ink}CarbonPass}\\[7mm]
+{\large\color{ink!75}Closing the Carbon Data Divide for Taiwan's Export SMEs}\\[2.5mm]
+{\normalsize\color{black!60}An AI compliance and energy-optimization copilot,\\prototyped on the world's screw capital}\\[15mm]
+{\color{ink}\rule{2.6pt}{2.45cm}}\hspace{4mm}%
+\begin{minipage}[b]{0.8\textwidth}\small
+2026 Presidential Hackathon --- International Track\\
+Theme: ``Digital Inclusion in the AI Era''\\
+Supervisor: Office of the President, ROC (Taiwan)\\
+Implementer: Ministry of Digital Affairs\\
+Document date: July 2026
+\end{minipage}
+\end{minipage}
+\end{minipage}
+
+\vfill
+\noindent
+\begin{minipage}{\textwidth}
+\hspace{1.9cm}\begin{minipage}{0.52\textwidth}
+\footnotesize\color{black!55}
+This document explains the full premise from first principles --- no prior
+knowledge of carbon regulation is assumed. All statistics are cited to primary
+or credible dated sources; estimates are labeled as estimates.
+\end{minipage}
+\hfill
+\raisebox{-0.4cm}{{\color{mist}\rule{3cm}{3cm}}}\hspace{-3cm}\raisebox{-3.42cm}{{\color{ink}\rule{6.2cm}{3cm}}}
+\end{minipage}
+\restoregeometry
+\end{titlepage}
+
+% ================= TOC =================
+\thispagestyle{plain}
+\tableofcontents
+\vspace{6mm}
+\listoffigures
+\listoftables
+\clearpage
+
+\input{sec1}
+\input{sec2}
+\input{sec3}
+\input{sec4}
+\input{sec5}
+\input{sec6}
+\input{sec7}
+\input{refs}
+
+\end{document}

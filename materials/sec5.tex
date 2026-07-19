@@ -1,0 +1,126 @@
+\section{The Proposed Solution: CarbonPass}\label{sec:solution}
+
+\textbf{CarbonPass is a local-first AI compliance and energy-optimization
+copilot for export SMEs, prototyped on the fastener cluster.} In one sentence
+of user experience: \emph{photograph your electricity bill and invoices inside
+LINE, answer three questions in Mandarin or Taiwanese, and receive (a) the
+carbon data pack your European buyer needs, (b) the money it saves them, and
+(c) a production schedule that cuts your power bill and makes next quarter's
+numbers better.}
+
+\begin{table}[htbp]
+\caption{The CarbonPass pipeline at a glance}
+\label{tab:pipeline}
+\small
+\begin{tabularx}{\textwidth}{@{}p{0.2\textwidth}X@{}}
+\toprule
+\textbf{Stage} & \textbf{What happens} \\
+\midrule
+Inputs the SME already has & Taipower bills, material invoices (steel wire rod, fuels), production records --- photographed in LINE, in Mandarin/Taiwanese \\
+Module 1: Data-Pack Engine & Document AI + allocation across product lines $\to$ per-CN-code embedded emissions in the EU template, flagged field-by-field for the verifier \\
+Module 2: Grid-Aware Scheduler & Hourly grid carbon intensity from open 10-minute Taipower data + time-of-use tariffs $\to$ shift plan for furnaces and compressors; NT\$ and tCO$_2$e deltas \\
+Outputs & CBAM data pack; organizational inventory; ``default vs.\ actual'' buyer-cost screen; monitored reduction ledger \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Module 1 --- the Data-Pack Engine (compliance core)}
+
+Document intelligence ingests bills, invoices and production records
+\textbf{on the factory's own device or premises} --- raw data never leaves. The
+engine then performs the two computations generic calculators cannot:
+\textbf{allocation} (splitting facility energy across product lines and CN
+codes using production volumes, machine ratings and operating-hour heuristics,
+with quantified uncertainty per line --- a strict CBAM requirement that
+invoices alone cannot satisfy) and \textbf{assembly of ``specific embedded
+emissions'' per the EU rulebook} (simple-vs-complex-goods logic, wire-rod
+precursor from mill certificates or conservative default fallback, output
+rendered in the European Commission's template structure). The most persuasive
+output is one screen: \emph{``with your data, your buyer surrenders
+$\approx$EUR~150/t; without it, $\approx$EUR~450--750/t and rising''} --- a
+retention argument the owner can forward to the customer.
+
+\subsection{Module 2 --- the Grid-Aware Scheduler (environmental-economic engine)}
+
+Taiwan publishes its power system's \textbf{generation by unit every 10 minutes
+as open data}\cite{taipowerdata}. CarbonPass computes an hourly
+grid-carbon-intensity curve from that public feed, overlays Taipower
+time-of-use tariffs (summer peak rates run several times the off-peak
+rate\cite{taipower}), and runs a scheduling optimizer over the factory's
+\emph{flexible} loads --- heat-treatment furnaces, compressors, plating
+rectifiers --- against order deadlines stated in the chat. Input is 15-minute
+smart-meter data the customer exports from their own Taipower account
+(consent-based; no third-party API dependency). Output: a shift plan, projected
+NT\$ savings, projected tCO$_2$e reduction, and a monitored before/after ledger
+--- a continuously documented reduction trajectory structured to the
+baseline-and-monitoring logic of ISO~14064-2. Stated carefully:
+\emph{structured to the standard's logic; certification remains the accredited
+verifier's act.} Every avoided tonne also shrinks the next data pack ---
+measurement and mitigation feed each other.
+
+\subsection{Module 3 --- the Inclusion Interface (the reason this belongs in this hackathon)}
+
+The front end is not a dashboard but a \textbf{conversation in LINE,
+Mandarin/Taiwanese-first, voice-friendly, zero ESG vocabulary}.
+``{\cjk 拍一張電費單}'' --- \emph{snap a photo of the power bill} --- is the
+entire onboarding. The excluded party here is a person: a 60-plus
+owner-operator who will never log into a European portal or read a 2,400-page
+implementing regulation\cite{omm}, and should not have to. Digital inclusion
+--- the Handbook's ``ages, regions, and needs'' --- is delivered as an
+interface property, not a slogan.
+
+\subsection{One engine, both directions of readiness}
+
+\begin{table}[htbp]
+\caption{Extended uses of the same data spine}
+\label{tab:extended}
+\small
+\begin{tabularx}{\textwidth}{@{}p{0.17\textwidth}Xp{0.3\textwidth}@{}}
+\toprule
+\textbf{Direction} & \textbf{Artifact / use} & \textbf{Trigger} \\
+\midrule
+International & CBAM data packs per CN code & Definitive phase, live since Jan 2026\cite{taxud} \\
+ & Customer Scope-3 questionnaires (TSMC-chain, global brands) & SBTi/RE100 supplier programs\cite{tsmc} \\
+ & ISO 14067 preparation; Digital Product Passport payloads & ESPR phase-in 2027--2030\cite{espr} \\
+\addlinespace
+Domestic & Standing organizational inventory (ISO 14064-1-style) & Carbon-fee threshold lowering\cite{ecobiz} \\
+ & Documented reduction ledger, positioned for the voluntary-credit mechanism (credits offset fee liability at 1.2:1, capped at 10\%) & MOENV voluntary reduction rules\cite{offset} \\
+ & Bank-ready carbon data for sustainability-linked lending & FSC Green Finance policies \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Beyond Today's Scope: The Mandates That Extend the Idea}\label{sec:future}
+
+A proposal must justify its life after the demo. CarbonPass's forward case
+rests on dated regulatory trajectories, not speculation:
+
+\begin{enumerate}[leftmargin=1.4em]
+\item \textbf{The CBAM downstream extension (decision imminent).} $\sim$180
+added product categories, obligations from 1~January~2028; Council position
+adopted June 2026; \textbf{European Parliament plenary vote expected September
+2026 --- inside this Hackathon's mentorship window}\cite{akin}. By the final
+review in late October, the team presents with the outcome known: either the
+addressable market grows from 2,600 firms to the exporters of 180 categories,
+or the beachhead is confirmed with more preparation time. Treated correctly as
+pending legislation, this is a roadmap event few proposals anywhere can
+schedule between submission and finals.
+\item \textbf{The Digital Product Passport.} Registry infrastructure from July
+2026; batteries mandatory 2027; steel, textiles, electronics phased
+2027--2030\cite{espr}. DPP payloads are machine-readable product sustainability
+data --- structurally the same output class CarbonPass already generates.
+\item \textbf{Domestic escalation.} Threshold lowering, fee increases, ETS
+pilot $\sim$2027\cite{ecobiz} --- each step converts more of Taiwan's
+manufacturing SMEs from spectators into reporters, with CarbonPass's inventory
+by-product as their on-ramp.
+\item \textbf{The NDC 3.0 arithmetic.} A 38\%$\pm$2\% cut by 2035\cite{ndc}
+cannot be delivered by $\sim$500 directly regulated entities alone; the state
+needs measurement capillaries into the SME layer. A tool the government can
+adopt through the Hackathon's own pipeline (Section~\ref{sec:fit}) is exactly
+such a capillary.
+\end{enumerate}
+
+The expansion sequence is therefore: fasteners (2026, live compulsion) $\to$
+downstream steel/aluminium categories (2028, pending) $\to$ DPP sectors
+(2027--2030) $\to$ domestic carbon-fee entrants (2027 onward). Same engine,
+widening catalogue.

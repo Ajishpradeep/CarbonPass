@@ -1,0 +1,102 @@
+\section{The Question and the Method}\label{sec:q}
+
+The question under test: \emph{when a team wins the Presidential Hackathon's
+International Track, is it because the project is genuinely excellent --- or
+because it lands on the nation's immediate need at the right moment?} The
+question matters because our own entry strategy depends on the answer.
+
+\textbf{Method.} We identified the publicly named Teams of Excellence for each
+International Track edition, 2019--2025 (two per year in official reporting;
+14 in total), then researched each against three factual axes: (1) what the
+project actually was and how technically substantial it was \emph{at the time
+of winning}; (2) whether it pre-existed the competition; (3) whether any
+public trace of activity exists \emph{after} the competition (websites, code
+repositories, partnerships, press, return appearances). Sources are official
+press releases (MODA, Office of the President), the competition's own history
+pages, the winning organizations' own publications, and third-party records
+(Open Contracting Partnership, CoST International, GitHub). Where we found
+nothing, we say ``no public trace found'' --- which is evidence of absence
+only in the weak sense, and is labeled accordingly.
+
+\textbf{Two bias controls.} First, this review deliberately re-verified claims
+made in this project's own earlier research files, and corrects two of them
+(Section~\ref{sec:corrections}). Second, we observe winners only: the losing
+pool is invisible, so we cannot prove that better projects lost. Claims below
+are therefore about \emph{what winners have in common}, not about what judges
+rejected.
+
+\textbf{The scoring frame the judges use.} The rubric weights Feasibility 40\%,
+Innovation 30\%, Social Impact 30\% at preliminaries; finals add
+Implementation \& Verification at 30\%\cite{handbook}. Note what this
+arithmetic already implies: ``uniqueness of technology'' is at most
+three-tenths of the decision; the other seven-tenths reward a solvable,
+important, demonstrable problem. The theme itself is set annually to the
+presidential agenda --- 2026's theme ``echoes President Lai's New Year
+vision''\cite{handbook} --- and the award is presented personally by the
+President in a ceremony attended by diplomatic representatives\cite{focuscrop}.
+The institutional design, in other words, is not neutral between our two
+hypotheses. What follows tests whether the record matches the design.
+
+\section{The Case Files, 2019--2025}\label{sec:cases}
+
+Table~\ref{tab:master} compresses the fourteen case files; the paragraphs
+after it add what a table cannot.
+
+\begin{table}[htbp]
+\caption{Fourteen Teams of Excellence: what they were, whether they pre-existed, what remains}
+\label{tab:master}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}p{0.032\textwidth}p{0.145\textwidth}p{0.105\textwidth}Xp{0.205\textwidth}@{}}
+\toprule
+\textbf{Yr} & \textbf{Team} & \textbf{Origin} & \textbf{Project (verified description)} & \textbf{Pre-existence / afterlife} \\
+\midrule
+19 & CoST Honduras & Honduras & SISOCS infrastructure-disclosure platform; disclosure rates 27\%$\to$95\%\cite{cost} & Pre-existed (2014--15, World Bank context); still operating, 1,850+ projects, $\sim$US\$1bn disclosed\cite{cost} \\
+19 & Cartelogy & Malaysia & Procurement red-flag tool; $\sim$7,000 contracts converted to OCDS\cite{ocpcartel} & Backed by civic-tech group; no public post-2019 trace found \\
+20 & Fiscal Force & India & Health Procurement Performance Index on Himachal Pradesh tenders\cite{ocpfiscal} & Built by CivicDataLab (existing org); grew into a formal CivicDataLab--OCP partnership with state governments\cite{ocpindia} \\
+20 & Learning Man & Taiwan & Social-housing procurement mapping via OC4IDS\cite{ocpfiscal} & No public post-2020 trace found \\
+21 & A/B Street & Intl.\ (US) & Open-source traffic simulation / street redesign tool\cite{abstreet} & Pre-existed (2018); post-win: creator ``almost ended the project,'' continued at the Alan Turing Institute, now a one-person consultancy; development narrowed to a library\cite{abstreet,abinterview} \\
+21 & Office Farmers & Intl. & Open-data crop adaptation modeling\cite{pres2021} & No public post-2021 trace found \\
+22 & BRSDM@Er-Lin & Taiwan & Field biochar-pyrolysis equipment + cloud data platform, promoted toward Southeast Asia\cite{hist2023} & Research-team project; no public post-2022 trace found \\
+22 & B.E.N.Z. & India & GIS-based urban-forest and tree-placement optimization\cite{hist2023} & No public post-2022 trace found \\
+23 & HysonTech & Taiwan/India & ``FarmABetterFish'' AIoT aquaculture system\cite{moda2023} & Hyson Technology sells intelligent-aquaculture products commercially today\cite{hyson} \\
+23 & Re-Fill City & Thailand & App incentivizing bottle refill/reuse with retailer partnerships\cite{moda2023} & No public post-2023 trace found \\
+24 & GreenhopeBCTW & Taiwan/US & Blockchain personal carbon wallet; monetizes verified behavior\cite{moda2024} & GreenHope operates as a Web3 company today\cite{greenhope} \\
+24 & MooApps & Indonesia & Digital livestock-monitoring app\cite{moda2024} & No public post-2024 trace found \\
+25 & CropNow & India & NEST IoT device + CropDesk advisory: soil, microclimate, disease prediction\cite{focuscrop} & Invited back to the 2026 launch to present implementation progress\cite{moda2026} \\
+25 & Beyond Hearing & Taiwan/France & AI+AR real-time sound-to-visual translation for the hearing-impaired\cite{pres2025} & Invited back to the 2026 launch to present implementation progress\cite{moda2026} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{What the winners were, in their year's context}
+
+\textbf{2019--2020: the transparency years.} The theme was sustainable
+infrastructure; the global civic-tech zeitgeist was open contracting. Both
+years' winners were procurement-data tools. Neither was algorithmically novel
+--- SISOCS is a disclosure database; HPPI is an index over tender data --- but
+both were \emph{real}: SISOCS had been disclosing actual road projects since
+2015 under a World Bank program\cite{cost}, and Fiscal Force was built by an
+established data-for-governance organization\cite{ocpindia}. The technically
+interesting entrant of 2019, Cartelogy's red-flag cartel detection, is the one
+whose trail goes cold afterward.
+
+\textbf{2021--2022: the net-zero years.} Themes pivoted to climate action.
+A/B Street won: a genuinely impressive piece of software --- but one started
+in 2018, three years mature, with an existing community\cite{abstreet}. Its
+post-win account is the most instructive in the whole record: the creator
+nearly shut it down within a year of winning, and the project survived by
+institutional adoption (Turing Institute) unrelated to
+Taiwan\cite{abinterview}. The 2022 winners (field biochar pyrolysis; GIS tree
+placement) were competent applied projects squarely on the ``practicing net
+zero'' theme\cite{hist2023}; neither left a public trace we could find.
+
+\textbf{2023--2025: the AI-for-the-vulnerable years.} As generative AI
+exploded, winning entries became AIoT systems with named beneficiary
+populations: fish farmers (HysonTech --- an operating company whose product
+line exists today\cite{hyson}), consumers (Re-Fill City), individual citizens'
+carbon behavior (GreenhopeBCTW --- likewise an operating
+company\cite{greenhope}), smallholder farmers (CropNow), and the
+hearing-impaired (Beyond Hearing). The 2025 pair --- an Indian agri-IoT
+startup-style team and a Taiwan--France accessibility team --- were selected
+from nine finalists and honored by the President alongside India's
+representative office chief\cite{focuscrop}.

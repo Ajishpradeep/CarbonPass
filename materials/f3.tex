@@ -1,0 +1,78 @@
+\section{Maturity of the Project}\label{sec:maturity}
+
+\subsection{Development stage}\label{sec:stage}
+
+CarbonPass is an early prototype purpose-built for this competition; it has not
+been commercialized, and the modification-rule provisions therefore do not
+apply. At submission the following is demonstrable:
+
+\begin{itemize}[leftmargin=1.3em,itemsep=2pt]
+\item \textbf{Module 1 (Data-Pack Engine)} runs end-to-end on a three-firm mock
+corpus built from real Taiwanese Taipower bill and Ministry of Finance
+e-invoice formats, producing a per-CN-code data pack in the European Commission
+template with per-line uncertainty.
+\item \textbf{Module 2 (Grid-Aware Scheduler)} runs on a synthetic
+fastener-plant load profile against the \emph{live} open 10-minute grid feed,
+computing hourly carbon intensity and an optimized shift plan\cite{taipowerdata}.
+\item \textbf{Module 3 (Inclusion Interface)} is an operational LINE
+conversational front end in Mandarin/Taiwanese.
+\end{itemize}
+
+The proof of concept requires no hardware, no paid API, and no partnership to
+run --- it is built entirely on open data (Section~\ref{sec:opendata}), which
+makes its feasibility independently checkable by the jury.
+
+\subsection{Project adjustments}\label{sec:adjustments}
+
+Not applicable: the project is original to this competition and has not been
+sold or awarded elsewhere. No 50\% modification was required.
+
+\subsection{Demonstration}\label{sec:demo}
+
+A demonstration video accompanies the online application, showing the full
+path from photographed documents to a generated data pack, the buyer-cost delta
+screen, and a grid-aware schedule computed from the live open grid feed.
+\emph{[Video link entered in application form field 3.3.]}
+
+\subsection{Existing validation fields}\label{sec:valfields}
+
+Validation is planned within the competition's own mentorship machinery and
+involves the public sector. During the mentorship period, outreach is directed
+to a TIFI member factory in the Gangshan cluster for a real pilot, with the
+Metal Industries Research \& Development Centre (MIRDC) and Kaohsiung
+Environmental Protection Bureau's voluntary-reduction advisory team as domain
+and public-sector validation partners. \emph{These are validation targets being
+approached, not yet secured commitments}, and are stated as such.
+
+\subsection{Existing validation results and verification plan}\label{sec:valresults}
+
+At submission the quantified results are those produced on the mock corpus and
+synthetic-plus-live-feed pipeline (Section~\ref{sec:stage}); the field-measured
+results are generated during mentorship and presented at the final review. The
+plan maps directly onto the official calendar\cite{handbook}:
+
+\begin{table}[htbp]
+\caption{Implementation and verification milestones mapped to the official schedule}
+\label{tab:plan}
+\small
+\begin{tabularx}{\textwidth}{@{}p{0.27\textwidth}X@{}}
+\toprule
+\textbf{Window (Handbook)} & \textbf{Milestone} \\
+\midrule
+By 31 Jul 2026 (submission) & Proof of concept v0 + demonstration video + this proposal; validation outreach opened to TIFI, MIRDC, and Kaohsiung EPB \\
+6--16 Aug (preliminary review) & Proposal and working prototype under evaluation \\
+Mid-Sep -- mid-Oct (mentorship) & One pilot factory in Gangshan: real bills in, real data pack out; pack structure reviewed with an MIRDC engineer or accredited verifier; one flexible load shifted and measured on-meter; weekly progress log \\
+Late Oct (final review) & Live demonstration: data pack generated on stage from raw documents; live grid-aware schedule; pilot before/after ledger; market outlook updated with the September European Parliament vote\cite{akin} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{formfield}{Boundaries stated up front}
+CarbonPass \emph{prepares} verification; it does not replace the accredited
+verifier --- at least 80\% of reported emissions must be third-party
+verified\cite{omm}. Preferential carbon-fee rates belong to large regulated
+emitters, not SMEs; the SME's incentives are customer retention, cost
+pass-through, energy savings, and readiness\cite{moenvfee}. The 2028 scope
+extension is pending legislation and is treated as a tracked roadmap event, not
+a booked benefit\cite{akin}.
+\end{formfield}

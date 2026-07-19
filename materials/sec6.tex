@@ -1,0 +1,68 @@
+\section{Technical Plan: How It Gets Built}\label{sec:tech}
+
+\subsection{Architecture and AI substance}
+
+The stack is deliberately conservative where compliance demands it and
+ambitious where differentiation lives. Three subsystems carry the AI claim
+honestly: (i) \textbf{document intelligence with allocation reasoning} ---
+multi-format, mixed-language bill and invoice understanding plus
+facility-to-product energy allocation under uncertainty, a genuine
+machine-learning problem rather than mere OCR; (ii) \textbf{carbon- and
+price-aware scheduling} --- a mixed-integer-programming baseline with a
+reinforcement-learning refinement, driven by a live grid signal computed from
+open data; (iii) a \textbf{compliance rules engine} encoding the EU's
+methodology (simple/complex goods, precursors, default tables) into
+field-level guidance. Bill-parsing arithmetic alone would not justify the AI
+framing --- both independent audits behind this proposal said so; the
+combination above is what clears the bar. Exotic roadmap items (federated
+learning across the cluster, confidential computing) are explicitly staged
+\emph{after} the pilot, following architectural precedents Taiwan's banking
+sector has already normalized.
+
+\subsection{Every dataset needed for the proof of concept (all accessible today)}
+
+\begin{table}[htbp]
+\caption{PoC data resources, access, and role (links are clickable)}
+\label{tab:datasets}
+\small
+\begin{tabularx}{\textwidth}{@{}p{0.31\textwidth}p{0.3\textwidth}X@{}}
+\toprule
+\textbf{Resource} & \textbf{Access} & \textbf{Role} \\
+\midrule
+MOENV carbon-footprint emission coefficients & \href{https://data.gov.tw/en/datasets/28176}{data.gov.tw \#28176} (OpenAPI) & Material / fuel / process emission factors \\
+Taiwan product carbon-footprint registry & \href{https://data.gov.tw/en/datasets/8992}{data.gov.tw \#8992} & Benchmarks and sanity checks \\
+Electricity emission factor, 0.474 kgCO$_2$e/kWh (2024) & \href{https://www.moeaea.gov.tw/ECW/English/content/Content.aspx?menu_id=24200}{MOEA Energy Administration} & Scope-2 and scheduler math \\
+Taipower generation by unit, 10-minute & \href{https://data.gov.tw/en/datasets/8931}{\#8931 (real-time)}, \href{https://data.gov.tw/en/datasets/37331}{\#37331 (historical)} & Hourly grid-carbon-intensity curve \\
+Taipower time-of-use rate schedules & \href{https://www.taipower.com.tw/2764/2765/2801/}{taipower.com.tw} & Price signal for the scheduler \\
+CBAM default values and methodology (Reg.\ (EU) 2025/2621; DG TAXUD templates) & \href{https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism_en}{EUR-Lex / DG TAXUD} & Output schema; CN 7318 default rows; cost-delta screen \\
+Official CBAM certificate prices (quarterly) & \href{https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism/price-cbam-certificates_en}{European Commission} & Live cost math (EUR 75.36 Q1 / 75.28 Q2 2026) \\
+EU--Taiwan trade flows for CN 7318 & Eurostat Comext; Taiwan MOF customs statistics & Impact quantification \\
+MOENV GHG registry disclosures of large emitters & MOENV platforms & Steel-precursor benchmarks \\
+15-minute smart-meter interval data & Customer CSV export via Taipower app/eBill (consent) & Scheduler input; synthetic profile until pilot \\
+Bill/invoice sample corpus & Public Taipower bill formats; MOF e-invoice specification; mock corpus by team & Document-AI training and evaluation \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Open-data reciprocity, which the application form scores: CarbonPass publishes
+back (a) a cleaned hourly Taiwan grid-carbon-intensity dataset derived from the
+10-minute feeds, and (b) an anonymized fastener-sector emissions benchmark from
+the pilot.
+
+\subsection{Build plan against the official competition calendar}
+
+\begin{table}[htbp]
+\caption{Deliverables mapped to the PHIT 2026 schedule\cite{handbook}}
+\label{tab:plan}
+\small
+\begin{tabularx}{\textwidth}{@{}p{0.27\textwidth}X@{}}
+\toprule
+\textbf{Window (Handbook)} & \textbf{Deliverable} \\
+\midrule
+Now $\to$ 31 Jul 2026, 17:00 (GMT+8) --- submission & Team of 3--10 with at least one non-ROC national; PoC v0 (Module~1 end-to-end on a three-firm mock corpus; Module~2 on a synthetic fastener load profile with the live grid feed); LINE-bot walkthrough; demo video; proposal written field-by-field to the application form (SDGs 8, 9, 12, 13); expressions of interest targeted from a TIFI member firm, MIRDC, or Kaohsiung EPB's advisory team \\
+6--16 Aug --- preliminary review & Scored 40\% Feasibility / 30\% Innovation / 30\% Social Impact: the proposal plus a credible start is the whole game \\
+Mid-Sep $\to$ mid-Oct --- mentorship & One real pilot factory in Gangshan: actual bills in, actual data pack out; structure reviewed by an MIRDC engineer or verifier; one flexible load shifted and measured. Track the European Parliament vote and update the market slide with the outcome \\
+Late Oct --- final review & Live demo: pack generation, grid-aware schedule, pilot before/after ledger. The Implementation \& Verification criterion (30\%) scores progress \emph{between submission and finals} and requires ``a system demo or code design description'' \\
+\bottomrule
+\end{tabularx}
+\end{table}

@@ -1,0 +1,22 @@
+\contentsline {section}{\numberline {1}Why This Document Exists --- and Five Ideas You Need First}{3}{section.1}%
+\contentsline {section}{\numberline {2}The Setting: Taiwan's SME Economy and the Kingdom of Screws}{3}{section.2}%
+\contentsline {section}{\numberline {3}The Mandate: Carbon Rules Closing In From Both Sides}{4}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Taiwan's own laws: net-zero, NDC targets, and the carbon fee}{5}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}The European Union's border carbon price (CBAM)}{6}{subsection.3.2}%
+\contentsline {section}{\numberline {4}The Problem: What Breaks, When, and For Whom}{6}{section.4}%
+\contentsline {subsection}{\numberline {4.1}The immediate problem (2026--2027): the price of not knowing your own number}{7}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}The compounding problem (2027--2030): four ratchets}{9}{subsection.4.2}%
+\contentsline {section}{\numberline {5}The Gap: Why Nothing in the Current System Solves This}{9}{section.5}%
+\contentsline {section}{\numberline {6}The Proposed Solution: CarbonPass}{9}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Module 1 --- the Data-Pack Engine (compliance core)}{10}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Module 2 --- the Grid-Aware Scheduler (environmental-economic engine)}{10}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}Module 3 --- the Inclusion Interface (the reason this belongs in this hackathon)}{10}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.4}One engine, both directions of readiness}{11}{subsection.6.4}%
+\contentsline {section}{\numberline {7}Beyond Today's Scope: The Mandates That Extend the Idea}{11}{section.7}%
+\contentsline {section}{\numberline {8}Technical Plan: How It Gets Built}{12}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Architecture and AI substance}{12}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Every dataset needed for the proof of concept (all accessible today)}{12}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}Build plan against the official competition calendar}{13}{subsection.8.3}%
+\contentsline {section}{\numberline {9}Fit With the Presidential Hackathon}{13}{section.9}%
+\contentsline {section}{\numberline {10}Honest Limits and Risks}{14}{section.10}%
+\contentsline {section}{References}{15}{section*.15}%

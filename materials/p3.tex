@@ -1,0 +1,92 @@
+\section{The Solution: CarbonPass in Action}\label{sec:solution}
+
+\subsection{Sixty seconds in the life of the user}
+
+Mr.~Lin, Gangshan, 61, opens LINE. The assistant greets him in Taiwanese and
+asks for a photo of last month's Taipower bill. He photographs it, then the
+steel wire-rod invoices, and answers three plain questions about last month's
+production. Ninety seconds later he has: a \textbf{carbon data pack} for his
+screws, per customs code, formatted to the European Commission's template and
+flagged line-by-line for the verifier; a \textbf{one-screen argument} he can
+forward to his Rotterdam buyer --- \emph{your cost with my data:
+$\approx$EUR~150/t; without it: EUR~450--750/t and rising}; and a
+\textbf{suggestion}: shift the heat-treatment furnace to the 02:00--06:00
+window this month, saving an estimated NT\$ amount on the bill and a stated
+number of kilograms of CO$_2$ --- both of which flow into next quarter's pack
+automatically. No portal. No consultant. No data leaving his building.
+
+\subsection{The three AI systems behind the conversation}
+
+\begin{table}[htbp]
+\caption{The CarbonPass pipeline: from shoebox documents to market access}
+\label{tab:pipeline}
+\small
+\begin{tabularx}{\textwidth}{@{}p{0.21\textwidth}X@{}}
+\toprule
+\textbf{Stage} & \textbf{What happens} \\
+\midrule
+Inputs the SME already has & Taipower bills, material invoices, production records --- photographed in LINE, in Mandarin/Taiwanese \\
+Document intelligence + allocation & Vision-language parsing of messy, mixed-format documents; facility energy allocated across product lines and CN codes with quantified uncertainty \\
+Compliance rules engine & The EU methodology (simple/complex goods, precursors, default tables from the 2,400-page regulation\cite{omm}) encoded into field-level guidance and the Commission's template structure \\
+Grid-aware scheduler & Hourly grid carbon intensity computed live from Taipower's open 10-minute generation feed\cite{taipowerdata} + time-of-use tariffs\cite{taipower} $\to$ MILP + reinforcement-learning shift plans for flexible loads \\
+Outputs & CBAM data pack per CN code; organizational inventory; buyer-cost delta screen; monitored before/after reduction ledger \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{1. Document intelligence with allocation reasoning.} Anyone can OCR a
+bill. The hard problem --- the one that decides CBAM compliance --- is
+\emph{allocation}: splitting one facility-wide electricity number across
+dozens of screw variants, per customs code, defensibly. CarbonPass treats this
+as a constrained-inference problem over production volumes, machine ratings
+and operating-hour priors, and attaches a quantified uncertainty to every
+line, so a human verifier sees not just a number but how solid it is. This is
+the step no existing calculator attempts (Section~\ref{sec:diff}).
+
+\textbf{2. A regulation, compiled.} The EU's methodology --- simple versus
+complex goods, precursor emissions, punitive default tables --- is encoded as
+a rules engine that fills the Commission's own communication template and
+marks each field \emph{actual / default / needs attention}. The AI does not
+replace the accredited verifier; it hands the verifier (and the EU importer) a
+structured, auditable file instead of a shoebox of paper.
+
+\textbf{3. A scheduler that reads the national grid.} Taiwan publishes
+every generating unit's output at 10-minute resolution as open
+data\cite{taipowerdata}. CarbonPass converts that feed into an hourly
+carbon-intensity curve for the whole grid, overlays Taipower's time-of-use
+prices, and optimizes when the factory's flexible loads run --- subject to the
+owner's order deadlines, stated in chat. Savings are measured on the meter,
+logged in a before/after ledger structured to the baseline-and-monitoring
+logic of ISO~14064-2, and feed the next data pack. \textbf{Measurement and
+mitigation reinforce each other --- the tool does not just report carbon, it
+removes some.}
+
+\textbf{Privacy as architecture, not promise.} Taiwanese SMEs rightly treat
+energy and production data as trade secrets. CarbonPass is \emph{local-first}:
+parsing and computation run on the factory's own device or premises; only the
+outputs the owner chooses to send ever leave. The roadmap --- federated
+benchmark learning across the cluster, hardware-backed confidential computing
+--- follows privacy-preserving patterns Taiwan's own financial sector has
+already normalized, and aligns with the national Trusted-AI posture.
+
+\subsection{Stakeholders and their roles}
+
+\begin{table}[htbp]
+\caption{Stakeholders, roles, and what each gains}
+\label{tab:stakeholders}
+\small
+\begin{tabularx}{\textwidth}{@{}p{0.28\textwidth}X@{}}
+\toprule
+\textbf{Stakeholder} & \textbf{Role and benefit} \\
+\midrule
+Fastener SME owners (target audience) & Primary users; retain EU customers, cut power costs, gain a standing carbon capability \\
+EU importers and their declarants & Receive template-ready supplier data; avoid punitive defaults\cite{omm} \\
+TIFI ($\sim$700 member firms) and MIRDC & Pilot recruitment, domain validation, cluster-scale rollout channel\cite{goebel} \\
+MOENV / Climate Change Administration & Their CBAM help platform\cite{tpt-cbam} gains the computational layer it lacks; carbon-fee readiness grows in the SME base \\
+MOEA / SMESA & CAAS education stack\cite{caas} gains an execution tool; supports SME competitiveness programs \\
+Taipower & Its open data and AMI infrastructure\cite{taipower,taipowerdata} become directly value-generating for small industry \\
+Accredited verifiers & Receive structured, uncertainty-annotated files instead of raw paper --- faster, cheaper verification \\
+Banks (green finance) & Verified SME carbon data for sustainability-linked lending \\
+\bottomrule
+\end{tabularx}
+\end{table}

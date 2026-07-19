@@ -17,6 +17,10 @@ import openpyxl
 
 from carbonpass.config import DEFAULT_VALUES_XLSX
 
+# The "Other countries and territories" table (Annex I). Excel truncates sheet names at
+# 31 chars, hence the clipped spelling — this is the literal sheet name in the workbook.
+FALLBACK_SHEET = "_Other Countries and Territorie"
+
 
 @dataclass(frozen=True)
 class DefaultValue:
@@ -71,7 +75,13 @@ def load_country(country: str = "Taiwan") -> list[DefaultValue]:
 
 
 def lookup(cn_code: str, country: str = "Taiwan") -> DefaultValue | None:
-    """Longest-prefix match: '73181542' -> row '731815' if no exact row exists."""
+    """Longest-prefix match: '73181542' -> row '731815' if no exact row exists.
+
+    NOTE this matches a query against a *stored row code* (`cn.startswith(row.cn_code)`),
+    so a query SHORTER than the stored row returns None: `lookup("7223")` misses the row
+    "722300". Pass the code as the workbook spells it. See `resolve()` for the country
+    fallback a caller almost always also wants.
+    """
     cn = cn_code.replace(" ", "")
     rows = load_country(country)
     best: DefaultValue | None = None
@@ -80,3 +90,27 @@ def lookup(cn_code: str, country: str = "Taiwan") -> DefaultValue | None:
             if best is None or len(r.cn_code) > len(best.cn_code):
                 best = r
     return best
+
+
+def resolve(cn_code: str, country: str = "Taiwan") -> tuple[DefaultValue | None, bool]:
+    """Country value, else the 'Other countries and territories' table. -> (dv, used_fallback)
+
+    Implements the rule in the Commission's Q&A p.37 §4.25:
+
+        "Where the CBAM good is not explicitly listed or where it is listed but the
+         relevant field shows a '-', CBAM declarants have to use the default values
+         from the table 'Other countries and territories' in Annex I."
+
+    That table is "the average of the ten exporting countries with the highest emission
+    intensities per good" (Q&A p.37 §4.26) — i.e. reaching it is expensive.
+
+    This is not hypothetical for Taiwan: of the 33 countries with a full steel book, only
+    Taiwan, Thailand and Vietnam have **no CN 7221 value at all** (stainless wire rod —
+    what a stainless fastener maker buys). Taiwan's 7221 row reads "see below" with nothing
+    below it. So every Taiwanese stainless fastener resolves here: 4.82 -> 5.302 in 2026.
+    """
+    dv = lookup(cn_code, country)
+    if dv is not None:
+        return dv, False
+    dv = lookup(cn_code, FALLBACK_SHEET)
+    return dv, dv is not None

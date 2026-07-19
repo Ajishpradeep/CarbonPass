@@ -1,0 +1,12 @@
+# Taiwan public-utility electricity emission factors (kgCO2e/kWh)
+# Provenance snapshot: data/official_refs/moea_grid_ef_2025.md (MOEA announcement 2026-06-02)
+# RULE: no code may hard-code a factor; select by year+series; print provenance in outputs.
+factors:
+  2024: { overall: 0.474 }
+  2025: { overall: 0.467, industrial: 0.466, residential: 0.471 }
+national_incl_green_power:      # 全國電力排放係數 — context only, not for factory Scope-2
+  2025_estimate: 0.456
+default_selection: { year: 2025, series: industrial }   # = 0.466
+source_url: https://www.moea.gov.tw/MNS/populace/news/News.aspx?kind=1&menu_id=40&news_id=122891
+announced: 2026-06-02
+next_update_expected: 2027-06   # annual, ~June

@@ -116,20 +116,30 @@ def compute_product_see(p: ProcessInput, period_year: int) -> ProductSEE:
             note = f"mill EPD: {prec.epd_document}" if prec.epd_document else "mill EPD"
             any_actual_prec = True
         else:
-            dv = defaults.lookup(prec.cn_code, prec.country) if prec.cn_code else None
+            dv, used_fallback = (defaults.resolve(prec.cn_code, prec.country)
+                                 if prec.cn_code else (None, False))
             if dv is None or dv.for_year(period_year) is None:
                 raise ValueError(
                     f"precursor {prec.name!r}: no EPD and no default value for "
-                    f"CN {prec.cn_code!r} ({prec.country})")
+                    f"CN {prec.cn_code!r} ({prec.country}), and none in the "
+                    f"'Other countries and territories' table either")
             psd = dv.for_year(period_year)
             psi, pse = 0.0, 0.0        # steel defaults carry indirect = N/A
             source, psd_unc = "default", 0.0     # a default is exact — just punitive
-            note = (f"CBAM default CN {dv.cn_code} ({prec.country}) "
+            origin = (f"'Other countries and territories' — {prec.country} has no CN "
+                      f"{prec.cn_code} row (Q&A p.37)" if used_fallback else prec.country)
+            note = (f"CBAM default CN {dv.cn_code} ({origin}) "
                     f"{dv.direct} +{markup_for_year(period_year):.0%} mark-up = {psd}")
             default_dir_sum += ratio * psd
             needs_attention.append(
                 f"precursor '{prec.name}': default value used ({note}) — request a mill EPD "
                 f"to replace it with actual data")
+            if used_fallback:
+                needs_attention.append(
+                    f"precursor '{prec.name}': {prec.country} has NO default value for CN "
+                    f"{prec.cn_code}, so the Annex I fallback applies — the average of the "
+                    f"ten highest-intensity exporting countries (Q&A p.37). A mill EPD is "
+                    f"worth more here than for any other input.")
 
         contrib_unc = math.hypot(ratio_unc, psd_unc)
         dir_terms.append((ratio * psd, contrib_unc))

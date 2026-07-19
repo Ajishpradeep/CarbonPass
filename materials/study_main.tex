@@ -1,0 +1,92 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{fontspec}
+\setmainfont{DejaVu Serif}[Scale=0.92]
+\setsansfont{DejaVu Sans}[Scale=0.92]
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{colortbl}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{caption}
+\usepackage{ragged2e}
+\usepackage[most]{tcolorbox}
+\usepackage[numbers,super,sort&compress]{natbib}
+\geometry{a4paper, top=2.4cm, bottom=2.6cm, left=2.4cm, right=2.4cm}
+\definecolor{ink}{HTML}{1A3A4A}
+\definecolor{accent}{HTML}{B8433A}
+\definecolor{steel}{HTML}{1A6B8A}
+\definecolor{mist}{HTML}{9DB4C0}
+\titleformat{\section}{\Large\bfseries\color{ink}}{\thesection}{0.7em}{}[\vspace{1pt}{\color{ink}\titlerule[1.1pt]}]
+\titleformat{\subsection}{\large\bfseries\color{ink}}{\thesubsection}{0.6em}{}
+\titlespacing{\section}{0pt}{16pt}{8pt}
+\titlespacing{\subsection}{0pt}{12pt}{5pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[C]{\footnotesize\color{gray}What Actually Wins the Presidential Hackathon --- An Evidence Review}
+\fancyfoot[C]{\footnotesize\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\captionsetup{font=small,labelfont=bf,justification=raggedright,singlelinecheck=false}
+\renewcommand{\arraystretch}{1.25}
+\setlength{\parskip}{4.5pt}\setlength{\parindent}{0pt}
+\newtcolorbox{finding}[1]{enhanced,breakable,colback=white,colframe=white,
+  borderline west={2.6pt}{0pt}{accent},left=8pt,right=4pt,top=4pt,bottom=4pt,
+  before upper={\textbf{\textcolor{accent}{#1}}\quad},arc=0pt,boxrule=0pt,
+  frame hidden,before skip=8pt,after skip=8pt}
+\usepackage[colorlinks=true,linkcolor=steel,citecolor=ink,urlcolor=steel,
+  bookmarks=true,bookmarksnumbered=true,unicode=true]{hyperref}
+
+\begin{document}
+
+% ---------- COVER ----------
+\begin{titlepage}
+\newgeometry{margin=0cm}
+\noindent
+\begin{minipage}{\textwidth}
+{\color{ink}\rule{\textwidth}{14mm}}\\[-2.5pt]
+{\color{steel}\rule{\textwidth}{2.6mm}}
+\end{minipage}
+\vspace{2.8cm}
+
+\begin{minipage}{0.85\textwidth}
+\hspace{1.9cm}\begin{minipage}{0.88\textwidth}
+{\sffamily\footnotesize\bfseries\color{steel}\MakeUppercase{E v i d e n c e\ \ R e v i e w\ \ ·\ \ I n d e p e n d e n t\ \ A n a l y s i s}}\\[9mm]
+{\fontsize{26}{31}\selectfont\bfseries\color{ink}What Actually Wins the\\Presidential Hackathon?}\\[7mm]
+{\large\color{ink!75}Every International-Track Team of Excellence, 2019--2025:\\project merit, national timing, and what happened afterward}\\[14mm]
+{\color{ink}\rule{2.6pt}{2.4cm}}\hspace{4mm}%
+\begin{minipage}[b]{0.8\textwidth}\small
+A fact-checked study of 14 winning entries\\
+Method: primary press releases, official records, project traces\\
+Prepared for the Pred-hack project · July 2026\\
+All claims cited; absences of evidence reported as such
+\end{minipage}
+\end{minipage}
+\end{minipage}
+\vfill
+\noindent
+\begin{minipage}{\textwidth}
+\hspace{1.9cm}\begin{minipage}{0.52\textwidth}
+\footnotesize\color{black!55}
+This review corrects two claims found in this project's own earlier research
+files. It observes winners only --- losing entries are invisible --- so causal
+conclusions are stated with that limit in mind.
+\end{minipage}
+\hfill
+\raisebox{-0.4cm}{{\color{mist}\rule{3cm}{3cm}}}\hspace{-3cm}\raisebox{-3.42cm}{{\color{ink}\rule{6.2cm}{3cm}}}
+\end{minipage}
+\restoregeometry
+\end{titlepage}
+
+\thispagestyle{plain}
+\tableofcontents
+\clearpage
+
+\input{s1}
+\input{s2}
+\input{s3}
+\input{srefs}
+
+\end{document}

@@ -4,6 +4,7 @@ from __future__ import annotations
 import pytest
 
 from carbonpass.config import markup_for_year
+from carbonpass.ingestion import pipeline
 from carbonpass.rules import defaults, ef
 from carbonpass.rules.see import PrecursorInput, ProcessInput, compute_product_see
 
@@ -29,6 +30,43 @@ def test_taiwan_7318_default_row():
 def test_taiwan_wire_rod_default_rows():
     assert defaults.lookup("7213", "Taiwan").direct == pytest.approx(2.297829146)
     assert defaults.lookup("7227", "Taiwan").direct == pytest.approx(2.17)
+
+
+def test_stainless_wire_rod_is_7221_not_7227():
+    """The precursor a stainless fastener maker actually buys.
+
+    CN 7221 = stainless rod, hot-rolled, in irregularly wound coils — the stainless twin
+    of CN 7213. CN 7227 is alloy steel *other than stainless*, and Taiwan's 7227 is the
+    lowest value assigned to any country on earth: using it for stainless made a stainless
+    screw look cleaner than a carbon one.
+    """
+    assert pipeline._precursor_cn("SUS304 盤元線材 Stainless steel wire rod") == "7221"
+    assert pipeline._precursor_cn("SAE1008 盤元線材 Carbon steel wire rod") == "7213"
+    assert pipeline._precursor_cn("不鏽鋼線材") == "7221"
+    # the trap this guards: 7227 is Taiwan's best-on-earth value, 7221 has no Taiwan value
+    assert defaults.lookup("7227", "Taiwan").direct < defaults.lookup("7213", "Taiwan").direct
+
+
+def test_taiwan_has_no_stainless_rod_value_so_fallback_applies():
+    """Q&A p.37 §4.25: not listed -> 'Other countries and territories' table.
+
+    Of the 33 countries with a full steel book, only Taiwan, Thailand and Vietnam have no
+    CN 7221 value at all. Taiwan's 7221 row reads "see below" with nothing below it.
+    """
+    assert defaults.lookup("7221", "Taiwan") is None
+
+    dv, used_fallback = defaults.resolve("7221", "Taiwan")
+    assert used_fallback is True
+    assert dv.direct == pytest.approx(4.82)
+    assert dv.y2026 == pytest.approx(4.82 * 1.10)
+
+    # a country that IS listed must not be routed to the fallback
+    dv_cn, fb_cn = defaults.resolve("7221", "China")
+    assert fb_cn is False and dv_cn.direct == pytest.approx(5.59)
+
+    # and resolve() must not change the answer where a country value exists
+    dv_tw, fb_tw = defaults.resolve("7213", "Taiwan")
+    assert fb_tw is False and dv_tw.direct == pytest.approx(2.297829146)
 
 
 def test_moenv_table_loaded_full():

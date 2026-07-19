@@ -1,0 +1,108 @@
+\section{Executive Summary}\label{sec:exec}
+
+On 1 January 2026, the European Union began charging for the carbon embedded in
+imported steel goods. Taiwan shipped \textbf{3.74 million tonnes} of covered
+goods to the EU in the preceding reporting period --- mostly screws and
+fasteners made by \textbf{about 2,600 small, family-run factories}
+concentrated in Kaohsiung's Gangshan district, the ``Kingdom of
+Screws''\cite{tpt-cbam}. From this year, each of those factories faces a choice
+made in Brussels: deliver verified, product-level carbon data to its European
+buyer, or watch that buyer pay punitive ``default values'' --- marked up 10\%
+now, 30\% by 2028\cite{omm} --- until the order quietly moves to a supplier who
+can deliver the data.
+
+The knowledge needed to escape that penalty exists. It is buried in a
+2,400-page implementing regulation\cite{omm} that a sixty-year-old factory
+owner, whose back office is a family member with a spreadsheet, cannot read ---
+and no tool in Taiwan's current ecosystem reads it for him\cite{caas,idb,tpt-cbam}.
+\textbf{This is the digital divide of the AI era:} not the absence of
+broadband, but the inability to produce the data that now decides who may
+participate in the world's markets.
+
+\textbf{CarbonPass closes that divide with a photograph.} Inside LINE, in
+Mandarin or Taiwanese, an owner photographs an electricity bill and a folder of
+invoices. A local-first AI --- raw data never leaves the factory --- returns
+three things: (1) the verifier-ready, per-product carbon data pack his EU buyer
+must have, in the European Commission's own format; (2) one decision screen
+showing what his data is worth: \emph{``with your numbers, your buyer pays
+$\approx$EUR~150 per tonne; without them, EUR~450--750 and
+rising''}\cite{ecprice,specialinsert}; and (3) a production schedule, computed
+from Taiwan's open 10-minute grid data\cite{taipowerdata}, that shifts furnaces
+and compressors to cheaper, cleaner hours --- cutting the power bill now and
+the next data pack's numbers with it.
+
+The proof of concept runs entirely on Taiwan's open data --- MOENV emission
+coefficients, Taipower grid telemetry and tariffs, EU published methodology ---
+and gives data back: a cleaned hourly grid-carbon-intensity dataset and an
+anonymized sector benchmark, published openly. A pilot factory in Gangshan is
+targeted for the mentorship period; measurable before/after results for the
+final review. If the European Parliament's September vote extends the border
+mechanism to $\sim$180 further product categories\cite{akin}, the same engine
+scales with it --- and, beyond Taiwan, to every SME exporting economy facing
+the same wall. Taiwan can help.
+
+\section{The Campaign and Its Moment}\label{sec:campaign}
+
+\subsection{Theme, scope, and nature of the Presidential Hackathon}
+
+The Handbook defines the 2026 theme, ``Digital Inclusion in the AI Era,''
+through two interlocking objectives: \emph{promoting digital inclusion} ---
+``enabling people of different ages, regions, and needs to access technology
+and participate in digital services on equal footing, thereby narrowing the
+digital divide'' --- and \emph{building smarter services} across ``education,
+care services, governance, disaster prevention, and
+beyond''\cite{handbook}. The campaign's nature is equally explicit: initiated
+by the Office of the President in 2019 and echoing President Lai's vision of
+``advancing toward a smart and prosperous Taiwan,'' it seeks data-driven
+solutions to public issues, built on open data, carried by international and
+interdisciplinary teams, and intended for real adoption --- selected teams
+receive mentorship, public-private matchmaking and field-validation support,
+and advancing teams join follow-up benefit tracking\cite{handbook,moda}. This
+is not a coding contest. It is the front door of a policy-adoption pipeline
+--- past winning work has matured into government
+practice\cite{pmc}.
+
+\subsection{What history says a winning entry looks like}
+
+Reading seven editions of Teams of Excellence reveals a consistent pattern:
+winners are \emph{technological answers to the most acute, well-documented
+anxiety of their year}, delivered on open data, with a working demonstration
+and a human face (Table~\ref{tab:winners}).
+
+\begin{table}[htbp]
+\caption{The winning pattern across editions of the International Track}
+\label{tab:winners}
+\small
+\begin{tabularx}{\textwidth}{@{}p{0.1\textwidth}p{0.26\textwidth}p{0.24\textwidth}X@{}}
+\toprule
+\textbf{Years} & \textbf{The year's anxiety} & \textbf{Representative winners} & \textbf{What made them effective} \\
+\midrule
+2019--20 & Corruption, opaque procurement, pandemic supply chains & Cartelogy; CoST Honduras; Fiscal Force & Open contracting data turned into accountability tools \\
+2021--22 & Climate urgency, binding net-zero pledges & A/B~Street; Office Farmers; BRSDM & Open data turned into carbon and adaptation action \\
+2023--25 & AI explosion; resilience of the vulnerable & HysonTech; Beyond Hearing; CropNow & Advanced AI aimed at a specific excluded population, demoed live \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Three lessons carry into 2026. First, \textbf{contextual precision beats
+technical generality}: Beyond Hearing won not because AR was novel but because
+it aimed AI at a nameable excluded group. Second, \textbf{open data is the
+price of admission}: the application form itself asks what open data is used,
+what should be improved, and what will be given back\cite{handbook}. Third,
+\textbf{feasibility is weighted above brilliance}: 40\% of the preliminary
+score, with a demo expected by finals\cite{handbook}.
+
+\subsection{The national moment this entry serves}
+
+Taiwan in 2026 is executing a dual transformation --- digital and net-zero at
+once. Net-zero 2050 is statutory; the new NDC 3.0 commits to a 38\%$\pm$2\% cut
+by 2035\cite{ndc}; the first carbon-fee cycle just collected NT\$4.97 billion
+from the island's largest emitters\cite{focus}. At the same moment, the EU's
+carbon border regime began taxing the products of Taiwan's smallest exporters
+--- and the Ministry of Environment itself has named the affected group and
+opened a help platform for them\cite{tpt-cbam}. The state has built the
+awareness layer; what is missing is the \emph{computation} layer that turns
+awareness into survival. A Presidential Hackathon entry that completes the
+government's own stack, on the government's own open data, for a
+government-named vulnerable population, in the year the government's theme is
+digital inclusion --- that is the alignment this proposal is built on.

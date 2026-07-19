@@ -1,0 +1,86 @@
+\section{Differences From Existing Solutions}\label{sec:diff}
+
+Taiwan's current ecosystem is an \emph{awareness} stack; CarbonPass is the
+missing \emph{execution} layer. The audit below was verified instrument by
+instrument in July 2026.
+
+\begin{table}[htbp]
+\caption{Capability audit: what exists, and what none of it does}
+\label{tab:gap}
+\small
+\begin{tabularx}{\textwidth}{@{}p{0.27\textwidth}p{0.33\textwidth}X@{}}
+\toprule
+\textbf{Instrument} & \textbf{What it does} & \textbf{What it does not do} \\
+\midrule
+CAAS ``SME Carbon Reduction Service Station'' (MOEA)\cite{caas} & Courses, articles, referrals & No computation; not a reporting tool \\
+IDB Carbon Emissions Calculator (MOEA)\cite{idb} & Rough annual company-level CO$_2$e from bills & No product-level allocation, no CN codes, no CBAM format \\
+MOENV CBAM Help Platform (Mar 2026)\cite{tpt-cbam} & Information and consultation & Explicitly informational; computes nothing \\
+Taipower app / eBill\cite{taipower} & Consumption charts, tariff simulation & No emissions conversion, no compliance artifacts \\
+tre100 pledge platform (CIER)\cite{tre100} & Renewable-energy commitments registry & No measurement tooling \\
+Consultants / ESG software\cite{chanchin} & Real one-off ISO certificates & Per-engagement pricing; cannot serve recurring per-product demands across 2,600 firms \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{CarbonPass's difference in one sentence:} it is the only tool that
+converts SME-native documents into importer-ready, verifier-structured,
+per-CN-code emissions data --- repeatably, in the owner's own language, at
+near-zero marginal cost --- and it is designed for \emph{integration} with the
+government's existing platforms rather than competition with them.
+
+\section{Expected Benefits (Quantified)}\label{sec:benefits}
+
+\begin{table}[htbp]
+\caption{Expected benefits, with basis of estimate}
+\label{tab:benefits}
+\small
+\begin{tabularx}{\textwidth}{@{}p{0.34\textwidth}Xp{0.22\textwidth}@{}}
+\toprule
+\textbf{Benefit} & \textbf{Quantification} & \textbf{Basis} \\
+\midrule
+CBAM cost avoided per tonne of product & EUR $\approx$300--600/t (verified $\approx$150 vs.\ defaults 450--750, rising with markups) & Official price\cite{ecprice}; industry multiples\cite{specialinsert} \\
+Compliance labor per data pack & Hours instead of consultant-weeks; recurring at near-zero marginal cost & Cluster ISO precedents priced per engagement\cite{chanchin} \\
+Energy cost reduction via load shifting & Peak/off-peak tariff spread of several$\times$ on shiftable loads (est.\ 5--15\% of bill for furnace-heavy plants; measured in pilot) & Taipower TOU schedules\cite{taipower}; pilot to verify \\
+Emissions reduction & Measured on-meter, logged to ledger; every avoided tonne also cuts the buyer's certificate cost & Grid EF 0.474 kgCO$_2$e/kWh\cite{moeaea} \\
+Population served at beachhead & 2,600 CBAM-exposed SMEs; $\sim$1,800-firm cluster; top-3 world export industry & MOENV\cite{tpt-cbam}; \cite{goebel,ktimes} \\
+National alignment & Supports NDC 3.0 (--38\%$\pm$2\% by 2035) by extending measurement into the SME layer & \cite{ndc} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{Corresponding SDGs:} SDG~8 (protecting decent work in an export
+cluster), SDG~9 (industry, innovation and infrastructure), SDG~12 (responsible
+production), SDG~13 (climate action).
+
+\section{Open Data: Used, Improved, and Given Back}\label{sec:opendata}
+
+Open data is this competition's founding ethos, and the application form asks
+three questions of every entry\cite{handbook}. Our answers:
+
+\textbf{Used.} MOENV carbon-footprint emission coefficients
+(\href{https://data.gov.tw/en/datasets/28176}{data.gov.tw \#28176}, OpenAPI);
+Taiwan product carbon-footprint registry
+(\href{https://data.gov.tw/en/datasets/8992}{\#8992}); Taipower generation by
+unit at 10-minute resolution
+(\href{https://data.gov.tw/en/datasets/8931}{\#8931},
+\href{https://data.gov.tw/en/datasets/37331}{\#37331}); Taipower tariff
+schedules\cite{taipower}; the MOEA electricity emission factor\cite{moeaea};
+EU-published CBAM methodology, default values and certificate
+prices\cite{taxud,ecprice}.
+
+\textbf{Suggested improvements.} (1) Publish an official hourly
+grid-carbon-intensity series (today it must be derived from the 10-minute unit
+feed); (2) publish MOENV emission coefficients mapped to customs (CN/HS)
+codes, so any exporter can find the factors relevant to a tariff line; (3)
+provide machine-readable Taipower bill formats to enable consented,
+automated ingestion.
+
+\textbf{Given back.} CarbonPass will publish (1) a cleaned, documented hourly
+Taiwan grid-carbon-intensity dataset derived from \#8931/\#37331, and (2) an
+anonymized fastener-sector embedded-emissions benchmark from the pilot ---
+both openly licensed, both useful far beyond this project.
+
+\textbf{Open source.} The intent is to release the compliance rules engine and
+the grid-intensity pipeline under an open license --- the components with the
+greatest public-good value --- consistent with the competition's open-source
+encouragement\cite{handbook}.

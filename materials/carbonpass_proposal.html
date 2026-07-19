@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CarbonPass — Closing the Carbon Data Divide for Taiwan's Export SMEs</title>
+<style>
+/* ============ base ============ */
+body { margin: 0; padding: 0; font-family: Georgia, "Times New Roman", serif; font-size: 11pt;
+       color: #333; line-height: 1.55; text-align: justify; text-align-last: left;
+       string-set: doctitle ""; }
+h1 { string-set: doctitle content(); }
+@page { size: A4; margin: 2.3cm 2cm;
+  @top-center { content: string(doctitle); font-size: 8.5pt; color: #888; }
+  @bottom-center { content: counter(page); font-size: 9pt; color: #666; } }
+@page :first { margin: 0; @top-center { content: none; } @bottom-center { content: none; } }
+@page cover { margin: 0; @top-center { content: none; } @bottom-center { content: none; } }
+@page toc { @top-center { content: none; } @bottom-center { content: counter(page); } }
+.cover { page: cover; }
+.toc-page { page: toc; }
+
+h1 { font-size: 19pt; color: #1a3a4a; margin: 0 0 0.4em 0; page-break-after: avoid; }
+h2 { font-size: 14.5pt; color: #1a3a4a; margin: 1.4em 0 0.5em 0; page-break-after: avoid;
+     border-bottom: 1.5px solid #1a3a4a; padding-bottom: 0.15em; }
+h3 { font-size: 12pt; color: #333; margin: 1.1em 0 0.4em 0; page-break-after: avoid; }
+p { margin: 0.5em 0; orphans: 2; widows: 2; }
+
+/* ============ prevent overflow ============ */
+pre, table, figure, img, svg, blockquote { max-width: 100%; box-sizing: border-box; }
+figure img { max-width: 100%; height: auto; }
+a { word-break: break-all; }
+code { word-break: break-word; background: #f5f5f5; padding: 0 3px; font-size: 9.5pt; }
+tr { page-break-inside: avoid; }
+thead { display: table-header-group; }
+
+/* ============ cover (Swiss) ============ */
+.cover { width: 210mm; height: 297mm; margin: 0; position: relative; overflow: hidden;
+         page-break-after: always; background: #f7f8f9; }
+.cover .bar-top { position: absolute; top: 0; left: 0; width: 100%; height: 14mm; background: #1a3a4a; }
+.cover .bar-accent { position: absolute; top: 14mm; left: 0; width: 100%; height: 2.5mm; background: #b8433a; }
+.cover .corner { position: absolute; bottom: 0; right: 0; width: 62mm; height: 62mm; background: #1a3a4a; }
+.cover .corner2 { position: absolute; bottom: 62mm; right: 0; width: 30mm; height: 30mm; background: #9db4c0; }
+.cover .grid-line-v { position: absolute; top: 0; left: 24mm; width: 0.4mm; height: 100%; background: #d5dbe0; }
+.cover .grid-line-h { position: absolute; top: 205mm; left: 0; width: 100%; height: 0.4mm; background: #d5dbe0; }
+.cover-content { position: absolute; top: 62mm; left: 30mm; width: 140mm; }
+.cover-kicker { font-size: 11pt; letter-spacing: 2.5px; color: #b8433a; text-transform: uppercase; margin-bottom: 9mm; font-family: Helvetica, Arial, sans-serif; }
+.cover-title { font-size: 31pt; font-weight: 700; color: #1a3a4a; line-height: 1.18; margin: 0 0 7mm 0; }
+.cover-sub { font-size: 13.5pt; color: #4a5a6a; line-height: 1.5; margin-bottom: 16mm; }
+.cover-meta { font-size: 10.5pt; color: #333; line-height: 1.9; border-left: 3px solid #1a3a4a; padding-left: 5mm; }
+.cover-foot { position: absolute; bottom: 16mm; left: 30mm; font-size: 9pt; color: #667; width: 105mm; }
+
+/* ============ TOC ============ */
+.toc-page { page-break-after: always; }
+.toc { list-style: none; padding: 0; }
+.toc li { margin: 0.55em 0; }
+.toc a { text-decoration: none; color: #333; display: block; }
+.toc a::after { content: leader('.') target-counter(attr(href url), page); }
+.toc .lvl2 { padding-left: 1.6em; font-size: 10.2pt; color: #555; }
+
+/* ============ tables (booktabs) ============ */
+table { border-collapse: collapse; width: 100%; margin: 0.9em 0; font-size: 9.6pt; }
+caption { caption-side: top; text-align: left; font-size: 9.6pt; margin-bottom: 0.4em; color: #333; }
+caption::before { content: attr(data-label) ".  "; font-weight: bold; }
+th, td { padding: 4.5px 7px; text-align: left; vertical-align: top; }
+thead tr { border-top: 1.6px solid #333; border-bottom: 0.9px solid #333; }
+tbody tr:last-child { border-bottom: 1.6px solid #333; }
+th { font-weight: bold; background: #f5f6f7; }
+tbody tr:nth-child(even) { background: #fafbfb; }
+
+/* ============ figures ============ */
+figure { margin: 1em 0; text-align: center; page-break-inside: avoid; }
+figcaption { font-size: 9.6pt; color: #333; margin-top: 0.4em; text-align: left; }
+figcaption::before { content: attr(data-label) ".  "; font-weight: bold; }
+
+/* ============ boxes ============ */
+.concept { border-left: 3px solid #1a6b8a; padding: 0.15em 0 0.15em 1em; margin: 0.9em 0; page-break-inside: avoid; }
+.concept-title { font-weight: bold; color: #1a3a4a; }
+.keyfact { border-left: 3px solid #b8433a; padding: 0.15em 0 0.15em 1em; margin: 0.9em 0; page-break-inside: avoid; }
+.keyfact-title { font-weight: bold; color: #b8433a; }
+
+/* ============ pipeline diagram ============ */
+.pipeline { display: flex; align-items: stretch; gap: 6px; margin: 1em 0; page-break-inside: avoid; }
+.pipe-box { flex: 1; border: 1px solid #333; padding: 7px 9px; font-size: 9pt; background: #fff; }
+.pipe-box b { display: block; margin-bottom: 3px; font-size: 9.5pt; color: #1a3a4a; }
+.pipe-arrow { display: flex; align-items: center; font-size: 13pt; color: #666; }
+
+/* ============ citations & references ============ */
+a.cite { color: black; text-decoration: none; vertical-align: super; font-size: 0.72em; }
+.references { font-size: 9.3pt; }
+.references li { padding-left: 2em; text-indent: -2em; margin: 0.45em 0; }
+.references a { color: #1a5276; text-decoration: none; }
+ul, ol { margin: 0.5em 0; padding-left: 1.6em; }
+li { margin: 0.25em 0; }
+.small { font-size: 9.3pt; color: #555; }
+</style>
+</head>
+<body>
+
+<!-- ================= COVER ================= -->
+<div class="cover">
+  <div class="bar-top"></div>
+  <div class="bar-accent"></div>
+  <div class="grid-line-v"></div>
+  <div class="grid-line-h"></div>
+  <div class="corner"></div>
+  <div class="corner2"></div>
+  <div class="cover-content">
+    <div class="cover-kicker">Project Proposal · Educational Edition</div>
+    <div class="cover-title">CarbonPass</div>
+    <div class="cover-sub">Closing the Carbon Data Divide for Taiwan's Export SMEs<br>
+    An AI compliance and energy-optimization copilot, prototyped on the world's screw capital</div>
+    <div class="cover-meta">
+      <p>2026 Presidential Hackathon — International Track<br>
+      Theme: "Digital Inclusion in the AI Era"<br>
+      Supervisor: Office of the President, ROC (Taiwan) · Implementer: Ministry of Digital Affairs<br>
+      Document date: July 2026</p>
+    </div>
+  </div>
+  <div class="cover-foot">This document explains the full premise from first principles — no prior knowledge of carbon regulation is assumed. All statistics are cited to primary or credible dated sources; estimates are labeled as estimates.</div>
+</div>
+
+<!-- ================= TOC ================= -->
+<div class="toc-page">
+  <h1 style="border:none;">Contents</h1>
+  <ul class="toc">
+    <li><a href="#sec1">1&nbsp;&nbsp;Why This Document Exists — and Five Ideas You Need First</a></li>
+    <li><a href="#sec2">2&nbsp;&nbsp;The Setting: Taiwan's SME Economy and the Kingdom of Screws</a></li>
+    <li><a href="#sec3">3&nbsp;&nbsp;The Mandate: Carbon Rules Closing In From Both Sides</a></li>
+    <li class="lvl2"><a href="#sec31">3.1&nbsp;&nbsp;Taiwan's own laws: net-zero, NDC targets, and the carbon fee</a></li>
+    <li class="lvl2"><a href="#sec32">3.2&nbsp;&nbsp;The European Union's border carbon price (CBAM)</a></li>
+    <li><a href="#sec4">4&nbsp;&nbsp;The Problem: What Breaks, When, and For Whom</a></li>
+    <li><a href="#sec5">5&nbsp;&nbsp;The Gap: Why Nothing in the Current System Solves This</a></li>
+    <li><a href="#sec6">6&nbsp;&nbsp;The Proposed Solution: CarbonPass</a></li>
+    <li><a href="#sec7">7&nbsp;&nbsp;Beyond Today's Scope: The Mandates That Extend the Idea</a></li>
+    <li><a href="#sec8">8&nbsp;&nbsp;Technical Plan: How It Gets Built</a></li>
+    <li><a href="#sec9">9&nbsp;&nbsp;Fit With the Presidential Hackathon</a></li>
+    <li><a href="#sec10">10&nbsp;&nbsp;Honest Limits and Risks</a></li>
+    <li><a href="#refs">References</a></li>
+  </ul>
+</div>
+
+<!-- ================= SECTION 1 ================= -->
+<h1 id="sec1">CarbonPass — Closing the Carbon Data Divide for Taiwan's Export SMEs</h1>
+
+<h2 style="margin-top:0.6em;">1&nbsp;&nbsp;Why This Document Exists — and Five Ideas You Need First</h2>
+
+<p>In 2026, a quiet rule change in Brussels began deciding which small factories in southern Taiwan keep their European customers. This proposal explains that situation from zero, shows with verified numbers why it matters, and presents a solution designed for Taiwan's 2026 Presidential Hackathon. Before the story, five concepts:</p>
+
+<div class="concept"><span class="concept-title">Carbon pricing.</span> Governments increasingly make emitters pay per tonne of carbon dioxide equivalent (tCO2e) released. Taiwan does this with a <i>carbon fee</i> on large emitters; the EU does it with an emissions trading system (ETS) whose allowance price hovered around EUR 75 per tonne in early 2026<a class="cite" href="#ref-24">[24]</a>.</div>
+
+<div class="concept"><span class="concept-title">Embedded (embodied) emissions.</span> The greenhouse gases released while making a product — the electricity for the furnace, the coal behind the steel. A tonne of finished steel fasteners carries roughly 2 tCO2e of embedded emissions, by industry estimate<a class="cite" href="#ref-17">[17]</a>.</div>
+
+<div class="concept"><span class="concept-title">CBAM — the EU's Carbon Border Adjustment Mechanism.</span> Since 1 January 2026, importers bringing carbon-intensive goods (cement, iron and steel, aluminium, fertilisers, electricity, hydrogen) into the EU must buy "CBAM certificates" for the embedded emissions in those goods<a class="cite" href="#ref-6">[6]</a>. Steel screws and bolts — customs code CN 7318 — are covered<a class="cite" href="#ref-15">[15]</a>.</div>
+
+<div class="concept"><span class="concept-title">Default values.</span> If nobody proves a product's real emissions, the EU assigns a deliberately pessimistic "default value" — set at the highest observed intensity and marked up 10% in 2026, rising to 30% by 2028<a class="cite" href="#ref-8">[8]</a><a class="cite" href="#ref-9">[9]</a>. Real, verified data is almost always far cheaper. This asymmetry is the engine of the entire problem.</div>
+
+<div class="concept"><span class="concept-title">Scope 1 / 2 / 3.</span> A firm's own fuel burning (Scope 1), the emissions behind its purchased electricity (Scope 2), and everything upstream and downstream in its value chain (Scope 3). When a giant like TSMC works on its Scope 3, the pressure lands on its small suppliers<a class="cite" href="#ref-14">[14]</a>.</div>
+
+<p>With those five ideas, the story is simple: <b>Taiwan's export SMEs are being asked, by market forces they cannot see or negotiate with, to produce data they have no tools to produce.</b> The rest of this document quantifies that sentence and proposes what to build about it.</p>
+
+<!-- ================= SECTION 2 ================= -->
+<h2 id="sec2">2&nbsp;&nbsp;The Setting: Taiwan's SME Economy and the Kingdom of Screws</h2>
+
+<p>Taiwan runs on small business. The Ministry of Economic Affairs counts <b>1.716 million</b> small and medium enterprises — 98.87% of all firms — employing <b>9.19 million people</b>, or 79.3% of the workforce<a class="cite" href="#ref-11">[11]</a>. That headline number is often used to dramatize the carbon problem ("1.71 million SMEs must decarbonize"). This proposal refuses that framing: most of those firms are shops and services with no carbon obligation at all. The honest picture is one of <i>concentration</i> — and it is shown in <a href="#fig-1">Figure 1</a>.</p>
+
+<figure id="fig-1">
+  <img src="chart1_funnel.png" alt="Funnel from 1.71M SMEs to 2,600 exposed firms">
+  <figcaption data-label="Figure 1">Narrowing from all Taiwanese SMEs to the population under hard compulsion. The 1,716,000 and 2,600 figures are official (MOEA<a class="cite" href="#ref-11">[11]</a>; MOENV<a class="cite" href="#ref-1">[1]</a>); the two middle bars are this proposal's estimates.</figcaption>
+</figure>
+
+<p>The 2,600 firms at the sharp end are concentrated in one place and one product. The Gangshan–Luzhu district of Kaohsiung — nicknamed the <b>"Kingdom of Screws"</b> — hosts roughly <b>1,800 fastener manufacturers</b>, about 700 of them organized under the Taiwan Industrial Fasteners Institute<a class="cite" href="#ref-16">[16]</a><a class="cite" href="#ref-12">[12]</a>. Their global standing is out of all proportion to their size (<a href="#fig-2">Figure 2</a>, <a href="#tab-1">Table 1</a>).</p>
+
+<figure id="fig-2">
+  <img src="chart5_sector.png" alt="Fastener sector snapshot">
+  <figcaption data-label="Figure 2">Sector snapshot: export value (left, industry statistics<a class="cite" href="#ref-25">[25]</a>) and share of world production (right<a class="cite" href="#ref-12">[12]</a><a class="cite" href="#ref-16">[16]</a>).</figcaption>
+</figure>
+
+<table id="tab-1">
+<caption data-label="Table 1">The Taiwanese fastener sector at a glance</caption>
+<thead><tr><th style="width:34%">Indicator</th><th>Value</th><th style="width:26%">Source, date</th></tr></thead>
+<tbody>
+<tr><td>Global rank</td><td>Top-3 exporter (#2 by value in 2023 reporting; #3 by volume in 2025–26 reporting)</td><td>CommonWealth 2023<a class="cite" href="#ref-13">[13]</a>; Kaohsiung Times 2026<a class="cite" href="#ref-12">[12]</a></td></tr>
+<tr><td>Share of world production</td><td>~10–13%</td><td><a class="cite" href="#ref-12">[12]</a><a class="cite" href="#ref-16">[16]</a></td></tr>
+<tr><td>Export volume</td><td>~1.2 million tonnes (2025)</td><td><a class="cite" href="#ref-12">[12]</a></td></tr>
+<tr><td>Export value</td><td>US$4.59 bn (2023); ~US$4.28 bn (2024 est.)</td><td>Fastener World<a class="cite" href="#ref-25">[25]</a></td></tr>
+<tr><td>Share destined for Europe</td><td>~one quarter</td><td><a class="cite" href="#ref-13">[13]</a></td></tr>
+<tr><td>Number of manufacturers</td><td>~1,800 (mostly SMEs; TIFI ~700 members)</td><td><a class="cite" href="#ref-16">[16]</a></td></tr>
+<tr><td>Typical firm structure</td><td>Family-run; nationally 51.79% of SMEs are sole proprietorships / family firms, 58.22% older than 8 years</td><td>MOEA White Paper<a class="cite" href="#ref-11">[11]</a></td></tr>
+<tr><td>Embedded emissions of product</td><td>~2 tCO2e per tonne of fasteners (industry estimate)</td><td><a class="cite" href="#ref-17">[17]</a></td></tr>
+</tbody>
+</table>
+
+<p><b>Economically</b>, these are "hidden champions": firms with aerospace-grade precision supplying European automakers, administered by family members on spreadsheets, with aging workforces and no in-house data or ESG staff. <b>Environmentally</b>, fastener-making is steel plus electricity plus heat — wire drawing, cold forging, thread rolling, heat treatment, electroplating — drawn from a grid that emitted <b>0.474 kgCO2e per kWh in 2024</b><a class="cite" href="#ref-23">[23]</a>, high by European standards. The SME controls neither the grid nor the steel mill. What it could control — proving its actual numbers instead of being assigned worst-case ones, and running its flexible loads at cleaner, cheaper hours — is precisely what it has no tools for.</p>
+
+<!-- ================= SECTION 3 ================= -->
+<h2 id="sec3">3&nbsp;&nbsp;The Mandate: Carbon Rules Closing In From Both Sides</h2>
+
+<h3 id="sec31">3.1&nbsp;&nbsp;Taiwan's own laws: net-zero, NDC targets, and the carbon fee</h3>
+
+<p>Taiwan wrote its climate destination into law. The Climate Change Response Act (2023) makes <b>net-zero emissions by 2050 a statutory goal</b>, and the government's "NDC 3.0" targets, announced in 2025, commit to cuts of <b>28%±2% by 2030, 32%±2% by 2032, and 38%±2% by 2035</b> against the 2005 baseline — among the most ambitious trajectories in Asia<a class="cite" href="#ref-22">[22]</a> (<a href="#fig-3">Figure 3</a>).</p>
+
+<figure id="fig-3">
+  <img src="chart4_ndc.png" alt="Taiwan NDC trajectory">
+  <figcaption data-label="Figure 3">Taiwan's legislated emissions path: NDC 3.0 targets (MOENV, 2025<a class="cite" href="#ref-22">[22]</a>) and the statutory 2050 net-zero goal.</figcaption>
+</figure>
+
+<p>The first enforcement instrument is the <b>carbon fee</b>. Firms emitting more than 25,000 tCO2e per year (Scope 1+2) pay NT$300 per tonne, reducible to NT$100 or NT$50 if the regulator approves a rigorous "Self-Determined Reduction Plan"; industries at high risk of relocating abroad apply a 0.2 adjustment coefficient, an effective floor near NT$10/t<a class="cite" href="#ref-4">[4]</a><a class="cite" href="#ref-5">[5]</a>. The first collection cycle closed on 31 May 2026 and raised <b>NT$4.97 billion from 461 factories run by 240 companies</b><a class="cite" href="#ref-2">[2]</a><a class="cite" href="#ref-3">[3]</a> (<a href="#fig-4">Figure 4</a>). Tellingly, of ~430 factories that applied for the discounted rates, about 28 were withdrawn or rejected — evidence that even well-resourced corporations struggle to produce reduction plans that survive regulatory scrutiny<a class="cite" href="#ref-2">[2]</a>.</p>
+
+<figure id="fig-4">
+  <img src="chart2_fee.png" alt="Carbon fee revenue by sector">
+  <figcaption data-label="Figure 4">First-cycle carbon-fee revenue by sector (MOENV via Focus Taiwan / Taipei Times, June 2026<a class="cite" href="#ref-2">[2]</a><a class="cite" href="#ref-3">[3]</a>). Semiconductors paid 44%, including 33 TSMC fabs.</figcaption>
+</figure>
+
+<div class="keyfact"><span class="keyfact-title">A correction this proposal carries deliberately.</span> Discounted ("preferential") fee rates depend only on the large emitter's <i>own</i> Scope 1+2 reductions — not on its suppliers' data<a class="cite" href="#ref-4">[4]</a><a class="cite" href="#ref-5">[5]</a>. Supplier carbon pressure in Taiwan is real, but it flows from voluntary corporate commitments (SBTi, RE100) and programs such as TSMC's NT$5.5 bn supplier carbon-reduction subsidy scheme<a class="cite" href="#ref-14">[14]</a> — not from the fee. Early drafts of this concept got that causal chain wrong; the corrected version is what appears here.</div>
+
+<p>Three forward signals matter: the 25,000 t threshold is set to be lowered over time; fee levels are signalled to rise (potentially NT$1,200–1,800/t by 2030); and a pilot emissions-trading system is planned around 2027<a class="cite" href="#ref-31">[31]</a>. Firms outside the fee today will not all stay outside it.</p>
+
+<h3 id="sec32">3.2&nbsp;&nbsp;The European Union's border carbon price (CBAM)</h3>
+
+<p>The EU charges its own industries for carbon through the ETS. To stop production simply relocating to unregulated countries ("carbon leakage"), CBAM extends that carbon price to imports. <a href="#tab-2">Table 2</a> gives the timeline that turned this from paperwork into money.</p>
+
+<table id="tab-2">
+<caption data-label="Table 2">CBAM timeline and mechanics relevant to Taiwanese exporters</caption>
+<thead><tr><th style="width:22%">Date</th><th>What happens</th><th style="width:14%">Source</th></tr></thead>
+<tbody>
+<tr><td>Oct 2023 – Dec 2025</td><td>Transitional phase: EU importers report embedded emissions quarterly; no payment; generic default values broadly permitted</td><td><a class="cite" href="#ref-6">[6]</a></td></tr>
+<tr><td>Oct 2025</td><td>"Omnibus" simplification: 50-tonne annual de minimis exempts ~90% of importers while retaining ~99% of covered emissions — but the threshold is counted <b>cumulatively per importer</b>, so small suppliers can still be swept in</td><td><a class="cite" href="#ref-7">[7]</a></td></tr>
+<tr><td><b>1 Jan 2026</b></td><td><b>Definitive phase: importers must buy and surrender CBAM certificates.</b> Certificate price = quarterly EU ETS auction average: <b>EUR 75.36 (Q1 2026), EUR 75.28 (Q2 2026)</b></td><td><a class="cite" href="#ref-6">[6]</a><a class="cite" href="#ref-24">[24]</a></td></tr>
+<tr><td>2026–2028</td><td>Default values set at highest observed intensity, marked up +10% (2026), +20% (2027), +30% (2028). Complex goods: at least 80% of reported emissions must be actual, third-party-verified data</td><td><a class="cite" href="#ref-8">[8]</a><a class="cite" href="#ref-9">[9]</a></td></tr>
+<tr><td>Sep 2027</td><td>First certificate surrender, covering 2026 imports</td><td><a class="cite" href="#ref-1">[1]</a></td></tr>
+<tr><td>Sep 2026 (pending)</td><td>European Parliament plenary vote on extending CBAM to ~180 downstream steel/aluminium product categories, with obligations from 1 Jan 2028 (Council position adopted June 2026)</td><td><a class="cite" href="#ref-10">[10]</a></td></tr>
+</tbody>
+</table>
+
+<p>Taiwan's exposure is documented by its own environment ministry: Taiwan ranked <b>13th among countries exporting CBAM goods to the EU</b>, shipping <b>3.74 million tonnes</b> during the transitional period — overwhelmingly screws, fasteners, and stainless/carbon steel — produced by <b>about 2,600 SMEs</b><a class="cite" href="#ref-1">[1]</a>. The legal duty sits on the EU importer; the Taiwanese factory's compulsion is commercial. That distinction is the crux of the whole problem, as the next section shows.</p>
+
+<!-- ================= SECTION 4 ================= -->
+<h2 id="sec4">4&nbsp;&nbsp;The Problem: What Breaks, When, and For Whom</h2>
+
+<h3>4.1&nbsp;&nbsp;The immediate problem (2026–2027): the price of not knowing your own number</h3>
+
+<p>Take a representative Gangshan SME shipping standard carbon-steel fasteners (~2 tCO2e embedded per tonne of product<a class="cite" href="#ref-17">[17]</a>). At the official EUR 75.3 certificate price<a class="cite" href="#ref-24">[24]</a>, its EU buyer pays about <b>EUR 150 per tonne</b> of fasteners — <i>if the factory supplies verified data</i>. If it cannot, the buyer falls back on default values that industry analysts estimate at 3–5 times the verified cost, escalating each year (<a href="#fig-5">Figure 5</a>). Against sector-average export prices near US$3,400–3,600 per tonne — and far less for commodity lines — analysts put worst-case default exposure as high as <b>30–50% of product value</b><a class="cite" href="#ref-17">[17]</a>.</p>
+
+<figure id="fig-5">
+  <img src="chart3_cbam.png" alt="CBAM cost comparison">
+  <figcaption data-label="Figure 5">Illustrative CBAM cost per tonne of fasteners at the official EUR 75.3/tCO2e certificate price<a class="cite" href="#ref-24">[24]</a>, comparing verified actual data (~2 tCO2e/t<a class="cite" href="#ref-17">[17]</a>) with low and high industry estimates of default-value multiples<a class="cite" href="#ref-17">[17]</a>, escalated by the regulation's markup schedule<a class="cite" href="#ref-8">[8]</a>.</figcaption>
+</figure>
+
+<div class="keyfact"><span class="keyfact-title">Why even tiny suppliers get caught.</span> The 50-tonne exemption is counted per EU importer, across all its suppliers combined. MOENV's Climate Change Administration Director-General publicly warned of the consequence: a European distributor buying ten tonnes each from five Taiwanese SMEs crosses the threshold — and must then demand verified data from all five<a class="cite" href="#ref-1">[1]</a>. The smallest factory in Gangshan can inherit a European compliance obligation it has never heard of.</div>
+
+<p>The commercial logic is brutal and impersonal: an importer facing two otherwise identical Taiwanese suppliers keeps the one whose data pack arrives with the shipment. And the capability to respond is demonstrably thin: sector surveys found <b>60%</b> of fast-growing SMEs had completed no carbon inventory, <b>80%</b> had no reduction targets, and half cited talent shortage as the binding constraint<a class="cite" href="#ref-13">[13]</a>. A handful of cluster firms (e.g., Chan Chin C., Fang Sheng) have obtained ISO 14067 product-footprint certificates through subsidized counseling<a class="cite" href="#ref-30">[30]</a> — proof the task is <i>tractable</i>, and proof of the economics problem: consultant-priced, one-off snapshots cannot serve recurring, per-product, per-quarter data demands across 2,600 firms.</p>
+
+<h3>4.2&nbsp;&nbsp;The compounding problem (2027–2030): four ratchets</h3>
+
+<table id="tab-3">
+<caption data-label="Table 3">The cost of doing nothing, year by year</caption>
+<thead><tr><th style="width:16%">Ratchet</th><th>Mechanism</th><th style="width:30%">Effect on a Gangshan SME</th></tr></thead>
+<tbody>
+<tr><td>Default markup</td><td>+10% (2026) → +20% (2027) → +30% (2028), automatic<a class="cite" href="#ref-8">[8]</a></td><td>The penalty for having no data rises every year without anyone lifting a finger</td></tr>
+<tr><td>Scope extension</td><td>~180 downstream steel/aluminium categories proposed; obligations from 2028 if passed (EP vote Sep 2026)<a class="cite" href="#ref-10">[10]</a></td><td>Neighbours making springs, wire, hand tools join the same regime</td></tr>
+<tr><td>Product passports</td><td>EU Digital Product Passport registry launches Jul 2026; batteries mandatory 2027; steel, textiles, electronics phased 2027–2030<a class="cite" href="#ref-28">[28]</a></td><td>Product-level, machine-readable sustainability data becomes a condition of EU market access</td></tr>
+<tr><td>Domestic expansion</td><td>Fee threshold lowering; rates rising toward NT$1,200–1,800/t by 2030; ETS pilot ~2027<a class="cite" href="#ref-31">[31]</a></td><td>Firms outside the carbon fee today are progressively pulled inside it</td></tr>
+</tbody>
+</table>
+
+<p>In 2024, a fastener maker's carbon ignorance cost it nothing. In 2026 it costs its buyer several hundred euros per tonne and puts the relationship at risk. By 2028 the penalty is a third higher, the covered catalogue potentially far larger, and Taiwan's own regulator closer to the factory gate. <b>The problem is not a wave; it is a rising floor.</b></p>
+
+<!-- ================= SECTION 5 ================= -->
+<h2 id="sec5">5&nbsp;&nbsp;The Gap: Why Nothing in the Current System Solves This</h2>
+
+<p>Taiwan's government has not been idle — it has built an entire <i>awareness</i> stack. What no instrument does is produce the artifact that decides procurement outcomes: verified-ready, per-product embedded-emissions data in the European Commission's format. <a href="#tab-4">Table 4</a> is a capability audit of everything that exists, verified as of July 2026.</p>
+
+<table id="tab-4">
+<caption data-label="Table 4">Capability audit of existing instruments</caption>
+<thead><tr><th style="width:26%">Instrument</th><th style="width:34%">What it does</th><th>What it does not do</th></tr></thead>
+<tbody>
+<tr><td>CAAS "SME Carbon Reduction Service Station" (MOEA)<a class="cite" href="#ref-19">[19]</a></td><td>Courses, articles, green-product promotion, consultant referrals</td><td>No computation of any kind; not a reporting tool</td></tr>
+<tr><td>IDB Carbon Emissions Calculator (MOEA)<a class="cite" href="#ref-21">[21]</a></td><td>Free web tool: bills + fuel lists → rough annual company-level CO2e</td><td>No product-level allocation, no CN-code output, no CBAM format, no reduction planning</td></tr>
+<tr><td>MOENV CBAM Help Platform (Mar 2026)<a class="cite" href="#ref-1">[1]</a></td><td>Information hub and two-way consultation channel for affected SMEs</td><td>Explicitly informational; computes nothing</td></tr>
+<tr><td>Taipower app / eBill<a class="cite" href="#ref-20">[20]</a></td><td>Consumption charts, tariff simulation, usage alerts for smart-meter customers</td><td>No emissions conversion; no compliance artifacts</td></tr>
+<tr><td>tre100 (CIER, Dec 2025)<a class="cite" href="#ref-26">[26]</a></td><td>Renewable-electricity pledge registry for firms below RE100's threshold</td><td>No measurement tooling, no accounting</td></tr>
+<tr><td>Private ESG software + consultants</td><td>Organizational inventories; real ISO certifications via subsidized counseling<a class="cite" href="#ref-30">[30]</a></td><td>Per-engagement pricing; recurring per-product CBAM packs remain manual, unaffordable at micro-SME scale</td></tr>
+</tbody>
+</table>
+
+<p><b>The gap, stated precisely:</b> no instrument converts <i>SME-native documents</i> — a Taipower bill, a stack of invoices, a production ledger — into <i>importer-ready, verifier-structured, per-CN-code emissions data</i>, repeatably and at near-zero marginal cost. The government stack ends at awareness; the market stack prices out the small end. And because MOENV has already built the informational front door<a class="cite" href="#ref-1">[1]</a>, a computational layer designed for integration <i>completes</i> a stack the state has visibly started building.</p>
+
+<!-- ================= SECTION 6 ================= -->
+<h2 id="sec6">6&nbsp;&nbsp;The Proposed Solution: CarbonPass</h2>
+
+<p><b>CarbonPass is a local-first AI compliance and energy-optimization copilot for export SMEs, prototyped on the fastener cluster.</b> In one sentence of user experience: <i>photograph your electricity bill and invoices inside LINE, answer three questions in Mandarin or Taiwanese, and receive (a) the carbon data pack your European buyer needs, (b) the money it saves them, and (c) a production schedule that cuts your power bill and makes next quarter's numbers better.</i></p>
+
+<div class="pipeline">
+  <div class="pipe-box"><b>Inputs the SME already has</b>Taipower bills · material invoices (steel wire rod, fuels) · production records — photographed in LINE, in Mandarin/Taiwanese</div>
+  <div class="pipe-arrow">&#8594;</div>
+  <div class="pipe-box"><b>Module 1 · Data-Pack Engine</b>Document AI + allocation across product lines → per-CN-code embedded emissions in the EU template, flagged field-by-field for the verifier</div>
+  <div class="pipe-arrow">&#8594;</div>
+  <div class="pipe-box"><b>Module 2 · Grid-Aware Scheduler</b>Hourly grid carbon intensity from open 10-min Taipower data + time-of-use tariffs → shift plan for furnaces and compressors; NT$ and tCO2e deltas</div>
+  <div class="pipe-arrow">&#8594;</div>
+  <div class="pipe-box"><b>Outputs</b>CBAM data pack · org-level inventory · "default vs actual" buyer-cost screen · monitored reduction ledger</div>
+</div>
+
+<h3>6.1&nbsp;&nbsp;Module 1 — the Data-Pack Engine (compliance core)</h3>
+<p>Document intelligence ingests bills, invoices and production records <b>on the factory's own device or premises</b> — raw data never leaves. The engine then performs the two computations generic calculators cannot: <b>allocation</b> (splitting facility energy across product lines and CN codes using production volumes, machine ratings and operating-hour heuristics, with quantified uncertainty per line — a strict CBAM requirement that invoices alone cannot satisfy) and <b>assembly of "specific embedded emissions" per the EU rulebook</b> (simple-vs-complex-goods logic, wire-rod precursor from mill certificates or conservative default fallback, output rendered in the Commission's template structure). The most persuasive output is one screen: <i>"with your data, your buyer surrenders ≈EUR 150/t; without it, ≈EUR 450–750/t and rising"</i> — a retention argument the owner can forward to the customer.</p>
+
+<h3>6.2&nbsp;&nbsp;Module 2 — the Grid-Aware Scheduler (environmental-economic engine)</h3>
+<p>Taiwan publishes its power system's <b>generation by unit every 10 minutes as open data</b><a class="cite" href="#ref-27">[27]</a>. CarbonPass computes an hourly grid-carbon-intensity curve from that public feed, overlays Taipower time-of-use tariffs (summer peak rates run several times the off-peak rate<a class="cite" href="#ref-20">[20]</a>), and runs a scheduling optimizer over the factory's <i>flexible</i> loads — heat-treatment furnaces, compressors, plating rectifiers — against order deadlines stated in the chat. Input is 15-minute smart-meter data the customer exports from their own Taipower account (consent-based; no third-party API dependency). Output: a shift plan, projected NT$ savings, projected tCO2e reduction, and a monitored before/after ledger — a continuously documented reduction trajectory structured to the baseline-and-monitoring logic of ISO 14064-2. Stated carefully: <i>structured to the standard's logic; certification remains the accredited verifier's act.</i> Every avoided tonne also shrinks the next data pack — measurement and mitigation feed each other.</p>
+
+<h3>6.3&nbsp;&nbsp;Module 3 — the Inclusion Interface (the reason this belongs in this hackathon)</h3>
+<p>The front end is not a dashboard but a <b>conversation in LINE, Mandarin/Taiwanese-first, voice-friendly, zero ESG vocabulary</b>. "拍一張電費單" — snap a photo of the power bill — is the entire onboarding. The excluded party here is a person: a 60-plus owner-operator who will never log into a European portal or read a 2,400-page implementing regulation<a class="cite" href="#ref-8">[8]</a>, and should not have to. Digital inclusion — the Handbook's "ages, regions, and needs" — is delivered as an interface property, not a slogan.</p>
+
+<h3>6.4&nbsp;&nbsp;One engine, both directions of readiness</h3>
+<table id="tab-5">
+<caption data-label="Table 5">Extended uses of the same data spine</caption>
+<thead><tr><th style="width:24%">Direction</th><th>Artifact / use</th><th style="width:30%">Trigger</th></tr></thead>
+<tbody>
+<tr><td rowspan="3">International</td><td>CBAM data packs per CN code</td><td>Definitive phase, live since Jan 2026<a class="cite" href="#ref-6">[6]</a></td></tr>
+<tr><td>Customer Scope-3 questionnaires (TSMC-chain, global brands)</td><td>SBTi/RE100 supplier programs<a class="cite" href="#ref-14">[14]</a></td></tr>
+<tr><td>ISO 14067 preparation; Digital Product Passport payloads</td><td>ESPR phase-in 2027–2030<a class="cite" href="#ref-28">[28]</a></td></tr>
+<tr><td rowspan="3">Domestic</td><td>Standing organizational inventory (ISO 14064-1-style)</td><td>Carbon-fee threshold lowering<a class="cite" href="#ref-31">[31]</a></td></tr>
+<tr><td>Documented reduction ledger, positioned for the voluntary-credit mechanism (credits offset fee liability at 1.2:1, capped at 10%)</td><td>MOENV voluntary reduction rules<a class="cite" href="#ref-33">[33]</a></td></tr>
+<tr><td>Bank-ready carbon data for sustainability-linked lending</td><td>FSC Green Finance policies</td></tr>
+</tbody>
+</table>
+
+<!-- ================= SECTION 7 ================= -->
+<h2 id="sec7">7&nbsp;&nbsp;Beyond Today's Scope: The Mandates That Extend the Idea</h2>
+
+<p>A proposal must justify its life after the demo. CarbonPass's forward case rests on dated regulatory trajectories, not speculation:</p>
+
+<ol>
+<li><b>The CBAM downstream extension (decision imminent).</b> ~180 added product categories, obligations from 1 January 2028; Council position adopted June 2026; <b>European Parliament plenary vote expected September 2026 — inside this Hackathon's mentorship window</b><a class="cite" href="#ref-10">[10]</a>. By the final review in late October, the team presents with the outcome known: either the addressable market grows from 2,600 firms to the exporters of 180 categories, or the beachhead is confirmed with more preparation time. Treated correctly as pending legislation, this is a roadmap event few proposals anywhere can schedule between submission and finals.</li>
+<li><b>The Digital Product Passport.</b> Registry infrastructure from July 2026; batteries mandatory 2027; steel, textiles, electronics phased 2027–2030<a class="cite" href="#ref-28">[28]</a>. DPP payloads are machine-readable product sustainability data — structurally the same output class CarbonPass already generates.</li>
+<li><b>Domestic escalation.</b> Threshold lowering, fee increases, ETS pilot ~2027<a class="cite" href="#ref-31">[31]</a> — each step converts more of Taiwan's manufacturing SMEs from spectators into reporters, with CarbonPass's inventory by-product as their on-ramp.</li>
+<li><b>The NDC 3.0 arithmetic.</b> A 38%±2% cut by 2035<a class="cite" href="#ref-22">[22]</a> cannot be delivered by ~500 directly regulated entities alone; the state needs measurement capillaries into the SME layer. A tool the government can adopt through the Hackathon's own pipeline (Section 9) is exactly such a capillary.</li>
+</ol>
+
+<p>The expansion sequence is therefore: fasteners (2026, live compulsion) → downstream steel/aluminium categories (2028, pending) → DPP sectors (2027–2030) → domestic carbon-fee entrants (2027 onward). Same engine, widening catalogue.</p>
+
+<!-- ================= SECTION 8 ================= -->
+<h2 id="sec8">8&nbsp;&nbsp;Technical Plan: How It Gets Built</h2>
+
+<h3>8.1&nbsp;&nbsp;Architecture and AI substance</h3>
+<p>The stack is deliberately conservative where compliance demands it and ambitious where differentiation lives. Three subsystems carry the AI claim honestly: (i) <b>document intelligence with allocation reasoning</b> — multi-format, mixed-language bill and invoice understanding plus facility-to-product energy allocation under uncertainty, a genuine machine-learning problem rather than mere OCR; (ii) <b>carbon- and price-aware scheduling</b> — a MILP baseline with a reinforcement-learning refinement, driven by a live grid signal computed from open data; (iii) a <b>compliance rules engine</b> encoding the EU's methodology (simple/complex goods, precursors, default tables) into field-level guidance. Bill-parsing arithmetic alone would not justify the AI framing — both independent audits behind this proposal said so; the combination above is what clears the bar. Exotic roadmap items (federated learning across the cluster, confidential computing) are explicitly staged <i>after</i> the pilot, following architectural precedents Taiwan's banking sector has already normalized.</p>
+
+<h3>8.2&nbsp;&nbsp;Every dataset needed for the proof of concept (all accessible today)</h3>
+<table id="tab-6">
+<caption data-label="Table 6">PoC data resources, access, and role</caption>
+<thead><tr><th style="width:34%">Resource</th><th style="width:30%">Access</th><th>Role</th></tr></thead>
+<tbody>
+<tr><td>MOENV carbon-footprint emission coefficients</td><td><a href="https://data.gov.tw/en/datasets/28176">data.gov.tw #28176</a> (OpenAPI)</td><td>Material / fuel / process emission factors</td></tr>
+<tr><td>Taiwan product carbon-footprint registry</td><td><a href="https://data.gov.tw/en/datasets/8992">data.gov.tw #8992</a></td><td>Benchmarks and sanity checks</td></tr>
+<tr><td>Electricity emission factor, 0.474 kgCO2e/kWh (2024)</td><td><a href="https://www.moeaea.gov.tw/ECW/English/content/Content.aspx?menu_id=24200">MOEA Energy Administration</a></td><td>Scope-2 and scheduler math</td></tr>
+<tr><td>Taipower generation by unit, 10-minute</td><td><a href="https://data.gov.tw/en/datasets/8931">#8931 (real-time)</a>, <a href="https://data.gov.tw/en/datasets/37331">#37331 (historical)</a></td><td>Hourly grid-carbon-intensity curve</td></tr>
+<tr><td>Taipower time-of-use rate schedules</td><td><a href="https://www.taipower.com.tw/2764/2765/2801/">taipower.com.tw</a></td><td>Price signal for the scheduler</td></tr>
+<tr><td>CBAM default values and methodology (Reg. (EU) 2025/2621; DG TAXUD templates)</td><td><a href="https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism_en">EUR-Lex / DG TAXUD</a></td><td>Output schema; CN 7318 default rows; cost-delta screen</td></tr>
+<tr><td>Official CBAM certificate prices (quarterly)</td><td><a href="https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism/price-cbam-certificates_en">European Commission</a></td><td>Live cost math (EUR 75.36 Q1 / 75.28 Q2 2026)</td></tr>
+<tr><td>EU–Taiwan trade flows for CN 7318</td><td>Eurostat Comext; Taiwan MOF customs statistics</td><td>Impact quantification</td></tr>
+<tr><td>MOENV GHG registry disclosures of large emitters</td><td>MOENV platforms</td><td>Steel-precursor benchmarks</td></tr>
+<tr><td>15-minute smart-meter interval data</td><td>Customer CSV export via Taipower app/eBill (consent)</td><td>Scheduler input; synthetic profile until pilot</td></tr>
+<tr><td>Bill/invoice sample corpus</td><td>Public Taipower bill formats; MOF e-invoice specification; mock corpus by team</td><td>Document-AI training and evaluation</td></tr>
+</tbody>
+</table>
+
+<p class="small">Open-data reciprocity, which the application form scores: CarbonPass publishes back (a) a cleaned hourly Taiwan grid-carbon-intensity dataset derived from the 10-minute feeds, and (b) an anonymized fastener-sector emissions benchmark from the pilot.</p>
+
+<h3>8.3&nbsp;&nbsp;Build plan against the official competition calendar</h3>
+<table id="tab-7">
+<caption data-label="Table 7">Deliverables mapped to the PHIT 2026 schedule<a class="cite" href="#ref-29">[29]</a></caption>
+<thead><tr><th style="width:26%">Window (Handbook)</th><th>Deliverable</th></tr></thead>
+<tbody>
+<tr><td>Now → 31 Jul 2026, 17:00 (GMT+8) — submission</td><td>Team of 3–10 with at least one non-ROC national; PoC v0 (Module 1 end-to-end on a three-firm mock corpus; Module 2 on a synthetic fastener load profile with the live grid feed); LINE-bot walkthrough; demo video; proposal written field-by-field to the application form (SDGs 8, 9, 12, 13); expressions of interest targeted from a TIFI member firm, MIRDC, or Kaohsiung EPB's advisory team</td></tr>
+<tr><td>6–16 Aug — preliminary review</td><td>Scored 40% Feasibility / 30% Innovation / 30% Social Impact: the proposal plus a credible start is the whole game</td></tr>
+<tr><td>Mid-Sep → mid-Oct — mentorship</td><td>One real pilot factory in Gangshan: actual bills in, actual data pack out; structure reviewed by an MIRDC engineer or verifier; one flexible load shifted and measured. Track the European Parliament vote and update the market slide with the outcome</td></tr>
+<tr><td>Late Oct — final review</td><td>Live demo: pack generation, grid-aware schedule, pilot before/after ledger. The Implementation &amp; Verification criterion (30%) scores progress <i>between submission and finals</i> and requires "a system demo or code design description"</td></tr>
+</tbody>
+</table>
+
+<!-- ================= SECTION 9 ================= -->
+<h2 id="sec9">9&nbsp;&nbsp;Fit With the Presidential Hackathon</h2>
+
+<p>The Presidential Hackathon is not a product competition; it is the Taiwanese government's <b>policy-adoption pipeline</b>. Winning teams present to the President; five Teams of Excellence per year receive government guidance, public-private matchmaking, field-validation support, and mandatory follow-up benefit tracking; past winners returned to the 2026 launch event to present post-victory implementation progress, and at least one past project matured into national policy<a class="cite" href="#ref-32">[32]</a><a class="cite" href="#ref-28b">[28b]</a>. The Handbook's own application form contains "development stage," "existing validation," and "future plans" fields designed for early-stage projects<a class="cite" href="#ref-29">[29]</a>. <b>Full deployment is therefore not expected at entry — a working proof of concept plus a government-connected validation path is precisely the intended shape</b>, and claiming more would score worse under Feasibility (40%), the heaviest preliminary criterion.</p>
+
+<table id="tab-8">
+<caption data-label="Table 8">Mapping to the official evaluation criteria<a class="cite" href="#ref-29">[29]</a></caption>
+<thead><tr><th style="width:26%">Criterion (weight prelim/final)</th><th>How CarbonPass answers it</th></tr></thead>
+<tbody>
+<tr><td>Feasibility (40% / 30%)</td><td>Built entirely on open, named datasets (Table 6); no hardware, no partnerships required for the PoC; staged plan matched to the official calendar (Table 7)</td></tr>
+<tr><td>Innovation (30% / 20%)</td><td>First tool converting SME-native documents into EU-format product-level emissions data; carbon-aware scheduling driven by Taiwan's open 10-minute grid feed; capability audit (Table 4) shows no existing overlap</td></tr>
+<tr><td>Social Impact (30% / 20%)</td><td>Protects a nameable regional blue-collar community (2,600 firms; a top-3 world export industry) from a dated, quantified threat; inclusion delivered in the interface itself</td></tr>
+<tr><td>Implementation &amp; Verification (– / 30%)</td><td>Pilot factory during mentorship; measured before/after ledger; weekly documented progress between submission and finals</td></tr>
+</tbody>
+</table>
+
+<p>On the theme: the Handbook defines digital inclusion as enabling <i>"people of different ages, regions, and needs to access technology and participate in digital services on equal footing"</i><a class="cite" href="#ref-29">[29]</a>. CarbonPass maps to all three axes without stretching the text — <b>ages</b> (aging, family-run firms asked to operate EU-grade data infrastructure overnight), <b>regions</b> (one nameable southern district whose economic identity is at stake), and <b>needs</b> (participation in what is now a de facto digital service: carbon-verified market access). Historical precedent supports economically framed winners: procurement transparency (2020), agricultural carbon reduction (2022), a blockchain carbon wallet (2024), agri-AI (2025)<a class="cite" href="#ref-28b">[28b]</a>.</p>
+
+<!-- ================= SECTION 10 ================= -->
+<h2 id="sec10">10&nbsp;&nbsp;Honest Limits and Risks</h2>
+
+<ul>
+<li><b>The tool prepares verification; it does not replace it.</b> At least 80% of reported emissions must be verified by an accredited third party<a class="cite" href="#ref-8">[8]</a>; CarbonPass's output is the structured input to that process, never a certificate.</li>
+<li><b>The 2028 extension is pending legislation</b> until the European Parliament and Council conclude; the proposal books no benefit from it, only a tracked roadmap event<a class="cite" href="#ref-10">[10]</a>.</li>
+<li><b>Preferential fee rates belong to large emitters.</b> The SME's incentives are customer retention, CBAM cost pass-through, energy savings, and readiness — the proposal says exactly that, nothing more<a class="cite" href="#ref-4">[4]</a>.</li>
+<li><b>Brussels risk cuts both ways.</b> Further CBAM simplification could shrink the compelled population; the extension could triple it. The beachhead (live compulsion today) is chosen precisely to be robust to either outcome.</li>
+<li><b>The addressable core is 2,600 firms today</b><a class="cite" href="#ref-1">[1]</a> — a deliberately honest number. The "big idea" is the expansion path; the demo scope is one cluster. Under a rubric that weights Feasibility at 40%, honesty is the competitive strategy.</li>
+</ul>
+
+<!-- ================= REFERENCES ================= -->
+<h2 id="refs">References</h2>
+<p class="small">All links verified accessible July 2026. Primary/government sources are listed first within each topic where possible.</p>
+<ol class="references">
+<li id="ref-1">Yeh, E. (2026, March 2). MOENV to set up CBAM help platform for SMEs. <i>Taipei Times</i>. <a href="https://www.taipeitimes.com/News/taiwan/archives/2026/03/02/2003853116">https://www.taipeitimes.com/News/taiwan/archives/2026/03/02/2003853116</a></li>
+<li id="ref-2">Focus Taiwan / CNA. (2026, June 3). Taiwan collects nearly NT$5 billion in first carbon fee cycle: MOENV. <a href="https://focustaiwan.tw/business/202606030008">https://focustaiwan.tw/business/202606030008</a></li>
+<li id="ref-3">Taipei Times. (2026, June 4). First carbon fee cycle rakes in almost NT$5bn. <a href="https://www.taipeitimes.com/News/front/archives/2026/06/04/2003858496">https://www.taipeitimes.com/News/front/archives/2026/06/04/2003858496</a></li>
+<li id="ref-4">Ministry of Environment, ROC (Taiwan). Taiwan's Ministry of Environment announces "Fee-Charging Rates of Carbon Fees". <a href="https://www.moenv.gov.tw/en/news/press-releases/31552.html">https://www.moenv.gov.tw/en/news/press-releases/31552.html</a></li>
+<li id="ref-5">RESET Carbon. (2025). Taiwan's carbon fee to begin collection in 2026: Market implications of preferential rates and carbon leakage risk adjustments. <a href="https://resetcarbon.com/en/taiwans-carbon-fee-to-begin-collection-in-2026-market-implications-of-preferential-rates-and-carbon-leakage-risk-adjustments/">https://resetcarbon.com/en/taiwans-carbon-fee-to-begin-collection-in-2026-market-implications-of-preferential-rates-and-carbon-leakage-risk-adjustments/</a></li>
+<li id="ref-6">European Commission, DG Taxation and Customs Union. Carbon Border Adjustment Mechanism. <a href="https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism_en">https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism_en</a></li>
+<li id="ref-7">International Carbon Action Partnership. (2025, October). EU adopts simplifications of CBAM rules ahead of the compliance phase starting in 2026. <a href="https://icapcarbonaction.com/en/news/eu-adopts-simplifications-cbam-rules-ahead-compliance-phase-starting-2026">https://icapcarbonaction.com/en/news/eu-adopts-simplifications-cbam-rules-ahead-compliance-phase-starting-2026</a></li>
+<li id="ref-8">O'Melveny &amp; Myers LLP. (2026). How the EU's new default emissions values under CBAM impact US exporters: What you need to know for 2026. <a href="https://www.omm.com/insights/alerts-publications/how-the-eu-s-new-default-emissions-values-under-cbam-impact-us-exporters-what-you-need-to-know-for-2026/">https://www.omm.com/insights/alerts-publications/how-the-eu-s-new-default-emissions-values-under-cbam-impact-us-exporters-what-you-need-to-know-for-2026/</a></li>
+<li id="ref-9">Bipartisan Policy Center. (2026). High CBAM default values underscore the need for U.S. data. <a href="https://bipartisanpolicy.org/article/high-cbam-default-values-underscore-the-need-for-u-s-data/">https://bipartisanpolicy.org/article/high-cbam-default-values-underscore-the-need-for-u-s-data/</a></li>
+<li id="ref-10">Akin Gump Strauss Hauer &amp; Feld LLP. (2026, January). EU Carbon Border Adjustment Mechanism: Financial obligations commence amid proposed scope expansion to include new downstream products. <a href="https://www.akingump.com/en/insights/alerts/eu-carbon-border-adjustment-mechanism-financial-obligations-commence-amid-proposed-scope-expansion-to-include-new-downstream-products">https://www.akingump.com/en/insights/alerts/eu-carbon-border-adjustment-mechanism-financial-obligations-commence-amid-proposed-scope-expansion-to-include-new-downstream-products</a></li>
+<li id="ref-11">Small and Medium Enterprise and Startup Administration, MOEA. (2025). 2025 White Paper highlights vital role of small and medium enterprises in Taiwan's economy. <a href="https://www.sme.gov.tw/article-en-2442-14150">https://www.sme.gov.tw/article-en-2442-14150</a></li>
+<li id="ref-12">Kaohsiung Times. (2026). South Taiwan "Kingdom of Screws" accelerates green shift ahead of April global summit. <a href="https://www.kaohsiungtimes.com/south-taiwan-kingdom-of-screws-accelerates-green-shift-ahead-of-april-global-summit-at-the-kaohsiung-exhibition-center/">https://www.kaohsiungtimes.com/south-taiwan-kingdom-of-screws-accelerates-green-shift-ahead-of-april-global-summit-at-the-kaohsiung-exhibition-center/</a></li>
+<li id="ref-13">CommonWealth Magazine. (2023, July 12). The screw triggering a battle worth NT$200 billion. <a href="https://english.cw.com.tw/article/article.action?id=3462">https://english.cw.com.tw/article/article.action?id=3462</a></li>
+<li id="ref-14">TSMC ESG. (2024). TSMC subsidizes suppliers for carbon reduction, driving green investments worth NT$5.5 billion. <a href="https://esg.tsmc.com/en-US/articles/343">https://esg.tsmc.com/en-US/articles/343</a></li>
+<li id="ref-15">CarbonChain. Quick guide to EU CBAM goods and CN codes. <a href="https://www.carbonchain.com/cbam/eu-cbam-cn-codes">https://www.carbonchain.com/cbam/eu-cbam-cn-codes</a></li>
+<li id="ref-16">Goebel Fasteners / PR Newswire. (2024). Taiwan's fasteners: The backbone of U.S. industries. <a href="https://www.goebelfasteners.com/taiwans-fasteners-the-backbone-of-us-industries/">https://www.goebelfasteners.com/taiwans-fasteners-the-backbone-of-us-industries/</a></li>
+<li id="ref-17">Special Insert. (2026, April 23). The fastener industry faces the CBAM challenge. <a href="https://www.specialinsert.it/en/2026/04/23/fastener-industry-carbon-border-adjustment-mechanism-cbam/">https://www.specialinsert.it/en/2026/04/23/fastener-industry-carbon-border-adjustment-mechanism-cbam/</a></li>
+<li id="ref-19">Small and Medium Enterprise and Startup Administration, MOEA. Carbon as a Service (CAAS) — SME Carbon Reduction Service Station. <a href="https://www.sme.gov.tw/caas_en/masterpage-caas_en">https://www.sme.gov.tw/caas_en/masterpage-caas_en</a></li>
+<li id="ref-20">Taiwan Power Company. AMI data applications — Taipower Smart Grid. <a href="https://smartgrid.taipower.com.tw/en/Data_Analytics/AMI_Data_Applications">https://smartgrid.taipower.com.tw/en/Data_Analytics/AMI_Data_Applications</a>; rate schedules: <a href="https://www.taipower.com.tw/2764/2765/2801/">https://www.taipower.com.tw/2764/2765/2801/</a></li>
+<li id="ref-21">Ministry of Economic Affairs, ROC (Taiwan). The carbon emissions calculator, an IDB new released tool to support enterprises' control on carbon emissions. <a href="https://www.moea.gov.tw/MNS/english/news/News.aspx?kind=6&amp;menu_id=176&amp;news_id=102426">https://www.moea.gov.tw/MNS/english/news/News.aspx?kind=6&amp;menu_id=176&amp;news_id=102426</a></li>
+<li id="ref-22">Ministry of Environment, ROC (Taiwan). (2025). Ministry of Environment announces Taiwan's 2035 Nationally Determined Contribution (NDC 3.0). <a href="https://www.moenv.gov.tw/en/news/press-releases/34357.html">https://www.moenv.gov.tw/en/news/press-releases/34357.html</a></li>
+<li id="ref-23">Energy Administration, Ministry of Economic Affairs, ROC (Taiwan). Electricity carbon emission factor. <a href="https://www.moeaea.gov.tw/ECW/English/content/Content.aspx?menu_id=24200">https://www.moeaea.gov.tw/ECW/English/content/Content.aspx?menu_id=24200</a></li>
+<li id="ref-24">European Commission, DG Taxation and Customs Union. Price of CBAM certificates. <a href="https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism/price-cbam-certificates_en">https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism/price-cbam-certificates_en</a></li>
+<li id="ref-25">Fastener World Magazine. (2025). Outlook report on Taiwan's fastener export momentum (no. 211/213). <a href="https://www.fastener-world.com/data/pdf_download/FW_211_E_251.pdf">https://www.fastener-world.com/data/pdf_download/FW_211_E_251.pdf</a></li>
+<li id="ref-26">Chung-Hua Institution for Economic Research. (2025, December). New initiative, tre100, bridges gap between Taiwanese businesses and global RE100 standards. <a href="https://www.cier.edu.tw/en/institution-en/29908/">https://www.cier.edu.tw/en/institution-en/29908/</a></li>
+<li id="ref-27">Government Open Data Platform, Taiwan. Taiwan Power Company — real-time and historical generation by unit (10-minute). <a href="https://data.gov.tw/en/datasets/8931">https://data.gov.tw/en/datasets/8931</a>; <a href="https://data.gov.tw/en/datasets/37331">https://data.gov.tw/en/datasets/37331</a></li>
+<li id="ref-28">European Union. Ecodesign for Sustainable Products Regulation (EU) 2024/1781 and Digital Product Passport rollout analyses. <a href="https://eur-lex.europa.eu/eli/reg/2024/1781/oj">https://eur-lex.europa.eu/eli/reg/2024/1781/oj</a></li>
+<li id="ref-28b">Ministry of Digital Affairs, ROC (Taiwan). (2026). 2026 Presidential Hackathon International Track launches global call for entries. <a href="https://moda.gov.tw/en/press/press-releases/20076">https://moda.gov.tw/en/press/press-releases/20076</a></li>
+<li id="ref-29">Ministry of Digital Affairs / Taipei Computer Association. (2026, May). 2026 Presidential Hackathon International Track Handbook. <a href="https://presidential-hackathon.taiwan.gov.tw/en/international-track/">https://presidential-hackathon.taiwan.gov.tw/en/international-track/</a></li>
+<li id="ref-30">Chan Chin C. Enterprise. ISO 14067 low-carbon steel fasteners carbon footprint verification opinion statement. <a href="https://www.chanchinc.com/en/news/Taiwan-based_screw_manufacturer_05.html">https://www.chanchinc.com/en/news/Taiwan-based_screw_manufacturer_05.html</a></li>
+<li id="ref-31">Eco-Business. (2026, June). Taiwan collects first carbon fee payments, plans higher rates and emissions trading pilot. <a href="https://www.eco-business.com/news/taiwan-collects-first-carbon-fee-payments-plans-higher-rates-and-emissions-trading-pilot/">https://www.eco-business.com/news/taiwan-collects-first-carbon-fee-payments-plans-higher-rates-and-emissions-trading-pilot/</a></li>
+<li id="ref-32">Chen, Y.-C., et al. (2025). Public–private partnership in pipelining science of acute care ecosystem: Insights from Taiwan's Presidential Hackathon. <i>Learning Health Systems</i>. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12264364/">https://pmc.ncbi.nlm.nih.gov/articles/PMC12264364/</a></li>
+<li id="ref-33">Ministry of Environment, ROC (Taiwan). Voluntary greenhouse gas reduction offset information platform. <a href="https://carbonoffset.moenv.gov.tw/EnglishVersion">https://carbonoffset.moenv.gov.tw/EnglishVersion</a></li>
+</ol>
+
+</body>
+</html>

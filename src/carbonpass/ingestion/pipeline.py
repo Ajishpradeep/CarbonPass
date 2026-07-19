@@ -35,8 +35,26 @@ def _vlm_uncertainty(confidence: float) -> float:
 STAINLESS_PAT = ("SUS", "不鏽", "不銹", "stainless")
 
 
+def _is_stainless(grade_or_desc: str) -> bool:
+    return any(p.lower() in grade_or_desc.lower() for p in STAINLESS_PAT)
+
+
 def _precursor_cn(grade_or_desc: str) -> str:
-    return "7227" if any(p.lower() in grade_or_desc.lower() for p in STAINLESS_PAT) else "7213"
+    """CN code of the wire rod (盤元線材) a fastener plant buys and draws itself.
+
+    Both codes are the same product in different grades — "hot-rolled, in irregularly
+    wound coils":
+        CN 7213  iron / non-alloy steel   (Taiwan 2.298)
+        CN 7221  stainless steel          (Taiwan: NO VALUE -> Annex I fallback 4.82)
+
+    Do NOT use CN 7227 here: that is "bars and rods of alloy steel **other than
+    stainless**", and Taiwan's 7227 (2.17) is the lowest value assigned to any country on
+    earth — using it for stainless understated the precursor ~2.2x and silently made a
+    stainless screw look cleaner than a carbon one. Nor CN 7222/7223, which are other
+    bars/rods and *drawn wire* — a fastener plant buys rod and draws it in-house (see the
+    抽線機 in every firm's machine list).
+    """
+    return "7221" if _is_stainless(grade_or_desc) else "7213"
 
 
 def ingest_firm(firm_dir: str | Path, use_vlm: bool = True) -> dict:
@@ -183,7 +201,8 @@ def ingest_firm(firm_dir: str | Path, use_vlm: bool = True) -> dict:
     consumption = onboarding.get("precursor_consumption_t", {})
     for rec in steel_by_key.values():
         cn = _precursor_cn(rec["description"])
-        name = ("Stainless steel wire rod" if cn == "7227" else "Carbon steel wire rod")
+        name = ("Stainless steel wire rod" if _is_stainless(rec["description"])
+                else "Carbon steel wire rod")
         aggregated["steel_inputs"].append({
             "name": name,
             "grade": rec["description"],

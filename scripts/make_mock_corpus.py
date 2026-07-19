@@ -63,10 +63,17 @@ GRID_EF = 0.474          # kgCO2e/kWh, MOEA Energy Admin 2024
 NG_NCV_GJ_PER_KNM3 = 38.5  # GJ per 1000 Nm3 natural gas
 NG_EF_TCO2_PER_TJ = 56.1   # IPCC / template example value
 
-# CBAM default values, Taiwan sheet (data/cbam_official/default_values.xlsx),
-# "2026 (including mark-up)" column — the +10% year.
-DEFAULT_SEE_WIRE_ROD_7213_2026 = 2.5276120606   # bars & rods, iron/non-alloy (base 2.297829146)
-DEFAULT_SEE_WIRE_ROD_7227_2026 = 2.387          # bars & rods, alloy/stainless (base 2.17)
+# CBAM default values (data/cbam_official/default_values.xlsx), "2026 (including mark-up)"
+# column — the +10% year. Ground truth is computed independently of the engine on purpose,
+# so these are transcribed from the workbook rather than looked up.
+#
+# Carbon wire rod: Taiwan sheet, CN 7213 (base 2.297829146).
+DEFAULT_SEE_WIRE_ROD_7213_2026 = 2.5276120606
+# Stainless wire rod: CN 7221. Taiwan's sheet has NO 7221 value — the row reads "see below"
+# and nothing is below it (only Taiwan, Thailand and Vietnam have this hole among the 33
+# full-book countries). So the Annex I "Other countries and territories" table applies
+# (Q&A p.37 §4.25) — base 4.82, the average of the ten highest-intensity exporters.
+DEFAULT_SEE_WIRE_ROD_7221_2026 = 5.302
 
 # TOU rates, NT$/kWh — single source of truth in the scheduler module
 from carbonpass.scheduler.tariffs import RATES  # noqa: E402
@@ -176,7 +183,7 @@ FIRMS = {
             {
                 "name": "Stainless steel wire rod",
                 "grade": "SUS304",
-                "cn_code_precursor": "7227",
+                "cn_code_precursor": "7221",
                 "country": "TW",
                 "supplier": "唐榮鐵工廠股份有限公司",
                 "supplier_ban": "85510258",
@@ -535,7 +542,7 @@ def compute_ground_truth(firm: dict) -> dict:
             else:
                 psd = (DEFAULT_SEE_WIRE_ROD_7213_2026
                        if prec["cn_code_precursor"] == "7213"
-                       else DEFAULT_SEE_WIRE_ROD_7227_2026)
+                       else DEFAULT_SEE_WIRE_ROD_7221_2026)
                 pse, psi = 0.0, 0.0   # defaults carry no indirect for steel (N/A)
                 source = "default"
                 default_share_num += ratio * psd

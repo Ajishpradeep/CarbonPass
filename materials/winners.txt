@@ -1,0 +1,504 @@
+EVIDENCE REVIEW · INDEPENDENT ANALYSIS
+
+What Actually Wins the
+Presidential Hackathon?
+Every International-Track Team of Excellence, 2019–2025:
+project merit, national timing, and what happened afterward
+
+A fact-checked study of 14 winning entries
+Method: primary press releases, official records, project traces
+Prepared for the Pred-hack project · July 2026
+All claims cited; absences of evidence reported as such
+
+This review corrects two claims found in this project’s own earlier research
+files. It observes winners only — losing entries are invisible — so causal
+conclusions are stated with that limit in mind.
+
+Contents
+1 The Question and the Method
+
+2
+
+2 The Case Files, 2019–2025
+
+2
+
+2.1 What the winners were, in their year’s context . . . . . . . . . . . . . . . . . . .
+3 Findings
+
+2
+4
+
+3.1 Finding 1: winners’ domains move in lockstep with the year’s theme . . . . . .
+
+4
+
+3.2 Finding 2: half the winners did not start at the hackathon . . . . . . . . . . . .
+
+4
+
+3.3 Finding 3: the afterlife record is split exactly in half
+
+5
+
+. . . . . . . . . . . . . . .
+
+3.4 Finding 4: the diplomatic pattern is visible and unhidden
+
+. . . . . . . . . . . .
+
+5
+
+3.5 Finding 5: corrections to our own earlier files . . . . . . . . . . . . . . . . . . .
+
+6
+
+4 Verdict: Good Project, or National Need?
+4.1 What this means for the CarbonPass entry . . . . . . . . . . . . . . . . . . . . .
+
+6
+7
+
+5 Limitations
+
+7
+
+References
+
+8
+
+What Actually Wins the Presidential Hackathon — An Evidence Review
+
+1 The Question and the Method
+The question under test: when a team wins the Presidential Hackathon’s International
+Track, is it because the project is genuinely excellent — or because it lands on the nation’s
+immediate need at the right moment? The question matters because our own entry strategy
+depends on the answer.
+Method. We identified the publicly named Teams of Excellence for each International
+Track edition, 2019–2025 (two per year in official reporting; 14 in total), then researched
+each against three factual axes: (1) what the project actually was and how technically substantial it was at the time of winning; (2) whether it pre-existed the competition; (3) whether
+any public trace of activity exists after the competition (websites, code repositories, partnerships, press, return appearances). Sources are official press releases (MODA, Office
+of the President), the competition’s own history pages, the winning organizations’ own
+publications, and third-party records (Open Contracting Partnership, CoST International,
+GitHub). Where we found nothing, we say “no public trace found” — which is evidence of
+absence only in the weak sense, and is labeled accordingly.
+Two bias controls. First, this review deliberately re-verified claims made in this project’s
+own earlier research files, and corrects two of them (Section 3.5). Second, we observe
+winners only: the losing pool is invisible, so we cannot prove that better projects lost.
+Claims below are therefore about what winners have in common, not about what judges
+rejected.
+The scoring frame the judges use. The rubric weights Feasibility 40%, Innovation 30%,
+Social Impact 30% at preliminaries; finals add Implementation & Verification at 30% 1 . Note
+what this arithmetic already implies: “uniqueness of technology” is at most three-tenths of
+the decision; the other seven-tenths reward a solvable, important, demonstrable problem.
+The theme itself is set annually to the presidential agenda — 2026’s theme “echoes President Lai’s New Year vision” 1 — and the award is presented personally by the President
+in a ceremony attended by diplomatic representatives 14 . The institutional design, in other
+words, is not neutral between our two hypotheses. What follows tests whether the record
+matches the design.
+
+2 The Case Files, 2019–2025
+Table 1 compresses the fourteen case files; the paragraphs after it add what a table cannot.
+
+2.1 What the winners were, in their year’s context
+2019–2020: the transparency years. The theme was sustainable infrastructure; the
+global civic-tech zeitgeist was open contracting. Both years’ winners were procurementdata tools. Neither was algorithmically novel — SISOCS is a disclosure database; HPPI
+is an index over tender data — but both were real: SISOCS had been disclosing actual
+road projects since 2015 under a World Bank program 2 , and Fiscal Force was built by
+an established data-for-governance organization 5 . The technically interesting entrant of
+2019, Cartelogy’s red-flag cartel detection, is the one whose trail goes cold afterward.
+2021–2022: the net-zero years. Themes pivoted to climate action. A/B Street won: a
+genuinely impressive piece of software — but one started in 2018, three years mature,
+with an existing community 6 . Its post-win account is the most instructive in the whole
+record: the creator nearly shut it down within a year of winning, and the project survived
+by institutional adoption (Turing Institute) unrelated to Taiwan 7 . The 2022 winners (field
+
+2
+
+What Actually Wins the Presidential Hackathon — An Evidence Review
+
+Table 1: Fourteen Teams of Excellence: what they were, whether they pre-existed, what remains
+Yr
+
+Team
+
+Origin
+
+Project (verified description)
+
+Pre-existence
+terlife
+
+19
+
+CoST Honduras
+
+Honduras
+
+SISOCS infrastructure-disclosure platform;
+disclosure rates 27%→95% 2
+
+Pre-existed (2014–15,
+World Bank context);
+still operating, 1,850+
+projects,
+∼US$1bn
+disclosed 2
+
+19
+
+Cartelogy
+
+Malaysia
+
+Procurement red-flag tool; ∼7,000 contracts
+converted to OCDS 3
+
+Backed by civic-tech
+group; no public post2019 trace found
+
+20
+
+Fiscal Force
+
+India
+
+Health Procurement Performance Index on
+Himachal Pradesh tenders 4
+
+Built by CivicDataLab (existing org);
+grew into a formal
+CivicDataLab–OCP
+partnership with state
+governments 5
+
+20
+
+Learning Man
+
+Taiwan
+
+Social-housing procurement mapping via
+OC4IDS 4
+
+No public post-2020
+trace found
+
+21
+
+A/B Street
+
+Intl. (US)
+
+Open-source traffic simulation / street redesign tool 6
+
+Pre-existed
+(2018);
+post-win:
+creator
+“almost ended the
+project,” continued at
+the Alan Turing Institute, now a one-person
+consultancy; development narrowed to a
+library 6,7
+
+21
+
+Office Farmers
+
+Intl.
+
+Open-data crop adaptation modeling 8
+
+No public post-2021
+trace found
+
+22
+
+BRSDM@ErLin
+
+Taiwan
+
+Field biochar-pyrolysis equipment + cloud
+data platform, promoted toward Southeast
+Asia 9
+
+Research-team
+project;
+no public
+post-2022 trace found
+
+22
+
+B.E.N.Z.
+
+India
+
+GIS-based urban-forest and tree-placement
+optimization 9
+
+No public post-2022
+trace found
+
+23
+
+HysonTech
+
+Taiwan/India “FarmABetterFish” AIoT aquaculture system 10
+
+Hyson
+Technology
+sells
+intelligentaquaculture products
+commercially today 11
+
+23
+
+Re-Fill City
+
+Thailand
+
+App incentivizing bottle refill/reuse with retailer partnerships 10
+
+No public post-2023
+trace found
+
+24
+
+GreenhopeBCTW Taiwan/US
+
+Blockchain personal carbon wallet; monetizes verified behavior 12
+
+GreenHope operates
+as a Web3 company
+today 13
+
+24
+
+MooApps
+
+Indonesia
+
+Digital livestock-monitoring app 12
+
+No public post-2024
+trace found
+
+25
+
+CropNow
+
+India
+
+NEST IoT device + CropDesk advisory: soil,
+microclimate, disease prediction 14
+
+Invited back to the
+2026
+launch
+to
+present
+implementation progress 16
+
+25
+
+Beyond
+ing
+
+Taiwan/FranceAI+AR real-time sound-to-visual translation
+for the hearing-impaired 15
+
+Invited back to the
+2026
+launch
+to
+present
+implementation progress 16
+
+Hear-
+
+3
+
+/
+
+af-
+
+What Actually Wins the Presidential Hackathon — An Evidence Review
+
+biochar pyrolysis; GIS tree placement) were competent applied projects squarely on the
+“practicing net zero” theme 9 ; neither left a public trace we could find.
+2023–2025: the AI-for-the-vulnerable years. As generative AI exploded, winning entries became AIoT systems with named beneficiary populations: fish farmers (HysonTech
+— an operating company whose product line exists today 11 ), consumers (Re-Fill City), individual citizens’ carbon behavior (GreenhopeBCTW — likewise an operating company 13 ),
+smallholder farmers (CropNow), and the hearing-impaired (Beyond Hearing). The 2025
+pair — an Indian agri-IoT startup-style team and a Taiwan–France accessibility team —
+were selected from nine finalists and honored by the President alongside India’s representative office chief 14 .
+
+3 Findings
+3.1 Finding 1: winners’ domains move in lockstep with the year’s theme
+Figure 1 plots each examined winner’s domain against its year. The fit is essentially perfect:
+procurement tools win in procurement-themed years, carbon tools in net-zero years, AI-forexcluded-groups in the AI era. This is not necessarily judges “choosing politics over quality”
+— entrants self-select onto the theme, and the theme filters the pool before judges see it.
+But it means no observed winner has ever won against the year’s current. The theme is set
+to the presidential agenda by design 1 ; the record confirms the design works.
+
+Figure 1: Domains of the 14 examined Teams of Excellence against each year’s official theme
+(top row). Sources: official press releases and history pages 4,9,10,12,15 .
+
+3.2 Finding 2: half the winners did not start at the hackathon
+Of the fourteen examined entries, four were demonstrably pre-existing products or platforms (SISOCS, 2014–15 2 ; A/B Street, 2018 6 ; HysonTech’s aquaculture line 11 ; GreenHope’s carbon wallet 13 ), and at least three more were new builds by existing organizations
+(CivicDataLab’s Fiscal Force 5 ; Sinar-backed Cartelogy 3 ; CropNow’s NEST device team 14 ).
+For the remaining seven we found no evidence either way (Figure 2). The competition’s
+own rules acknowledge this reality: entries previously sold or awarded must be modified
+by at least 50% 1 — a rule you only write when mature entries are common. Implication:
+4
+
+What Actually Wins the Presidential Hackathon — An Evidence Review
+
+“hackathon” is a misnomer; this is a showcase for projects that already exist at
+least in embryo, judged partly on how real they already are. That is consistent with
+a rubric that puts Feasibility (40%) above Innovation (30%) 1 .
+
+Figure 2: Maturity of the examined winners at the time of winning. “No public evidence either
+way” means our searches found neither a pre-existing product nor proof the build began at the
+competition.
+
+3.3 Finding 3: the afterlife record is split exactly in half
+Seven of fourteen winners show documented post-competition activity: CoST’s platform
+still discloses projects at national scale 2 ; CivicDataLab’s hackathon index became a formal multi-state partnership 5 ; A/B Street continues, diminished, through its creator’s consultancy 7 ; HysonTech and GreenHope operate commercially 11,13 ; CropNow and Beyond
+Hearing were presented by MODA itself in 2026 as progressing implementations 16 . The
+other seven — Cartelogy, Learning Man, Office Farmers, BRSDM@Er-Lin, B.E.N.Z., Re-Fill
+City, MooApps — left no public trace we could find (Figure 3). The pattern within the split
+is sharper than the split itself: every winner with a documented afterlife had an institution, company, or funded program behind it; every winner without one was,
+as far as the record shows, a team formed around a competition. The Presidential
+Hackathon amplifies projects; the evidence does not show it sustaining them. (MODA’s
+own claim that winning proposals are implemented and tracked 16,17 is documented mainly
+through domestic-track examples, such as the emergency-response system that became
+policy 17 .)
+
+3.4 Finding 4: the diplomatic pattern is visible and unhidden
+India appears among the winners in four of seven editions (Fiscal Force 2020, B.E.N.Z.
+2022, HysonTech’s co-team 2023, CropNow 2025); the 2025 award ceremony was attended
+by the India–Taipei Association’s acting chairperson 14 ; 2019’s winner came from Honduras,
+then a diplomatic ally, via a program co-branded with the World Bank 2 . The International
+Track is, openly, an instrument of Taiwan’s “Taiwan Can Help” outreach — multinational
+teams are a scored expectation (at least one non-ROC national is mandatory 1 ). This does
+not diminish the winners; it describes the selection environment honestly: a good project
+that also serves Taiwan’s international positioning is worth more, in this arena,
+than a slightly better project that does not.
+
+5
+
+What Actually Wins the Presidential Hackathon — An Evidence Review
+
+Figure 3: Post-competition public traces of the examined winners, as of July 2026. “No public
+trace found” is weak evidence — teams may continue privately — and is reported as such.
+
+3.5 Finding 5: corrections to our own earlier files
+Re-verification caught two errors in this project’s earlier research documents, worth recording precisely because this review is meant to be unbiased. (1) File 1 described 2022’s
+B.E.N.Z. as “AI applications deployed in smart agriculture ecosystems”; the competition’s
+own history page describes a GIS-based tree-placement and urban-forest project 9 — less
+AI, more geography. (2) The same file listed Cartelogy as a 2019 Team of Excellence; the
+Open Contracting Partnership’s contemporaneous account says “top 2 teams out of almost
+30 applicants” 3 , while a Malaysian government portal celebrates a different Malaysian
+team (“Mentadak”) as award-winning — the precise 2019 honor roll is thus partially ambiguous in accessible English sources, and we flag rather than resolve it. Neither correction changes the structural findings; both illustrate how easily secondary summaries drift
+toward the more flattering, more AI-flavored version of events.
+
+4 Verdict: Good Project, or National Need?
+The evidence supports a two-stage answer. Project quality is the entry ticket;
+national timing is the selector. Nothing in the record shows a weak project winning:
+every examined winner had a working artifact, used open data, and could demonstrate.
+But nothing in the record shows raw technical excellence winning against the year’s
+current either — and the one winner whose technical depth most clearly exceeded its
+peers (A/B Street) won in precisely the year its subject matter became the zeitgeist,
+three years after it was built. The rubric’s arithmetic (70% of preliminary weight on
+feasibility and social importance, 30% on innovation 1 ), the annually re-set presidential
+theme, and the diplomatic staging of the award all point the same way as the case
+record.
+Put more bluntly, for the benefit of our own entry: the question “is it really a good project
+or just the nation’s immediate need?” assumes a dichotomy the competition does not contain. The Presidential Hackathon is a policy showcase that uses competition mechanics. It
+selects for the intersection: projects good enough to demo without embarrassment, aimed
+precisely at what the state most needs demonstrated that year, carried by teams whose
+composition serves Taiwan’s international story. Within that intersection, “better project”
+
+6
+
+What Actually Wins the Presidential Hackathon — An Evidence Review
+
+still matters — the 2025 field had nine finalists 14 , and demonstrable maturity visibly separates winners from the invisible losing pool — but outside that intersection, quality alone
+has no observed path to victory.
+Two honest caveats bound this verdict. First, survivorship: we cannot examine rejected
+entries, so “no weak project wins” is really “no weak project is visible among winners.”
+Second, afterlife is a lagging and noisy indicator: CropNow and Beyond Hearing are recent,
+and quiet teams may be active teams. The 50/50 afterlife split (Finding 3) should be read
+as “the competition does not guarantee sustainability,” not as “half of all winners failed.”
+
+4.1 What this means for the CarbonPass entry
+The findings translate directly into entry strategy, and they largely confirm — with one
+sharpened warning — the approach already taken in this project’s proposal documents:
+• Confirmed: theme-lock is non-negotiable. No winner has beaten the year’s current.
+CarbonPass’s framing of the carbon-data divide as 2026’s digital-inclusion problem is
+the correct kind of move — provided the inclusion is visible in the demo (the LINE/voice
+interface), not just argued in prose (Finding 1).
+• Confirmed: bring something that already works. Half the winners pre-existed the
+event; feasibility outweighs innovation in the rubric. The plan to arrive with a working
+data-pack engine on real bill formats, and to secure a Gangshan pilot during mentorship,
+mirrors what distinguishes winners (Finding 2).
+• Confirmed: the multinational team and the exportable story matter. India’s recurrence and the ceremony’s diplomatic cast are data (Finding 4). CarbonPass’s “every
+SME-exporting economy faces this wall” expansion path is the right register.
+• Sharpened warning: winning is not a sustainability plan. The afterlife record says
+the competition amplifies but does not sustain (Finding 3). Every winner that lasted
+had an institution behind it. For CarbonPass, the integration targets (MOENV’s CBAM
+platform, SMESA’s service network, TIFI/MIRDC) are therefore not a rhetorical flourish
+in the proposal — they are, on this evidence, the difference between becoming CoST
+Honduras and becoming Re-Fill City.
+
+5 Limitations
+This review covers the International Track’s publicly celebrated teams (two per year in
+official English-language reporting); some editions named additional excellent teams not
+consistently listed in English. Afterlife searches were conducted in English in July 2026
+and may miss activity documented only in Mandarin, Thai, or Bahasa. The 2019 honor
+roll contains a source discrepancy we flag but cannot resolve (Section 3.5). Assessments
+of “technical substance” are qualitative readings of documented functionality, not code
+review.
+
+7
+
+What Actually Wins the Presidential Hackathon — An Evidence Review
+
+References
+[1] Ministry of Digital Affairs / Taipei Computer Association. (2026, May). 2026 Presidential Hackathon International Track Handbook. presidential-hackathon.taiwan.gov.tw/en/international-track
+[2] CoST — Infrastructure Transparency Initiative. CoST Honduras (SISOCS history, disclosure rates, project
+counts). infrastructuretransparency.org/where/cost-honduras; 2019 showcase
+[3] Open Contracting Partnership. (2019, August 23). Cartelogy: A tool for fair competition and corruptionfree public procurement in Malaysia. open-contracting.org
+[4] Open Contracting Partnership. (2020). Teams from India and Taiwan win this year’s Presidential
+Hackathon with projects on health procurement and social housing. open-contracting.org
+[5] Open Contracting Partnership. (2020, December 14). Setting the sustainability standard for India’s
+healthcare procurement; CivicDataLab, Public Procurement program. open-contracting.org; civicdatalab.in
+[6] A/B Street project. GitHub organization and documentation (project started 2018; current development
+focus). github.com/a-b-street/abstreet; abstreet.uk
+[7] OpenCage. Interview: Dustin Carlino — A/B Street (on nearly ending the project and its continuation);
+The Alan Turing Institute, researcher profile. blog.opencagedata.com; turing.ac.uk
+[8] Office of the President, ROC (Taiwan). (2021). President Tsai attends Presidential Hackathon award ceremony. english.president.gov.tw/News/6208
+[9] Presidential Hackathon International Track — official history pages (2022–2023 team descriptions, incl. BRSDM@Er-Lin biochar platform and B.E.N.Z. GIS urban-forest project). presidentialhackathon.taiwan.gov.tw/history/2023
+[10] Ministry of Digital Affairs. (2023). New record of 2023 Presidential Hackathon: Team Taiwan–India and
+Team Thai selected as outstanding teams. moda.gov.tw/en/press/press-releases/6463
+[11] Hyson Technology. Intelligent aquaculture product line (commercial site). hysontech.tw/products/8/1
+[12] Ministry of Digital Affairs. (2024). Presidential Hackathon promotes international collaboration to accelerate environmental sustainability through technology. moda.gov.tw/en/press/press-releases/14882
+[13] GreenHope. Web3.0: The new era of value exchange (commercial site). greenhope.com.tw
+[14] Focus Taiwan / CNA. (2025, December 14). Taiwan–France and India teams win 2025 Presidential
+Hackathon international track. focustaiwan.tw/politics/202512140012
+[15] Office of the President, ROC (Taiwan). (2025). President Lai attends 2025 Presidential Hackathon awards
+ceremony. english.president.gov.tw/News/7057
+[16] Ministry of Digital Affairs. (2026). 2026 Presidential Hackathon International Track launches global
+call for entries (returning Teams of Excellence: GreenhopeBCTW, CropNow, Beyond Hearing).
+moda.gov.tw/en/press/press-releases/20076
+[17] Chen, Y.-C., et al. (2025). Public–private partnership in pipelining science of acute care
+ecosystem:
+Insights from Taiwan’s Presidential Hackathon. Learning Health Systems.
+pmc.ncbi.nlm.nih.gov/articles/PMC12264364
+[18] MyGOV — The Government of Malaysia’s Official Portal. Malaysian award-winning team at the 2019
+Taiwan Presidential Hackathon (“Mentadak”) — source of the 2019 honor-roll discrepancy flagged in
+Section 3.5. malaysia.gov.my/portal/content/30753
+
+8
+
+

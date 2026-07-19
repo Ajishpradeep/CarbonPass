@@ -1,0 +1,70 @@
+\section{Open Data}\label{sec:opendata}
+
+Open data is the founding ethos of the Presidential Hackathon, and the proof of
+concept is built on it end-to-end, requiring no proprietary data source.
+
+\subsection{Open-data sources used}\label{sec:used}
+
+\begin{table}[htbp]
+\caption{Open data used in the proof of concept (links are clickable)}
+\label{tab:datasets}
+\small
+\begin{tabularx}{\textwidth}{@{}p{0.32\textwidth}p{0.28\textwidth}X@{}}
+\toprule
+\textbf{Resource} & \textbf{Access} & \textbf{Role} \\
+\midrule
+MOENV carbon-footprint emission coefficients & \href{https://data.gov.tw/en/datasets/28176}{data.gov.tw \#28176} (OpenAPI) & Material / fuel / process emission factors \\
+Taiwan product carbon-footprint registry & \href{https://data.gov.tw/en/datasets/8992}{data.gov.tw \#8992} & Benchmarks and sanity checks \\
+Electricity emission factor, 0.474 kgCO$_2$e/kWh (2024) & \href{https://www.moeaea.gov.tw/ECW/English/content/Content.aspx?menu_id=24200}{MOEA Energy Administration} & Scope-2 and scheduler math \\
+Taipower generation by unit, 10-minute & \href{https://data.gov.tw/en/datasets/8931}{\#8931 (real-time)}, \href{https://data.gov.tw/en/datasets/37331}{\#37331 (historical)} & Hourly grid-carbon-intensity curve \\
+Taipower time-of-use rate schedules & \href{https://www.taipower.com.tw/2764/2765/2801/}{taipower.com.tw} & Price signal for the scheduler \\
+CBAM methodology, default values (Reg.\ (EU) 2025/2621; DG TAXUD templates) & \href{https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism_en}{EUR-Lex / DG TAXUD} & Output schema; CN 7318 default rows; cost-delta screen \\
+Official CBAM certificate prices (quarterly) & \href{https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism/price-cbam-certificates_en}{European Commission} & Live cost math (EUR 75.36 Q1 / 75.28 Q2 2026) \\
+EU--Taiwan trade flows for CN 7318 & Eurostat Comext; Taiwan MOF customs & Impact quantification \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Suggestions for modifying open data}\label{sec:improve}
+
+Working with these datasets surfaced three concrete improvements that would
+benefit any exporter, not only this project: (1) \textbf{publish an official
+hourly grid-carbon-intensity series} --- today it must be derived from the
+10-minute generation-by-unit feed; (2) \textbf{publish MOENV emission
+coefficients mapped to customs (CN/HS) codes}, so any exporter can locate the
+factors relevant to a specific tariff line; and (3) \textbf{provide a
+machine-readable Taipower bill format}, enabling consented, automated ingestion
+without manual transcription.
+
+\subsection{Provision of open data (given back)}\label{sec:giveback}
+
+CarbonPass publishes back, under an open license: (1) a \textbf{cleaned,
+documented hourly Taiwan grid-carbon-intensity dataset} derived from
+\href{https://data.gov.tw/en/datasets/8931}{\#8931} /
+\href{https://data.gov.tw/en/datasets/37331}{\#37331}, useful to any
+researcher or firm doing carbon-aware scheduling; and (2) an \textbf{anonymized
+fastener-sector embedded-emissions benchmark} from the pilot, useful to the
+whole cluster and to verifiers. Both are organized with documentation and
+stable links for others to reuse.
+
+\section{Open-Source Software Design}\label{sec:oss}
+
+The project intends to release its highest public-value components --- the CBAM
+compliance rules engine and the grid-intensity pipeline --- under an open
+license, and to build on open-source foundations (open vision-language models,
+open optimization libraries) for the proof of concept. The team is willing to
+allow future open-source use of these components, consistent with the
+competition's encouragement of open-source contribution. \emph{(Per the
+Handbook, this section does not affect the project score\cite{handbook}.)}
+
+\vspace{5mm}
+\begin{center}
+\begin{minipage}{0.86\textwidth}
+\centering\itshape\color{ink!85}
+When the AI era builds a wall of data around the world's markets, digital
+inclusion means handing every small factory a door. CarbonPass is that door ---
+a photograph of an electricity bill, met by the right AI, keeping two thousand
+six hundred family factories, and the district they built, inside the world
+economy.
+\end{minipage}
+\end{center}

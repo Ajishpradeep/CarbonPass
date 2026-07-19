@@ -1,0 +1,14 @@
+# Dated market/regulatory prices. RULE: engine refuses to output any figure whose quarter/date
+# is not present here; never extrapolate an unpublished certificate price.
+cbam_certificate_eur_per_tco2e:
+  2026Q1: { price: 75.36, published: 2026-04-07, source: "European Commission quarterly publication" }
+  2026Q2: { price: 75.28, published: 2026-07-06, source: "European Commission quarterly publication" }
+  # 2026Q3 expected 2026-10-05 — DO NOT quote before publication (kill-list, docs/20 §6)
+scrap_resale_recovery:
+  carbon_steel:  { pct_range: [0.30, 0.40], asof: 2026-07-18,
+                   basis: "LME/Argus scrap CFR Taiwan ~US$325/t (15 Jul) vs domestic wire rod ~NT$27,350/t (Apr)" }
+  stainless_304: { pct_range: [0.35, 0.45], asof: 2026-07-18,
+                   basis: "304 scrap ~NT$28-40/kg vs input material ~NT$70-90/kg (metaltrade.tw)" }
+reference_input_prices_ntd_per_t:
+  carbon_wire_rod: { value: 27350, asof: 2026-04, note: "domestic avg; synthetic corpus uses 24,500 (conservative)" }
+update_watchlist: docs/20 §8   # re-verify before 31 Jul and before finals

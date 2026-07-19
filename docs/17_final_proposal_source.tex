@@ -1,0 +1,547 @@
+\documentclass[11pt]{article}
+\usepackage{fontspec}
+\usepackage[a4paper,top=2.4cm,bottom=2.3cm,left=2.3cm,right=2.3cm]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage[table]{xcolor}
+\usepackage{titlesec}
+\usepackage{titling}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{ragged2e}
+\usepackage{caption}
+\usepackage[hidelinks]{hyperref}
+\usepackage{parskip}
+
+% ---- Fonts ----
+\setmainfont{TeX Gyre Termes}
+\setsansfont{TeX Gyre Heros}
+\newfontfamily\cjkfont{Noto Serif CJK TC}
+\newcommand{\zh}[1]{{\cjkfont #1}}
+
+% ---- Colours ----
+\definecolor{cpgreen}{HTML}{2A7F62}
+\definecolor{cpdark}{HTML}{2F3B38}
+\definecolor{cpred}{HTML}{B3402F}
+\definecolor{cpamber}{HTML}{9A6A1E}
+\definecolor{cpgrey}{HTML}{5C6663}
+\definecolor{rowg}{HTML}{EFF4F2}
+\definecolor{linegrey}{HTML}{C9D2CF}
+
+% ---- Hyperlinks ----
+\hypersetup{colorlinks=true,linkcolor=cpgreen,urlcolor=cpgreen,citecolor=cpgreen}
+
+% ---- Section styling ----
+\titleformat{\section}{\sffamily\LARGE\bfseries\color{cpdark}}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\sffamily\large\bfseries\color{cpgreen}}{\thesubsection}{0.6em}{}
+\titleformat{\subsubsection}{\sffamily\normalsize\bfseries\color{cpdark}}{\thesubsubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{16pt}{8pt}
+\titlespacing*{\subsection}{0pt}{12pt}{5pt}
+\titlespacing*{\subsubsection}{0pt}{9pt}{3pt}
+
+% ---- Captions ----
+\captionsetup{font=small,labelfont={bf,color=cpdark},labelsep=period,skip=5pt}
+\captionsetup[table]{position=top}
+
+% ---- Header / footer ----
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.3pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{linegrey}\leaders\hrule height \headrulewidth\hfill}}
+\fancyhead[L]{\footnotesize\sffamily\color{cpgrey}CarbonPass}
+\fancyhead[R]{\footnotesize\sffamily\color{cpgrey}2026 Presidential Hackathon · International Track}
+\fancyfoot[C]{\footnotesize\sffamily\color{cpgrey}\thepage}
+
+\setlength{\parskip}{5pt}
+\setlength{\parindent}{0pt}
+\renewcommand{\arraystretch}{1.28}
+\newcolumntype{Y}{>{\RaggedRight\arraybackslash}X}
+
+% ---- Callout box (left border, LaTeX-style) ----
+\usepackage{mdframed}
+\newmdenv[linewidth=0pt,leftline=true,linecolor=cpgreen,innerleftmargin=10pt,
+  innerrightmargin=6pt,innertopmargin=6pt,innerbottommargin=6pt,
+  backgroundcolor=rowg,skipabove=8pt,skipbelow=8pt]{keybox}
+\newmdenv[linewidth=0pt,leftline=true,linecolor=cpamber,innerleftmargin=10pt,
+  innerrightmargin=6pt,innertopmargin=6pt,innerbottommargin=6pt,
+  backgroundcolor=rowg,skipabove=8pt,skipbelow=8pt]{honestbox}
+
+\newcommand{\euro}{\texteuro}
+\usepackage{textcomp}
+
+\begin{document}
+
+% =================== COVER ===================
+\newgeometry{top=0cm,bottom=0cm,left=0cm,right=0cm}
+\thispagestyle{empty}
+\noindent\colorbox{cpdark}{\begin{minipage}[t][297mm][t]{210mm}
+\vspace{34mm}
+\hspace{20mm}\begin{minipage}{170mm}
+\color{white}\sffamily
+{\fontsize{13}{16}\selectfont\color{cpgreen}2026 PRESIDENTIAL HACKATHON \quad·\quad INTERNATIONAL TRACK}\\[3mm]
+{\fontsize{12}{15}\selectfont\color{white!70}Digital Inclusion in the AI Era}\\[22mm]
+{\fontsize{62}{66}\selectfont\bfseries CarbonPass}\\[8mm]
+{\fontsize{21}{27}\selectfont\color{cpgreen}\bfseries The Factory That Cannot See Itself}\\[6mm]
+{\fontsize{15}{21}\selectfont\color{white!85} A 3{,}000-person factory sees its carbon, its waste and its\\ energy on a dashboard. A 30-person factory cannot. CarbonPass\\ restores that sight from a photograph --- offline, in Taiwanese,\\ on the factory's own laptop.}\\[22mm]
+{\color{linegrey}\rule{150mm}{0.4pt}}\\[6mm]
+{\fontsize{12}{18}\selectfont\color{white!80}\bfseries Corresponding SDGs:\ \ \color{cpgreen}8\ \ ·\ \ 9\ \ ·\ \ 12\ \ ·\ \ 13}\\[3mm]
+{\fontsize{11}{16}\selectfont\color{white!60}Project Proposal \quad|\quad Submission: 31 July 2026 \quad|\quad All content in English}
+\end{minipage}
+\vfill
+\hspace{20mm}\begin{minipage}{170mm}
+\color{white!45}\sffamily\footnotesize
+Beachhead: the fastener cluster of Gangshan--Luzhu, Kaohsiung --- the ``Kingdom of Screws''.\\
+Every figure in this document is computed by the team's own working engine from primary EU regulation and Taiwan open data.
+\end{minipage}
+\vspace{18mm}
+\end{minipage}}
+\clearpage
+\restoregeometry
+\justifying
+
+% =================== TOC ===================
+\thispagestyle{fancy}
+{\sffamily\Large\bfseries\color{cpdark}Contents}\vspace{2mm}
+{\color{linegrey}\hrule}\vspace{4mm}
+\renewcommand{\contentsname}{\vspace{-8mm}}
+\setcounter{tocdepth}{2}
+\tableofcontents
+\vspace{4mm}
+{\color{linegrey}\hrule}
+\vspace{3mm}
+{\small\color{cpgrey}\emph{How to read this document.} Section 2.3 states the problem for a non-specialist reader; every number in it is reproduced from the European Commission's own adopted tables and the team's working code, so a carbon-accounting specialist can audit it line by line. Charts and tables carry the load; the prose connects them.}
+
+\clearpage
+\section{Executive Summary}
+
+Two factories sit a few streets apart in Gangshan, the district of Kaohsiung the world calls the ``Kingdom of Screws''. One has 3{,}000 employees, an ERP system, a manufacturing-execution system and a sustainability team; its material yield, its energy use and its product carbon numbers are on a dashboard, reviewed weekly --- a one-percent improvement is somebody's KPI. The other has thirty employees, and its entire information system is its owner --- Mr.\ Lin, 61 --- his daughter-in-law, and a spreadsheet. Both factories generate the same kinds of data every day: electricity bills, steel invoices, production logs, a scrap pile sold to the recycler. The large factory turns that data into sight. The small one files it in a drawer.
+
+\begin{keybox}
+\textbf{That is the digital divide of the AI era, stated precisely: not the absence of connectivity, but the absence of organizational self-knowledge.} Industry research finds \textbf{54\% of small and mid-sized plants worldwide still run production on pen, paper and spreadsheets} (IoT Analytics, 2025), and the quality literature puts the cost of what un-instrumented factories cannot see --- scrap, rework, hidden inefficiency --- at \textbf{10--20\% of revenue} (ASQ cost-of-poor-quality studies; scrap and rework alone average \textasciitilde2\% in APQC benchmarks).\textsuperscript{[21]} Corporations closed this gap over twenty years with enterprise software and analysts. A 30-person exporter cannot --- there is no analyst in the building to hire, and no software he could operate if there were. CarbonPass closes it with what he already has: a photograph of his own paperwork.
+\end{keybox}
+
+\textbf{The forcing function arrived on 1 January 2026.} The EU began charging importers for the carbon embedded in steel goods, and Taiwan shipped 3.74 million tonnes of covered products --- largely from \textasciitilde2{,}600 small factories like Mr.\ Lin's.\textsuperscript{[1]} We are deliberate about the magnitude: our own engine, run over the Commission's adopted tables, shows Taiwan's default is among the mildest in the world, so CBAM alone will not bankrupt Gangshan --- for a carbon-steel maker, supplying data is worth only about \euro{}4/t. But the buyer's letter still demands an answer only an \emph{instrumented} factory can produce, and it is the first such demand of many (product passports, domestic carbon fees, customer Scope-3 audits). CBAM's real significance for a small factory is this: \textbf{the first document Europe asks for is the one that forces the factory to finally see itself --- and once it can, everything else comes into view.}
+
+\textbf{CarbonPass turns one photograph into four kinds of sight.} Inside LINE, in Mandarin or Taiwanese, Mr.\ Lin photographs a Taipower bill and a folder of invoices; a local-first AI --- raw documents never leave the factory --- returns the four answers a corporate dashboard would give him: \emph{What carbon is in my product?} (the verifier-ready CBAM data pack, in the Commission's own template); \emph{What do I lose between buying and shipping?} (a waste map: every firm in our sample buys \textasciitilde1.10 tonnes of steel per tonne shipped, and the scrapped tenth carries \textasciitilde758 tCO\textsubscript{2}e of purchased carbon and a net NT\$4--5 million a year for a typical firm --- a pile he \emph{sells} but has never been able to \emph{read}); \emph{When should my machines run?} (a schedule worth a measured NT\$399{,}800/yr); and \emph{Am I normal?} (the first anonymised sector benchmark, so 1{,}800 firms can finally know what a good yield is). One data spine, four blind spots removed.
+
+And the point of sight is \emph{reduction}, not paperwork. Cutting scrap is the one lever that lowers real emissions, real cost and the EU-declared number at once --- our measurements put it at \textbf{80 times} the carbon impact of energy scheduling --- and the cluster benchmark turns one factory's improvement into a sector-wide mechanism, the same way corporate yield KPIs did. The tool ranks every lever honestly, including telling an owner when something is \emph{not} worth doing this year.
+
+The inclusion claim is not argued on a slide; it is in the demo. The document reader is a \textbf{4-billion-parameter} vision-language model that reads a Traditional-Chinese utility bill at \textbf{100\% field accuracy across six phone-photo distortions, in 18--31 seconds, on a laptop, offline, with no GPU and no cloud} --- AI that runs on the excluded side of the wall. The proof of concept is built entirely on Taiwan's open data and the EU's published methodology, and it gives data back, openly licensed.
+
+A note on method, because it is our differentiator: every number here is computed by our own working code from primary sources, and where our earlier drafts overstated --- a widely repeated \euro{}450--750/t ``penalty'' that turns out to describe Taiwan's competitors, not Taiwan; a waste figure first quoted at purchase price rather than net of scrap resale --- we corrected ourselves in the open. Section~2.3 is written so a non-specialist can follow it and a specialist can audit it.
+
+\subsection*{Team composition and eligibility}
+The team comprises between three and ten members as required by the Handbook, including at least one member holding a nationality other than that of the Republic of China (Taiwan), with a designated primary and secondary contact. Members span software and machine-learning engineering, carbon-accounting/CBAM domain knowledge, and the Taiwanese manufacturing-SME field. All project content and this document are in English, per the submission rules.
+
+\subsection*{Originality and commitments}
+The entry is the original work of the team, created for this competition; it has not been sold or awarded elsewhere, so the 50\% modification rule does not apply. Intellectual-property arrangements among members follow the Handbook's terms. The team commits to full participation in the mentorship period, implementation-result presentations, field validation, and the follow-up benefit tracking required of advancing teams.
+
+\clearpage
+\section{Project Information}
+
+\subsection{Project name and introduction}
+\textbf{Project name:} CarbonPass --- a local-first AI copilot that gives a small export factory the operational self-knowledge a large one gets from enterprise software, starting from a photograph of its own paperwork.
+
+CarbonPass is a conversational artificial-intelligence system. It converts the ordinary documents a small factory already keeps --- electricity bills, material invoices and production records --- into the four kinds of sight a corporate dashboard provides: the product-carbon data pack its European customers now request, a per-line map of its material waste, an energy schedule, and its position against sector peers. The whole user experience is one sentence: \emph{photograph an electricity bill and your invoices inside LINE, answer a few questions in Mandarin or Taiwanese, and receive (a)~the verifier-ready carbon data pack your EU buyer needs, (b)~a map of what you lose between buying and shipping, worth millions of NT\$ a year, and (c)~a ranked, honest list of what to fix first.}
+
+\subsubsection*{Detailed description of AI usage}
+CarbonPass is an AI system, not an arithmetic calculator with a chat interface --- and its AI does not \emph{replace} anyone, because in a 30-person factory there is no analyst to replace. It supplies a capability that never existed in the building. Three distinct AI/ML subsystems carry the product, and each is already running:
+
+\textbf{(1) Document intelligence with allocation reasoning.} A vision-language model parses heterogeneous, mixed-language, \emph{photographed} documents --- Taipower electricity bills, Ministry of Finance electronic invoices (MIG~4.0 XML), and production logs --- into structured activity data with per-field confidence. The non-trivial machine-learning problem is \emph{allocation}: splitting one facility-wide electricity figure across many product lines and customs (CN) codes, which the EU's product-level methodology strictly requires but invoices never contain. The system solves this as a constrained-optimization problem over production volumes, machine power ratings and operating-hour priors, and attaches a quantified uncertainty (\textpm1.06\% at one standard deviation on our corpus, from 10{,}000 Monte-Carlo samples) to every line. A second, independent OCR pass (PP-OCRv4) back-checks every number the vision model returns and flags any mismatch for human attention.
+
+\textbf{(2) A carbon-and-price-aware scheduling optimizer.} Using Taiwan's open 10-minute grid-generation feed and Taipower's time-of-use tariffs, the system computes an hourly grid-carbon-intensity curve and schedules a factory's flexible loads (heat-treatment furnaces, compressors) against real order deadlines --- a mixed-integer optimization no existing Taiwan tool attempts.
+
+\textbf{(3) A compliance rules engine.} The engine encodes the operative parts of the EU's methodology --- simple-versus-complex-goods logic, precursor emissions, country-and-year-specific default values, the Annex~I fallback --- and renders output in the Commission's own template. It is validated by reproducing the Commission's \emph{own} worked ``screws and nuts'' example to nine decimal places in automated tests. This is what lets the tool read a rulebook that now spans eleven legislative acts and their annexes \emph{for} the owner and tell him, in one screen, what it means for him.
+
+\subsection{Corresponding SDGs}
+CarbonPass maps directly onto four UN Sustainable Development Goals, and the mapping is quantified rather than decorative:
+
+\begin{itemize}[leftmargin=1.2em,itemsep=2pt,topsep=3pt]
+\item \textbf{SDG~12 --- Responsible Consumption and Production.} The core of the product: it measures and reduces material waste (\textasciitilde10\% of steel input) that is today invisible to the firms generating it.
+\item \textbf{SDG~13 --- Climate Action.} Every tonne of avoided scrap and every shifted kilowatt-hour is a measured, documented emission reduction, structured to recognised monitoring logic.
+\item \textbf{SDG~9 --- Industry, Innovation and Infrastructure.} It brings corporate-grade data infrastructure to micro-manufacturers on commodity hardware.
+\item \textbf{SDG~8 --- Decent Work and Economic Growth.} It defends the export livelihood of a 2{,}600-firm cluster against a market-access barrier that would otherwise pick winners by administrative capacity, not product quality.
+\end{itemize}
+
+\subsection{Problem to be resolved and its importance}
+
+\subsubsection{The setting: a world industry run on spreadsheets}
+Taiwan's fastener cluster is a textbook ``hidden champion'' ecosystem --- globally dominant firms, administered like corner shops. It is a top-three fastener exporter worldwide, making an estimated 10--13\% of global production, and it sends about a quarter of its output to Europe. Yet the typical firm is family-run, its workforce ageing, with no in-house data or ESG staff. Table~\ref{tab:sector} sets the scene.
+
+\begin{table}[h]
+\caption{The Taiwanese fastener sector at a glance}
+\label{tab:sector}
+\small
+\begin{tabularx}{\textwidth}{Y r}
+\toprule
+\textbf{Indicator} & \textbf{Value} \\
+\midrule
+Global export rank & Top-3 by volume; \#4 by value (2023) \\
+Share of global production & \textasciitilde10--13\% \\
+Manufacturers in the cluster (Gangshan--Luzhu) & \textasciitilde1{,}800 (\textasciitilde700 in the industry institute, TIFI) \\
+Annual export volume & \textasciitilde1.2 million tonnes (2025) \\
+Annual export value & \textasciitilde US\$4.3--4.6 billion \\
+Share destined for Europe & \textasciitilde one quarter \\
+Firm structure & Predominantly family-run SMEs (Taiwan: 1.715~M SMEs, >98\% of all firms, MOEA White Paper 2025) \\
+CBAM-exposed steel-product SMEs (MOENV estimate) & \textasciitilde2{,}600 \\
+Taiwan's CBAM export rank to the EU & 13th largest; 3.74 million tonnes shipped \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsubsection{The door: a carbon border tax that lands in Rotterdam, not Gangshan}
+The EU's Carbon Border Adjustment Mechanism (CBAM) puts a price on the carbon embedded in imported steel, and screws and bolts (customs heading CN~7318) have been in scope from the start. Since 1~January 2026 the mechanism is in its definitive phase: 2026 imports accrue a certificate obligation priced at the EU carbon market (official price \euro{}75.28 per tonne of CO\textsubscript{2}e for Q2~2026); certificate sales open on the common central platform in February 2027, and the first declaration and surrender, covering 2026 imports, falls on 30~September 2027.\textsuperscript{[6][7]}
+
+The legal duty sits on the \emph{EU importer}, not on Mr.\ Lin --- and that is exactly what makes his position precarious. He is not summoned by a regulator he can petition; he is silently re-scored by a procurement spreadsheet in Rotterdam. If he supplies no data, his buyer falls back on a country-specific ``default value'' that is deliberately marked up (10\% in 2026, rising to 30\% from 2028).\textsuperscript{[8][32]} Figure~\ref{fig:country} shows what that default costs, by country of origin.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{figs/fig_cn7318_by_country.png}
+\caption{The certificate cost an EU buyer pays for a tonne of fasteners when the supplier provides \emph{no} data, by country of origin (2026, computed from the Commission's adopted default-value tables at the Q2-2026 certificate price). Taiwan's default is among the mildest in the world; the punitive figures belong to its competitors and, above all, to countries with no entry in the book at all.}
+\label{fig:country}
+\end{figure}
+
+Two facts follow, and we state both plainly because a judge will. \textbf{First, Brussels has, in effect, written Taiwan a competitive advantage into law}: a Taiwanese screw already costs its buyer about \euro{}300/t less than a Chinese one, before anyone lifts a finger. \textbf{Second, precisely because Taiwan's default is mild, pure compliance is worth very little to a Taiwanese carbon-steel maker} --- about \euro{}4 per tonne, roughly NT\$0.4 million a year. This is the honest correction at the centre of this proposal: an earlier, widely repeated figure priced the ``no-data penalty'' at \euro{}450--750/t. When we parsed the Commission's \emph{adopted} tables with our own engine, that range turned out to describe China, India and book-less countries --- never Taiwan. We killed the claim rather than ship it.
+
+So CBAM, for Taiwan, is an \emph{assist}, not a catastrophe --- and the proposal does not need it to be one. Its real role is as a \textbf{forcing function}: the buyer's letter is the first demand, of many now arriving (EU product passports, Taiwan's descending carbon-fee threshold, corporate Scope-3 questionnaires), that only an \emph{instrumented} factory can answer. A factory that instruments itself to answer the letter has, in the same act, acquired the sight it always lacked --- and that sight, not the \euro{}4, is where the value is. The next subsection shows what the sight reveals.
+
+\subsubsection{The first thing sight reveals: a pile the owner sells but cannot read}
+Here is the finding that reframes the whole project --- stated carefully, because the careless version of it is false. Mr.\ Lin is not blind to his scrap: he collects it, sells it to a recycler, and banks the payment. What he cannot see is the \emph{information} inside the pile. The same invoices and production logs that produce the compliance pack contain, in plain sight, the ratio of steel bought to product shipped. In our modelled sample that ratio is about \textbf{1.10 to 1}: for every tonne that leaves as a finished screw, roughly 110~kg entered --- the missing tenth is heading slugs, trimming, coil ends, setup and rejects. Industry data brackets the real range at about 5--15\% (cold forming runs 85--95\% material utilization\textsuperscript{[22]}), and some loss is physics --- it cannot go to zero. What varies, firm to firm and month to month, is \emph{how far above the floor} a factory is running --- and that is exactly what nobody in a 30-person firm can currently know, because knowing means reconciling 22 dated invoices against a production log, per product line, per month, for a year. Because the EU counts the mass \emph{entering} the process before cutting, this loss also sits inside the declared carbon number whether anyone looks or not. Table~\ref{tab:waste} is our engine's per-line output --- the attribution no small firm has ever seen --- on three product lines from two modelled firms.
+
+\begin{table}[h]
+\caption{What the factory buys and loses, computed from e-invoice mass and unit price against the production log. ``Carbon'' is the embodied carbon of the scrapped mass (gross --- the scrap is remelted; see the box below). ``Purchase value'' is what the scrapped steel cost to buy; scrap resale recovers roughly 30--40\% of it at current prices, so the \emph{net} cash loss is about 60--70\% of the figure shown.}
+\label{tab:waste}
+\small
+\begin{tabularx}{\textwidth}{Y r r r r r}
+\toprule
+\textbf{Firm / product} & \textbf{Steel in} & \textbf{Product out} & \textbf{Loss} & \textbf{Carbon (gross)} & \textbf{Purchase value} \\
+\midrule
+Firm A --- carbon screws & 3{,}300 t & 3{,}000 t & 9.1\% & 758 tCO\textsubscript{2}e/yr & NT\$7.35 M/yr \\
+Firm B --- carbon screws & 4{,}650 t & 4{,}200 t & 9.7\% & 1{,}138 tCO\textsubscript{2}e/yr & NT\$11.21 M/yr \\
+\rowcolor{rowg} Firm B --- \textbf{stainless} screws & 1{,}440 t & 1{,}300 t & 9.7\% & 742 tCO\textsubscript{2}e/yr & NT\$13.43 M/yr \\
+\midrule
+\textbf{Firm B total (gross / \textasciitilde net)} & & & & \textbf{1{,}879 tCO\textsubscript{2}e/yr} & \textbf{NT\$24.6 M / \textasciitilde15--17 M} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Read the stainless row twice. It is the \emph{smallest} product in Firm~B --- 1{,}300 tonnes against 4{,}200 tonnes of carbon steel --- yet it accounts for 39\% of the firm's lost carbon and the single biggest cash loss, because every tonne of scrapped stainless carries about twice the carbon and nearly four times the money of a tonne of carbon steel. The loss is not evenly spread, and without per-line attribution the owner cannot know where it concentrates --- or notice when a wearing die quietly moves a line from 7\% to 11\% for three months. Attribution plus the invoice dates is what turns a once-a-year accounting curiosity into a \emph{control loop}.
+
+Now compare this lever with the ``green'' feature we built first --- a scheduler that shifts flexible loads to cleaner, cheaper hours. It is genuinely useful and saves Firm~A about NT\$400{,}000 a year. But as a \emph{carbon} lever it is a rounding error next to yield, and it does not touch the compliance number at all. Figure~\ref{fig:lever} puts the two side by side.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.92\textwidth]{figs/fig_waste_lever.png}
+\caption{For one factory, a 9.1\%$\rightarrow$5\% loss scenario removes about 359 tonnes of purchased embodied CO\textsubscript{2}e a year from the supply chain --- 80 times the 4.49 tonnes the grid-aware scheduler saves --- and, uniquely, it also lowers the declared CBAM number, because the scrapped steel's carbon is already inside the reported figure.}
+\label{fig:lever}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{figs/fig_waste_by_product.png}
+\caption{Per-line attribution of the loss --- gross embodied carbon, and money stated both ways (purchase value and net of scrap resale). The smallest line (stainless) is the largest loss: the kind of pattern that is obvious on a corporate dashboard and invisible to a factory reconciling invoices by hand once a year.}
+\label{fig:wasteprod}
+\end{figure}
+
+\begin{honestbox}
+\textbf{We are careful with this number, and the tool is too --- four disciplines, enforced in the output itself.} (1)~\emph{The pile is not trash:} scrap is sold and remelted; the owner already knows his aggregate tonnage. What the tool adds is attribution, drift, carbon linkage and benchmark --- information, not the discovery of the pile. (2)~\emph{Gross and net together:} the money column is purchase value; resale recovers roughly 30--40\% at current scrap prices, so the net cash loss for Firm~A is about NT\$4--5 million, not NT\$7.35 million --- and the tool prints both, at live prices. (3)~\emph{Reported vs.\ atmospheric carbon:} the effect on the declared CBAM figure is exact and one-to-one (mass is counted before cutting); the atmospheric effect is real but smaller than the gross tonnage, because remelting recovers the iron, not the energy already spent making the rod. We never claim 758 tonnes ``avoided''. (4)~\emph{The magnitude is provisional:} 9.1\% is a synthetic mid-range figure inside a documented industry band of \textasciitilde5--15\%; the mechanism is certain, the pilot measures the magnitude, and the tool shows the owner the curve rather than promising a number. It also does not yet claim to know the process fix for his particular dies --- that is a question for the field, and for MIRDC's engineers, not for a language model.
+\end{honestbox}
+
+\subsubsection{What is actually in danger: stainless, and a hole in the EU's book}
+The owner asked a sharp question: if Taiwanese carbon-steel fasteners are safe, what does the data say is \emph{not}? We scanned all 244 of Taiwan's goods against every other country in the EU's adopted tables. Carbon steel is unremarkable. But Taiwan's entire \emph{stainless} block sits at roughly 2.6 times the world median --- among the worst-rated on earth --- and the precursor a fastener plant actually buys, stainless wire rod (CN~7221), has \textbf{no Taiwanese value in the EU's book at all}. Of the 33 countries with a full steel book, exactly three lack this one row --- Taiwan, Thailand and Vietnam, the three fastener exporters --- so every Taiwanese stainless screw resolves to the EU's punitive fallback (the average of the ten dirtiest exporters).
+
+The consequence is a paradox that only a tool reading the regulation could surface, shown in Figure~\ref{fig:stainless}: the EU gives stainless fasteners the \emph{same mild default as carbon fasteners}, so the honest actual number is more than double the default. Reporting truthfully would cost the buyer an extra \euro{}228/t --- so nobody reports, and Taiwan's worst carbon problem stays legally invisible.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.86\textwidth]{figs/fig_stainless_undercount.png}
+\caption{For stainless screws the EU default (\euro{}224/t) is roughly half the honest actual figure (\euro{}452/t). The gap is a disincentive to tell the truth --- which is exactly why a \emph{filing} tool would tell a stainless maker to stay quiet, and a \emph{waste} tool tells him the stainless in his scrap bin is the most expensive thing he throws away, whatever he files.}
+\label{fig:stainless}
+\end{figure}
+
+This is the decisive argument for building a sight tool rather than a filing tool. A filing tool, pointed at stainless, counsels silence. A sight tool tells the same owner that his stainless line loses more than the carbon-steel line three times its size --- 742 tonnes of embodied CO\textsubscript{2}e and NT\$13.4 million a year at purchase value --- and that is true and actionable no matter what he sends to Brussels. (The absent CN~7221 row may be a publishing defect rather than deliberate; either way it is worth reporting to the Commission, which is part of our open-data give-back in Section~5.2.)
+
+\subsubsection{The divide, in the Handbook's own three axes}
+The competition theme is ``Digital Inclusion in the AI Era --- ages, regions, needs''. CarbonPass answers all three literally, with a number attached to each:
+
+\begin{itemize}[leftmargin=1.2em,itemsep=3pt,topsep=3pt]
+\item \textbf{Ages.} An analog-native, sixty-plus owner-operator with no data professional in the building, asked to operate capabilities that are ordinary in a corporation.
+\item \textbf{Regions.} Gangshan--Luzhu, a single nameable district of about 1{,}800 firms of exactly this shape, whose economic identity is at stake.
+\item \textbf{Needs.} Not ``market access'' in the abstract, but \textbf{NT\$3.5 million a year and 359 tonnes of CO\textsubscript{2} that Mr.\ Lin cannot see} --- and the enterprise-software capability to see them, delivered for the price of a photograph.
+\end{itemize}
+
+The gap is concrete: his 3{,}000-employee competitor runs enterprise resource planning, a manufacturing execution system and a sustainability team; yield is a weekly KPI. Mr.\ Lin has never seen his once. That asymmetry --- not broadband --- is the digital divide this project closes.
+
+\subsection{Related stakeholders and their roles}
+The target audience is deliberately the party with the least capacity and the most exposure: the owner-operator of a micro or small fastener firm. Table~\ref{tab:stake} lists the stakeholders and why the SME owner is the chosen user.
+
+\begin{table}[h]
+\caption{Stakeholders and their roles (target audience in bold)}
+\label{tab:stake}
+\small
+\begin{tabularx}{\textwidth}{l Y}
+\toprule
+\textbf{Stakeholder} & \textbf{Role and benefit} \\
+\midrule
+\rowcolor{rowg}\textbf{SME fastener owner-operator} & \textbf{Primary user and target audience.} Photographs documents; receives the compliance pack, the waste map and the fix-list. Chosen because the burden is heaviest and the existing tools serve him least. \\
+EU importer / declarant & Legally liable for the CBAM declaration; the party demanding data. CarbonPass produces the artifact they need in the Commission's format, protecting the trade relationship. \\
+Steel mill (e.g.\ China Steel) & Precursor supplier; an environmental product declaration from the mill materially improves the pack. The tool tells the owner exactly when to ask. \\
+MOENV / MOEA & Government front door (the CBAM help platform is informational). CarbonPass is the missing computational layer, designed to integrate rather than compete. \\
+MIRDC / TIFI & Industry research body and fastener institute; pilot partners and channel to the cluster; source of real yield benchmarks. \\
+Accredited CBAM verifier & Independent assurance of actual data. The tool produces the documentation a verifier needs; it never claims to replace verification. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\clearpage
+\subsection{Description of solution functions}
+CarbonPass is a single pipeline with a conversational front end: one extraction feeding four answers --- the four questions a corporate dashboard answers daily and a small factory has never been able to ask. The owner never sees the machinery; he sees a chat that asks for a photo and returns answers. Figure~\ref{fig:pipe} shows the flow.
+
+\begin{figure}[h]
+\centering
+\footnotesize
+\setlength{\fboxsep}{7pt}
+\colorbox{rowg}{\begin{minipage}{0.96\textwidth}
+\centering\sffamily
+\textbf{PHOTO} \; electricity bill · steel e-invoices · production log\\
+$\downarrow$\quad\emph{on-device ingestion --- qwen3-VL 4B, offline, 18--31 s/doc}\\
+\textbf{ACTIVITY DATA} \; energy, material mass \& price, output tonnes (with uncertainty)\\[2pt]
+$\downarrow$\hspace{5em}$\downarrow$\hspace{5em}$\downarrow$\hspace{5em}$\downarrow$\\[2pt]
+\begin{tabular}{p{0.22\textwidth} p{0.22\textwidth} p{0.22\textwidth} p{0.22\textwidth}}
+\centering\textbf{``What's in my product?''}\newline\footnotesize CBAM data pack --- the buyer's letter, answered &
+\centering\textbf{``What do I lose?''}\newline\footnotesize waste map: per-line loss, gross \& net, monthly drift &
+\centering\textbf{``When should machines run?''}\newline\footnotesize schedule + bill saving &
+\centering\textbf{``Am I normal?''}\newline\footnotesize anonymised sector benchmark \tabularnewline
+\end{tabular}
+\end{minipage}}
+\caption{One photograph, one extraction, four kinds of sight. The compliance pack answers the letter that forced the question; the other three are the self-knowledge the factory keeps.}
+\label{fig:pipe}
+\end{figure}
+
+\textbf{Sight 1 --- ``What carbon is in my product?'' (the Data-Pack Engine).} Document intelligence ingests bills, invoices and production records on-device. The engine then does the two computations generic calculators cannot: \emph{allocation} of facility energy across product lines and CN codes with quantified uncertainty, and \emph{assembly} of the per-product specific embedded emissions in the Commission's own template, every field flagged actual / default / needs-attention. It also produces an organizational inventory as a by-product for banks, the descending domestic carbon-fee threshold, and customer questionnaires.
+
+\textbf{Sight 2 --- ``What do I lose between buying and shipping?'' (the Waste Map).} From the same extracted data --- steel mass \emph{and} unit price from the e-invoices, output tonnes from the production log --- it computes yield per product per CN code, the carbon and the money in the loss (gross and net of scrap resale, always both), and what a target loss rate is worth. Because the invoices are dated, it tracks loss month by month, turning a once-a-year blind spot into a control loop that flags a drifting die in weeks. This is the sight no competitor offers and the one that \emph{reduces} rather than merely reports (Section~2.5.1).
+
+\textbf{Sight 3 --- ``When should my machines run?'' (the Grid-Aware Scheduler).} Using Taiwan's open 10-minute grid feed and time-of-use tariffs, it shifts flexible loads (furnaces, compressors) against order deadlines to cut the electricity bill and grid-driven emissions, with a documented before/after ledger. We are precise about its place: it saves real money (a measured NT\$399{,}800/yr for Firm~A) but its carbon effect is small and outside the CBAM certificate scope for steel, so the tool itself ranks it last, honestly.
+
+\textbf{Sight 4 --- ``Am I normal?'' (the sector benchmark).} No fastener SME can currently know whether its loss rate or its energy per tonne is good, bad or ordinary, because no benchmark exists. CarbonPass aggregates anonymised yield and energy-intensity figures across participating firms and gives every owner his percentile. This is also the project's open-data give-back (Section~5.3) --- and, as Section~2.5.1 argues, the mechanism that turns one firm's sight into sector-scale reduction.
+
+\textbf{The interface --- and the inclusion claim.} The whole system fronts as a conversational assistant in LINE, Mandarin/Taiwanese-first, voice-friendly, with zero ESG vocabulary. ``\zh{拍一張電費單}'' --- snap a photo of the power bill --- is the entire onboarding. And it runs on the excluded side of the wall: the document model is a 4-billion-parameter vision-language model that reads the bill offline, on a laptop, with no GPU and no cloud. Raw documents never leave the factory; only the outputs the owner chooses to send do. That is digital inclusion delivered as a property of the product, not a promise on a slide.
+
+\subsubsection{How this actually reduces emissions}
+A reporting tool changes a spreadsheet; a reduction happens in the factory. Our theory of reduction is the oldest one in industry --- \emph{you can only manage what you can measure} --- and it is the same mechanism that made yield a weekly KPI in every corporation: information, not exhortation. CarbonPass makes the measurement free and then ranks the levers honestly, in the order our own numbers support:
+
+\begin{enumerate}[leftmargin=1.6em,itemsep=2pt,topsep=3pt]
+\item \textbf{Yield} (structural). Every percentage point of loss is roughly one percent of the firm's steel purchases and of its precursor emissions, and it moves the declared EU number one-for-one. At Firm~A, a 9.1\%$\rightarrow$5\% scenario is worth \textasciitilde359 tCO\textsubscript{2}e and \textasciitilde NT\$3.5M a year --- \textbf{80$\times$} the scheduler's carbon effect. The monthly drift alert is the operative feature: catching a wearing die in weeks instead of never.
+\item \textbf{Precursor choice and the mill EPD} (supply chain). One document from the steel mill --- an environmental product declaration --- changes the buyer's cost by a measured \textasciitilde\euro{}60/t (Firm~C); and the EU's own tables price electric-arc (scrap-route) wire rod at a fraction of blast-furnace rod, so the tool can quantify, per firm, what cleaner sourcing is worth. The factory cannot decarbonise the mill, but it can choose, ask, and prove.
+\item \textbf{Process energy} (the heat-treatment load). Heat treatment and surface treatment are the cluster's dominant electricity draws. Per-tonne energy intensity, benchmarked across firms, exposes the outliers --- and today an outlier cannot know it is one. Sight precedes every retrofit.
+\item \textbf{Load shifting} (timing). Measured NT\$399{,}800/yr and 4.49 tCO\textsubscript{2}e for Firm~A --- real money, small carbon, ranked last by the tool itself.
+\item \textbf{The cluster multiplier.} The anonymised benchmark converts each firm's private improvement into sector-wide pressure, exactly as corporate KPI culture did --- \textasciitilde1{,}800 firms discovering what ``normal'' is, with no mandate required.
+\end{enumerate}
+
+Trust is part of the reduction mechanism: a tool that states gross and net, distinguishes the declared number from the atmosphere, and is able to tell an owner ``this lever is not worth it for you this year'' is a tool an owner will follow into the levers that are.
+
+\subsection{Differences from existing solutions}
+Taiwan's government has moved, but every existing instrument stops short of the artifact that decides procurement --- and none of them looks at waste at all. Table~\ref{tab:audit} is a verified capability audit.
+
+\begin{table}[h]
+\caption{Capability audit: what exists, and what none of it does}
+\label{tab:audit}
+\small
+\begin{tabularx}{\textwidth}{l Y Y}
+\toprule
+\textbf{Instrument} & \textbf{What it does} & \textbf{What it does \emph{not} do} \\
+\midrule
+CAAS SME service station (MOEA) & Courses, articles, consultant referrals & No computation of any kind \\
+IDB Carbon Calculator (MOEA) & Rough annual organizational CO\textsubscript{2}e from bills & No product-level allocation; no CN-code output; no waste \\
+MOENV CBAM Help Platform (2026) & Information hub, consultation channel & Explicitly informational; computes nothing \\
+Taipower app / eBill & Consumption charts, tariff simulation & No emissions conversion; no compliance artifact \\
+Private ESG SaaS & Organizational inventories; advisory content & Subscription + consultant-mediated; no per-product packs for micro-SMEs; no yield analysis \\
+Consultants + MIRDC counseling & Real ISO/CBAM certifications, partly subsidised & One-off, per-engagement; cannot service recurring per-product data across 2{,}600 firms \\
+\rowcolor{rowg}\textbf{CarbonPass} & \textbf{SME documents $\rightarrow$ importer-ready pack \emph{and} a waste map, on-device, near-zero marginal cost} & \textbf{---} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The gap, stated precisely: no instrument in Taiwan converts \emph{SME-native documents} into an \emph{importer-ready, per-CN-code embedded-emissions pack} at near-zero marginal cost --- and \emph{none of them measures the waste at all}. The government stack ends at awareness; the market stack prices out the small end; and nobody has turned the compliance data around to show the owner his own losses. Two things are genuinely novel. First, the \textbf{waste lever falls straight out of the Commission's own emissions formula} --- where the ratio of input mass to output is a first-class term --- yet everyone read that formula as an accounting rule to satisfy, never as an optimization target to attack. Second, the \textbf{edge tier}: a 4-billion-parameter model that reads a Traditional-Chinese bill perfectly on commodity hardware is the inclusion argument made concrete, not a footnote about efficiency.
+
+\subsection{Expected benefits (quantified)}
+Table~\ref{tab:benefits} gives the quantified benefits, each with its basis and its honest caveat. Figures are per firm and per year unless stated; all are engine-computed from the sources in Section~5.
+
+\begin{table}[h]
+\caption{Expected benefits, with basis and caveat}
+\label{tab:benefits}
+\small
+\begin{tabularx}{\textwidth}{Y l Y}
+\toprule
+\textbf{Benefit} & \textbf{Quantification} & \textbf{Basis / caveat} \\
+\midrule
+Loss made visible (carbon, gross) & 758 tCO\textsubscript{2}e/yr (Firm A); 1{,}879 t (Firm B) & Engine from invoices + log; remelt caveat always stated \\
+Loss made visible (money) & gross NT\$7.35 M / net \textasciitilde NT\$4--5 M (Firm A) & Purchase value from e-invoices; net after \textasciitilde30--40\% scrap resale recovery\textsuperscript{[23]} \\
+Recoverable at 5\% target loss & \textasciitilde359 tCO\textsubscript{2}e and NT\$3.5 M/yr (Firm A) & Scenario, not a promise; owner sets the target \\
+Yield's effect on the CBAM number & SEE 2.924 $\rightarrow$ 2.805; \euro{}9/t, \euro{}27k/yr to the buyer & Exact 1:1 via the mass-before-cutting rule \\
+Electricity bill saving (scheduler) & NT\$399{,}800/yr + 4.49 tCO\textsubscript{2}e (Firm A, measured) & Live grid feed + TOU tariff; small carbon, real money \\
+Compliance / trade-relationship & Buyer keeps the supplier whose pack arrives & Retention argument; Taiwan default mild (\textasciitilde\euro{}4/t) \\
+Time and cost to produce the pack & Minutes, near-zero marginal cost & vs.\ per-engagement consultant economics \\
+Cluster-scale potential & \textasciitilde1{,}800 firms $\times$ \textasciitilde10\% steel binned & Extrapolation; pilot will calibrate the loss rate \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The headline is deliberately not the \euro{}4/t compliance margin --- we retire that overstatement rather than lean on it. The headline is that a single photograph now surfaces \emph{millions of NT\$ and hundreds of tonnes of CO\textsubscript{2} per firm} that were previously invisible, in a cluster of about 1{,}800 firms, using a tool that costs the owner nothing per use.
+
+\clearpage
+\section{Project maturity}
+\subsection{Development stage}
+CarbonPass is an advanced, working proof of concept, not a concept sketch. As of mid-July 2026 the following is demonstrable and reproducible from the repository, with 25+ automated tests green:
+
+\begin{itemize}[leftmargin=1.2em,itemsep=2pt,topsep=3pt]
+\item \textbf{End-to-end ingestion} of a Taipower bill photograph, MIG~4.0 e-invoices and a production log into structured activity data, with a second OCR pass back-checking every number.
+\item \textbf{The compliance engine} reproduces the European Commission's own worked ``screws and nuts'' example to a relative tolerance of $10^{-9}$, and fills the Commission's real 19-sheet template such that its formula cells independently recompute to the engine's values.
+\item \textbf{The rules engine is already global}: it parses all 120 country sheets and 12{,}532 default-value rows of the adopted tables with zero failures, and computes emissions for cement, aluminium and fertiliser as well as steel.
+\item \textbf{The Waste Map} runs today on two firms from real document formats, producing Table~\ref{tab:waste}.
+\item \textbf{The scheduler} runs against Taipower's live 10-minute feed and produces the measured NT\$399{,}800/yr plan.
+\item \textbf{Module 3} runs as a FastAPI service with a LINE webhook and a credential-free simulator demonstrating the full conversation end-to-end.
+\end{itemize}
+
+The single most important maturity result is the edge-tier benchmark in Figure~\ref{fig:4b}, because it is the inclusion claim in numbers.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{figs/fig_4b_accuracy.png}
+\caption{Field-extraction accuracy on phone-photo utility bills across six synthetic distortions. The 4-billion-parameter model runs offline on a laptop at 100\% and 18--31 s per document; a larger challenger model drops to 66\%, concentrating its errors on exactly the tariff-table fields a verifier cares about. The small model is not a compromise --- on this corpus it is the better tool, and it is the one Mr.\ Lin can actually run.}
+\label{fig:4b}
+\end{figure}
+
+\subsection{Project adjustments}
+The project has not been sold or awarded elsewhere; no 50\% modification applies. Internally, we made two adjustments in the open and carry them as evidence of rigour rather than hiding them: (1)~we retired the \euro{}450--750/t ``penalty'' figure once our engine showed it described Taiwan's competitors, not Taiwan; and (2)~we corrected a precursor-mapping error that had made stainless screws look cleaner than carbon ones, which is what surfaced the stainless finding in Section~2.3.4. Both corrections came from checking our own claims against primary sources --- the discipline we are asking a judge to reward.
+
+\subsection{Demonstration}
+The submission includes a recorded walkthrough: two bill photographs into the LINE simulator, returning the acknowledgement, the compliance pack, the waste map and the schedule reply. The engine, tests and reproduction commands are in the repository; every figure and table in this document regenerates from committed scripts.
+
+\subsection{Existing validation fields}
+Validation to date is on a deterministic synthetic corpus modelled on real formats (public Taipower bill layouts and the Ministry of Finance e-invoice specification), which lets us pin correctness against ground truth. The decisive external validation --- real consented bills, real yields --- is the explicit purpose of the mentorship-phase pilot in Gangshan, in cooperation with a cluster firm and, we hope, MIRDC or the Kaohsiung EPB advisory team. We do not overstate: the mechanism is proven; the field magnitudes are what the pilot measures.
+
+\subsection{Existing validation results and verification plan}
+Measured results so far: 100\% field extraction across six phone-photo distortions on the 4B and 8B models; the Commission worked example reproduced at $10^{-9}$; the waste map computed for three product lines; the scheduler's NT\$399{,}800/yr plan against the live grid feed. The verification plan is staged to the PHIT calendar (Table~\ref{tab:calendar}). We are candid about the regulatory reality behind ``verification'': as of mid-July 2026 no CBAM verifier is yet accredited anywhere in the world; eight EU national accreditation bodies now accept applications from third-country verifiers (up from four earlier in the year), and the Commission expects the first accreditations around September 2026 --- squarely inside this Hackathon's mentorship window. The pilot's aim is therefore to have a generated pack reviewed for structure by a Taiwanese GHG-verification body (Taiwan has 20 such bodies and 200+ specialists whose path to EU accreditation is only now opening), not to claim a certification that does not yet exist for anyone.
+
+\begin{table}[h]
+\caption{Build and verification plan against the official PHIT calendar}
+\label{tab:calendar}
+\small
+\begin{tabularx}{\textwidth}{l Y}
+\toprule
+\textbf{Window} & \textbf{Deliverable} \\
+\midrule
+Now $\rightarrow$ 31 Jul (submission) & Working PoC: ingestion, compliance engine, waste map, scheduler, LINE simulator; demo video; this proposal. \\
+6--16 Aug (preliminary) & Scored on proposal + credible start (Feasibility 40\%, Innovation 30\%, Social Impact 30\%). \\
+Mid-Sep $\rightarrow$ mid-Oct (mentorship) & One real pilot firm in Gangshan: real bills in, real pack + waste map out; structure reviewed by a verification body; one flexible load shifted and measured; first real yield benchmark. \\
+Late Oct (final) & Live demo + measured pilot deltas (Implementation \& Verification, 30\%, scored on progress since submission). \\
+Dec (awards) & --- \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Future plans}
+\subsection{Promotion and adoption plan}
+The Presidential Hackathon is a policy-adoption pipeline, not a product launch, and CarbonPass is engineered for it. The adoption path is: (1)~a working PoC at submission; (2)~a government-connected pilot in Gangshan during mentorship, using PHIT's own public-private matchmaking and field-validation support; (3)~integration with the front door the state has already built --- MOENV's informational CBAM platform and MOEA's SME service network --- as the computational layer they lack. Distribution to the cluster runs through the fastener institute (TIFI, \textasciitilde700 members) and MIRDC counseling channels, and through the one interface every owner already uses, LINE. Claiming full national deployment now would score \emph{worse} under Feasibility than demonstrating an honest, moving trajectory --- so we stage it.
+
+\subsection{Engaged collaboration units}
+The proof of concept requires no partnerships and uses only open data, by design. For the pilot we are pursuing expressions of interest from a TIFI member firm and from MIRDC / the Kaohsiung Environmental Protection Bureau's advisory team. We state plainly that these are targets, not yet secured commitments, as of submission.
+
+\subsection{Future planned collaboration units and the expansion sequence}
+The same engine that serves Taiwan's cluster is already global in its computational core, which is why the idea has a future well beyond fasteners. Table~\ref{tab:expand} gives the sequence.
+
+\begin{table}[h]
+\caption{Planned collaboration and the expansion sequence (same engine, widening catalogue)}
+\label{tab:expand}
+\small
+\begin{tabularx}{\textwidth}{l Y}
+\toprule
+\textbf{Stage} & \textbf{Description} \\
+\midrule
+Beachhead (2026) & Taiwan fasteners (CN 7318), live compulsion; MOENV / MOEA / MIRDC / TIFI. \\
+Downstream steel \& aluminium (2028) & The EU has proposed extending CBAM to \textasciitilde180 further product categories (obligations from 1 Jan 2028); the Council agreed its position in June 2026, the Parliament's committee stage passed in July, and the plenary vote is expected September 2026 --- inside this Hackathon's mentorship window. If it passes, the exposed Taiwanese population multiplies well beyond 2{,}600 firms. \\
+Digital Product Passport sectors (2027--2030) & The EU's product-passport registry demands machine-readable product sustainability data --- structurally the same output CarbonPass already generates. \\
+Domestic carbon-fee entrants (2027 onward) & As Taiwan's fee threshold falls, more of its 150{,}000+ manufacturing SMEs become reporters; the org-inventory by-product is their on-ramp. \\
+New Southbound economies & Taiwan builds and proves the tool on its own cluster, then offers it to the ASEAN and South Asian producers who need it most --- the international track's entire purpose. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+That last row rests on a finding worth stating, because it is the strongest social-impact argument the project has. Holding a factory's physics fixed and changing only its country of origin, the reward for proving its carbon ranges from about \euro{}4/t in Taiwan to \euro{}177/t in a country with no entry in the EU's book --- 44 times the reward for identical emissions, decided by a passport (Figure~\ref{fig:moved}). The cruelty is in the correlation: the reward for proving is highest exactly where the capacity to prove is lowest. Taiwan --- which needs the tool least, and has world-class open data, idle verification capacity and a government at the front door --- is best placed to build it and give it to the economies that need it most.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.92\textwidth]{figs/fig_same_factory_moved.png}
+\caption{The same factory, the same carbon, moved between countries: the reward for proving actual emissions is set not by how clean the factory is but by whether the EU happens to hold a data book for its country. This is the global provability divide the beachhead tool is designed to travel to. (For Thailand the reward is negative --- its default is cleaner than its truth --- and the tool must be honest enough to say ``don't bother'', which ours is.)}
+\label{fig:moved}
+\end{figure}
+
+\section{Open data}
+\subsection{Open-data sources used}
+The proof of concept is built entirely on open data and published methodology. Table~\ref{tab:opendata} lists the sources; all are accessible now, with no partnership required.
+
+\begin{table}[h]
+\caption{Open data used in the proof of concept}
+\label{tab:opendata}
+\small
+\begin{tabularx}{\textwidth}{Y Y}
+\toprule
+\textbf{Source} & \textbf{Role} \\
+\midrule
+MOENV carbon-footprint emission coefficients (data.gov.tw \#28176; OpenAPI) & Material / fuel / process emission factors \\
+Taiwan product carbon-footprint registry (data.gov.tw \#8992) & Benchmarks, sanity checks \\
+Electricity emission factor: 0.467 kgCO\textsubscript{2}e/kWh for 2025, first published with an industrial split of 0.466 (MOEA Energy Administration, Jun 2026; supersedes 2024's 0.474 --- the tool tracks the moving figure) & Scope-2 and scheduler math \\
+Taipower generation-by-unit, 10-minute (data.gov.tw \#8931 live / \#37331 historical) & Hourly grid-carbon-intensity curve \\
+Taipower time-of-use rate schedules & Price signal for the scheduler \\
+EU CBAM adopted default values (Impl.\ Reg.\ 2025/2621) and benchmarks (2025/2620) & Output schema; per-country default rows; the waste and cost math \\
+EU CBAM communication template + filled ``screws and nuts'' example & Output format; golden test \\
+Official CBAM certificate prices (Commission quarterly) & Live cost conversion \\
+Ministry of Finance e-invoice (MIG 4.0) specification & Ingestion of steel and fuel invoices \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Suggestions for modifying open data}
+Parsing the EU's adopted tables with our own engine surfaced concrete, reportable defects that we will feed back to the Commission, DG~TAXUD and MOENV. The most consequential: \textbf{stainless wire rod (CN~7221) has no value for Taiwan, Thailand or Vietnam} --- the three fastener exporters --- so their stainless resolves to the punitive fallback; this is most likely a publishing omission and is worth correcting. We also documented inconsistent CN-code formatting that will silently break naive data joins (the entire aluminium block is stored unspaced), three different dash characters used for ``no value'', a handful of aluminium goods with neither a benchmark nor a fallback, and five cement rows whose mark-up contradicts their own sheet headers. Each is a small fix that materially improves a dataset thousands of firms will rely on.
+
+\subsection{Provision of open data (given back)}
+CarbonPass publishes two open datasets in return. First, a cleaned, machine-readable \textbf{hourly Taiwan grid-carbon-intensity dataset} derived from the Taipower 10-minute feed --- directly useful to any firm or researcher doing carbon-aware scheduling. Second, and more valuable to the cluster, the first anonymised \textbf{fastener-sector yield benchmark}: a table that lets every firm see whether its \textasciitilde10\% loss is good, bad or ordinary --- something no firm can learn today, and worth more to the sector than any grid dataset. Both are openly licensed, and the team is willing to release the compliance-engine core as open source.
+
+\section*{References}
+\addcontentsline{toc}{section}{References}
+\small
+\begin{enumerate}[leftmargin=2.2em,itemsep=1.5pt,label={[\arabic*]}]
+\item Taipei Times, ``MOENV to set up CBAM help platform for SMEs,'' 2 Mar 2026 (3.74 M t; \textasciitilde2{,}600 SMEs; 13th-largest CBAM exporter; importer-level aggregation).
+\item Focus Taiwan / Taipei Times, first carbon-fee cycle results, Jun 2026.
+\item European Commission, DG TAXUD --- CBAM definitive-regime pages, Q\&A (27--28 May 2026) and operator guidance.
+\item European Commission, ``CBAM default values as adopted'' workbook (machine-readable Impl.\ Reg.\ (EU) 2025/2621), v20260204 --- per-country $\times$ CN-code tables; parsed and unit-tested by the CarbonPass engine.
+\item European Commission, CBAM benchmarks workbook (Impl.\ Reg.\ (EU) 2025/2620) --- free-allocation adjustment benchmarks.
+\item European Commission, CBAM communication template for installations v2.1 + filled ``Steel 3: Screws and nuts'' example --- reproduced by the engine at $10^{-9}$.
+\item European Commission, CBAM certificate price publications (\euro{}75.36 Q1 2026; \euro{}75.28 Q2 2026).
+\item European Commission, ``State-of-play CBAM accreditation'' (retrieved 17 Jul 2026): 24 accreditation bodies, 4 accepting third-country applications; zero verifiers accredited worldwide as of mid-2026.
+\item MOENV (Taiwan), \emph{Major Environmental Policies}, Mar 2026 --- 20 GHG-verification bodies and 200+ specialists; zero EU applications; EU-side blockers.
+\item Akin / Covington / SteelOrbis (2026) --- CBAM downstream extension (\textasciitilde180 categories), Council position, EP plenary vote timing.
+\item MOEA SME Administration, 2025 White Paper on SMEs (1.716 M SMEs; family-firm structure).
+\item CommonWealth Magazine (2023); Kaohsiung Times (2026); Fastener World (2024--25) --- fastener cluster scale, export value/volume, share to Europe.
+\item Goebel Fasteners / PRNewswire (2024); TIFI profile --- \textasciitilde1{,}800 manufacturers, \textasciitilde700 institute members.
+\item MOEA Energy Administration --- electricity emission factors: 0.474 kgCO\textsubscript{2}e/kWh (2024); 0.467 overall / 0.466 industrial (2025, published 2 Jun 2026).
+\item J. McLeod (Crowe UK), ``The new reality of CBAM,'' \emph{Fastener + Fixing Magazine}, 9 Feb 2026 --- independent corroboration that Taiwan's default is mild (\euro{}150/t vs Türkiye \euro{}400, China \euro{}500).
+\item data.gov.tw open datasets \#28176 (MOENV coefficients), \#8992 (product-footprint registry), \#8931 / \#37331 (Taipower generation-by-unit).
+\item ESPR (EU) 2024/1781 --- Digital Product Passport registry (from Jul 2026); staged sector rollout 2027--2030.
+\item Business Standard (28 Jan 2026); Free Press Journal (9 Jul 2026) --- Indian MSME CBAM impact and proposed certification-cost subsidy (context for the global divide).
+\item MODA / Taipei Computer Association --- 2026 Presidential Hackathon International Track Handbook (theme, criteria, schedule, application form).
+\item Ministry of Finance (Taiwan) --- electronic-invoice MIG 4.0 specification.
+\item IoT Analytics, \emph{MES Market Report 2025--2031} (Dec 2025): 54\% of small- and mid-sized plants use pen \& paper or spreadsheets as their MES; only 8\% use a commercial MES. ASQ cost-of-poor-quality literature: typically 10--20\% of revenue; APQC benchmarks: scrap and rework \textasciitilde2.2\% of revenue at the median.
+\item MacLean-Fogg, ``Cold Forming vs.\ Machining''; The Federal Group USA; industry cold-heading analyses --- cold-forming material utilization 85--95\%, far above machining.
+\item Argus / LME Steel Scrap CFR Taiwan (US\$345--360/t in Q2 2026, \textasciitilde US\$325/t mid-July 2026); Taiwan domestic wire-rod prices \textasciitilde NT\$27{,}000/t (Apr 2026); Taiwan scrap-recycling price surveys --- basis of the \textasciitilde30--40\% resale-recovery estimate. All prices move; the tool computes gross and net at current prices.
+\end{enumerate}
+
+\vfill
+{\footnotesize\color{cpgrey}\emph{Reproducibility note.} Every quantitative claim in this proposal --- the waste table, the country default chart, the same-factory-moved comparison, the stainless under-count, the model-accuracy benchmark and the scheduler ledger --- is generated by the team's own code from the open sources in Table~\ref{tab:opendata} and the EU's published tables, and regenerates from committed scripts. Where a figure is a scenario, an estimate or a synthetic-corpus magnitude, it is labelled as such in the text.}
+
+\end{document}

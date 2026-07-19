@@ -13,12 +13,27 @@ declaration; the dominant input is the **purchased steel precursor**; indirect
 every figure carries a source flag (actual/default) + per-line uncertainty; the
 tool **prepares** verification — it never certifies.
 
-> ⚠️ **Read first (17 Jul 2026): `docs/14_scope_extension.md`** — "The Provability Divide", the
-> owner-approved scope extension (Taiwan = lab, not market; ASEAN + South Asia foreground), and
-> **`docs/15_evidence_dossier.md`** — every source behind it, the **kill-list** (the "≥80% actual
-> verified" and "5% variance" rules are in **no** Commission document; the guidance PDFs are expired),
-> and **recorded engine defects** (the mark-up basis is wrong outside steel/aluminium — do not publish
-> cement or fertiliser numbers yet). Atlas: `uv run python scripts/atlas_scan.py`.
+> ⚠️ **Read first (17 Jul 2026) — the direction has moved.**
+> **`docs/16_waste_extension.md`** is the **live thesis**: stop selling the filing — the same
+> photograph finds the **waste**. Every firm buys ~1.10 t of steel per 1 t shipped and nobody counts
+> the other 0.10: firm_a bins **758 tCO₂e + NT$7.35M/yr**, firm_b **1,879 tCO₂e + NT$24.6M/yr**. The
+> yield lever is **80× the carbon of Module 2's scheduler** and, unlike it, moves the CBAM number.
+> Run it: `uv run python scripts/waste_scan.py out/firm_a_activity.json data/mock_corpus/firm_a`
+>
+> **`docs/15_evidence_dossier.md`** — every source, the **kill-list** (the "≥80% actual verified" and
+> "5% variance" rules are in **no** Commission document; the guidance PDFs are expired), and the
+> **engine defects**. Still open: the mark-up basis is wrong outside steel/aluminium, so **do not
+> publish cement or fertiliser numbers yet**; and ground truth is computed from exact totals the
+> production logs don't carry, so **firm_b/firm_c are not golden-testable** (rel ~1e-4).
+>
+> **Fixed 17 Jul:** stainless mapped to the wrong precursor CN — **7227** ("alloy steel *other than
+> stainless*", Taiwan's lowest-on-earth 2.17) instead of **7221** (stainless rod in coils). Taiwan has
+> **no CN 7221 value at all** — only Taiwan, Thailand and Vietnam among 33 full-book countries — so the
+> Annex I fallback applies (4.82 → 5.302, Q&A p.37), now implemented as `defaults.resolve()`. firm_b
+> stainless SEE **2.774 → 6.003**.
+>
+> `docs/14_scope_extension.md` is a **background annex** — verified facts, superseded thesis.
+> Atlas: `uv run python scripts/atlas_scan.py`.
 
 ## Setup
 
