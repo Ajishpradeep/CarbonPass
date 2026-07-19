@@ -1,14 +1,22 @@
 #!/usr/bin/env python3
-"""LINE-bot simulator: drives the webhook end-to-end without a LINE channel.
+"""LINE-bot simulator: the FOUR SIGHTS from one photo set, end-to-end, no channel.
 
 Posts fake (but correctly signed, when a secret is set) LINE events against a
-running `carbonpass serve` instance, using the firm_a corpus: two bill photos
-in, then 「狀態」, 「產生報告」 and 「排程」. Prints every bot reply.
+running `carbonpass serve` instance, using the firm_a corpus. One session, in
+sequence (docs/21 §1.5 — this is the demo-video script):
+
+    (photographs two Taipower bills)      the one photograph
+    「狀態」                                what's been received
+    「產生報告」   Sight ① product carbon:  CBAM pack + ranked fix-list
+    「浪費」       Sight ② material loss:   waste map, gross AND net, drift
+    「排程」       Sight ③ energy timing:   grid-aware shift plan
+    「我正常嗎」   Sight ④ peer position:   percentile vs (labelled) seed band
 
 Usage:
     uv run python -m carbonpass serve &          # terminal 1
     uv run python scripts/line_simulator.py      # terminal 2
-    (--fast skips 「產生報告」, whose VLM pass takes minutes)
+    (--fast skips 「產生報告」, whose VLM pass takes minutes; the other three
+     sights run on structured documents and stay fast)
 """
 from __future__ import annotations
 
@@ -75,12 +83,18 @@ def main() -> int:
     show(post_events([image_event(bills[0]), image_event(bills[6])]))
     print("👤 狀態")
     show(post_events([text_event("狀態")]))
-    print("👤 排程")
-    show(post_events([text_event("排程")]))
     if not args.fast:
-        print("👤 產生報告   (VLM parses the received photos — takes a while)")
+        print("👤 產生報告   — Sight ① product carbon (VLM parses the photos; takes a while)")
         show(post_events([text_event("產生報告")]))
-    print("simulator done ✓  (real channel = set LINE_CHANNEL_SECRET/"
+    else:
+        print("(--fast: skipping 「產生報告」 / Sight ① — VLM step)")
+    print("👤 浪費       — Sight ② material loss (gross AND net)")
+    show(post_events([text_event("浪費")]))
+    print("👤 排程       — Sight ③ energy timing")
+    show(post_events([text_event("排程")]))
+    print("👤 我正常嗎   — Sight ④ peer position (synthetic seed, labelled)")
+    show(post_events([text_event("我正常嗎")]))
+    print("four sights done ✓  (real channel = set LINE_CHANNEL_SECRET/"
           "LINE_CHANNEL_ACCESS_TOKEN in .env and point the LINE console at /line/webhook)")
     return 0
 

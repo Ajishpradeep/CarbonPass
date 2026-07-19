@@ -1,9 +1,11 @@
 """LINE Messaging API webhook — the Module 3 inclusion interface.
 
-Flow (zh-TW, zero ESG vocabulary):
+Flow (zh-TW, zero ESG vocabulary) — the four sights from one photo set:
     owner sends photos of bills/invoices  -> stored in the user's session folder
-    owner types 「產生報告」               -> ingest + pack + costdelta, reply summary
-    owner types 「排程」                   -> Module 2 shift plan summary
+    owner types 「產生報告」               -> Sight ①: ingest + CBAM pack + ranked fix-list
+    owner types 「浪費」/「損耗」          -> Sight ②: waste map (gross AND net) + drift
+    owner types 「排程」                   -> Sight ③: grid-aware shift plan
+    owner types 「我正常嗎」               -> Sight ④: percentile vs (labelled) seed band
     owner types 「狀態」                   -> what's been received so far
 
 Modes:
@@ -125,7 +127,12 @@ def _handle_report(session: Path) -> list[str]:
     # the ranked fix-list replaces the old cost-delta screen (docs/21 §1.3)
     act_path = session / "activity.json"
     act_path.write_text(_json.dumps(activity, ensure_ascii=False), encoding="utf-8")
-    fl = fixlist(str(act_path), str(session))
+    try:
+        from carbonpass.scheduler.ledger import schedule_firm
+        schedule = schedule_firm(session)
+    except Exception:            # offline / no machine list — lever degrades honestly
+        schedule = None
+    fl = fixlist(str(act_path), str(session), schedule)
     return ["\n".join(lines), render_fixlist_zh(fl)]
 
 
@@ -208,7 +215,8 @@ def _handle_status(session: Path) -> list[str]:
     n_bills = len(list((session / "bills").glob("*")))
     n_inv = len(list((session / "invoices").glob("*")))
     return [f"目前收到：電費單 {n_bills} 張、發票 {n_inv} 張。\n"
-            f"傳「產生報告」開始計算；傳「排程」看省電建議。"]
+            f"四種看見：「產生報告」CBAM 資料包＋改善清單、「浪費」物料損耗地圖、"
+            f"「排程」省電建議、「我正常嗎」同業比較。"]
 
 
 @router.post("/webhook")

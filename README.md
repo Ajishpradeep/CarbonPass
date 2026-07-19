@@ -1,39 +1,29 @@
-# CarbonPass — Module 1 PoC
+# CarbonPass — the factory that cannot see itself
 
-Local-first AI that turns a Taiwanese fastener SME's documents (Taipower bill,
-steel wire-rod e-invoices, production log) into a **verifier-ready EU CBAM
-"Communication Template for installations"** (`.xlsx`) for CN 7318 goods, plus a
-default-vs-actual buyer-cost screen.
+Local-first AI that turns a small Taiwanese factory's photographed paperwork
+(Taipower bill, steel e-invoices, production log) into **four kinds of sight**
+— offline, in Taiwanese, raw documents never leaving the building:
 
-**CBAM ground rules baked into the code** (see `docs/10_poc_blueprint.md` §2A):
-one SEE (tCO2e/t) per CN code per **calendar year** — never per shipment; output
-is the producer→importer **Communication Template**, not the EU Registry
-declaration; the dominant input is the **purchased steel precursor**; indirect
-(electricity) emissions are recorded but are **not** in the CN 7318 certificate;
-every figure carries a source flag (actual/default) + per-line uncertainty; the
-tool **prepares** verification — it never certifies.
+| Sight | The owner's question | Surface | Measured anchor (synthetic corpus) |
+|---|---|---|---|
+| ① Product carbon | "What carbon is in my product?" | CBAM Communication Template (.xlsx) + ranked fix-list | Commission's own worked example reproduced at rel 1e-9; firm_a data worth €4.03/t to its buyer (and the tool says when that's *not* worth chasing) |
+| ② Material loss | "What do I lose between buying and shipping?" | Waste map, gross **and** net, monthly drift alert | firm_a: 9.1% loss → 758 tCO₂e/yr embodied carbon purchased-but-never-shipped; NT$7.35M at purchase price / **NT$4.4–5.1M net of scrap resale**; 5%-scenario = 359 t + NT$3.5M ≈ **80×** the scheduler |
+| ③ Energy timing | "When should my machines run?" | Grid-aware MILP shift plan (live #8931 feed + TOU) | NT$399,800/yr + ~4 tCO₂e (indirect — recorded, **not** in the CN 7318 certificate) |
+| ④ Peer position | "Am I normal?" | Anonymised percentile screen (k≥5 floor) | synthetic seed on the documented 5–15% band — labelled; the pilot populates it |
 
-> ⚠️ **Read first (17 Jul 2026) — the direction has moved.**
-> **`docs/16_waste_extension.md`** is the **live thesis**: stop selling the filing — the same
-> photograph finds the **waste**. Every firm buys ~1.10 t of steel per 1 t shipped and nobody counts
-> the other 0.10: firm_a bins **758 tCO₂e + NT$7.35M/yr**, firm_b **1,879 tCO₂e + NT$24.6M/yr**. The
-> yield lever is **80× the carbon of Module 2's scheduler** and, unlike it, moves the CBAM number.
-> Run it: `uv run python scripts/waste_scan.py out/firm_a_activity.json data/mock_corpus/firm_a`
->
-> **`docs/15_evidence_dossier.md`** — every source, the **kill-list** (the "≥80% actual verified" and
-> "5% variance" rules are in **no** Commission document; the guidance PDFs are expired), and the
-> **engine defects**. Still open: the mark-up basis is wrong outside steel/aluminium, so **do not
-> publish cement or fertiliser numbers yet**; and ground truth is computed from exact totals the
-> production logs don't carry, so **firm_b/firm_c are not golden-testable** (rel ~1e-4).
->
-> **Fixed 17 Jul:** stainless mapped to the wrong precursor CN — **7227** ("alloy steel *other than
-> stainless*", Taiwan's lowest-on-earth 2.17) instead of **7221** (stainless rod in coils). Taiwan has
-> **no CN 7221 value at all** — only Taiwan, Thailand and Vietnam among 33 full-book countries — so the
-> Annex I fallback applies (4.82 → 5.302, Q&A p.37), now implemented as `defaults.resolve()`. firm_b
-> stainless SEE **2.774 → 6.003**.
->
-> `docs/14_scope_extension.md` is a **background annex** — verified facts, superseded thesis.
-> Atlas: `uv run python scripts/atlas_scan.py`.
+**Ground rules baked into the code** (docs/21 §2): one SEE per CN code per
+**calendar year**, never per shipment · defaults are lawful without limit (no
+80/20 rule, no cap — verified against IR 2025/2547 itself, docs/15 §8.1) · mass
+counts **before cutting** (Annex III §F: scrap sits inside the declared SEE —
+the yield lever's legal basis) · electricity is recorded but **not**
+certificated for iron & steel · money and carbon always gross **and** net,
+enforced in types · prices/factors are dated config (`data/prices.yaml`,
+`data/ef/grid_ef.yaml`), never literals — the engine **refuses** to quote an
+unpublished certificate quarter · the tool prepares verification, never
+certifies.
+
+Entry point for a fresh session: **`docs/20_master_handoff.md`** (state, doc
+index, kill-list) → **`docs/21_sprint2_blueprint_kickoff.md`** (build order).
 
 ## Setup
 
@@ -41,53 +31,62 @@ tool **prepares** verification — it never certifies.
 uv sync                                  # Python 3.12; installs everything incl. docling
 brew install ollama                      # local VLM serving
 ollama serve &                           # if not already running as a service
-ollama pull qwen3-vl:8b-instruct         # ~6 GB, one-time
+ollama pull qwen3-vl:8b-instruct         # ~6 GB, one-time (4B also supported)
 python scripts/pull_moenv_ef.py          # refresh MOENV coefficient table (optional; snapshot committed)
 cp .env.example .env                     # fill MOENV_API_KEY only if you want live refreshes
 ```
 
-## Run (Firm A end-to-end)
+## Run (Firm A, all four sights)
 
 ```bash
-# 1. generate the synthetic 3-firm corpus (data/mock_corpus/ is gitignored)
+# 0. generate the synthetic 3-firm corpus (data/mock_corpus/ is gitignored)
 uv run python scripts/make_mock_corpus.py
 
-# 2. documents -> validated activity data (VLM parses the 12 Taipower bills;
-#    steel/gas come from MIG 4.0 e-invoice XML; production log from CSV)
+# 1. documents -> validated activity data (VLM parses the Taipower bills;
+#    steel/gas from MIG 4.0 e-invoice XML; production log from CSV)
 uv run python -m carbonpass ingest data/mock_corpus/firm_a -o out/firm_a_activity.json
 #    add --no-vlm to skip Ollama (structured parsers only; no electricity data)
 
-# 3. activity data -> filled Communication Template + flags sidecar
-uv run python -m carbonpass pack out/firm_a_activity.json -o out/firm_a_communication_template.xlsx
+# Sight ①: activity data -> filled Communication Template + flags sidecar
+uv run python -m carbonpass pack out/firm_a_activity.json
 
-# 4. the buyer screen: what your data is worth to the EU importer
-uv run python -m carbonpass costdelta out/firm_a_activity.json
+# Sight ② standalone: waste map (gross AND net) + drift series
+uv run python scripts/waste_scan.py out/firm_a_activity.json data/mock_corpus/firm_a
 
-# 5. Module 2 — grid-aware shift plan (live Taipower #8931 feed + TOU tariffs)
+# Sight ③: grid-aware shift plan (live Taipower #8931 feed + TOU tariffs)
 uv run python -m carbonpass schedule data/mock_corpus/firm_a
 
-# 6. Module 3 — local API + LINE webhook (simulator needs no LINE channel)
+# The one screen the demo pivots on — ranked fix-list, each lever able to
+# answer "not worth it this year" (replaces the old costdelta screen):
+uv run python -m carbonpass fixlist out/firm_a_activity.json
+
+# All four sights through LINE (simulator needs no LINE channel):
 uv run python -m carbonpass serve &
-uv run python scripts/line_simulator.py --fast
+uv run python scripts/line_simulator.py          # --fast skips the VLM step
+# session: photos -> 狀態 -> 產生報告(①) -> 浪費(②) -> 排程(③) -> 我正常嗎(④)
 ```
 
-## Sprint-1 extras
+## Verification extras
 
 ```bash
 uv run python scripts/degrade_corpus.py          # phone-photo degradations of the corpus
 uv run python scripts/vlm_bakeoff.py --models qwen3-vl:8b-instruct   # accuracy matrix
 uv run python scripts/verify_workbook_recalc.py  # LibreOffice recompute vs engine sidecar
+uv run python scripts/atlas_scan.py              # 120-country default-value atlas
 ```
-Results and findings: `docs/13_sprint1_report.md`.
 
-Firms B (two product lines sharing one meter — the allocation case) and C
-(mill EPD supplied — the actual-precursor case) run identically.
+Firms B (two product lines sharing one meter — the allocation case; stainless
+resolves through the Annex I fallback because Taiwan's CN 7221 row is a hole in
+the published OJ itself) and C (mill EPD supplied — €60.31/t buyer delta) run
+identically and are golden-tested end-to-end.
 
 ## Tests
 
 ```bash
-uv run pytest            # incl. golden tests reproducing the European Commission's
-                         # own worked "screws and nuts" example at 1e-9 relative
+uv run pytest      # 53 green: Commission screws-and-nuts AND cement examples at
+                   # rel 1e-9; firms A/B/C e2e vs ground truth; unpublished-quarter
+                   # refusal; MoneyLoss gross+net enforcement; drift alert;
+                   # k>=5 export refusal; the pinned "not worth it this year"
 ```
 
 ## Repo map
@@ -95,44 +94,45 @@ uv run pytest            # incl. golden tests reproducing the European Commissio
 ```
 schema/cbam_template_map.yaml      writer contract: exact cells, input vs formula
 schema/activity_data.schema.json   ingestion output schema
+schema/benchmark_row.schema.json   PUBLIC give-back spec: k>=5 anonymised benchmark rows
 src/carbonpass/
-  ingestion/   docling pre-pass + qwen3-vl (Ollama) + validation pipeline
+  ingestion/   docling pre-pass + qwen3-vl (Ollama) + PP-OCRv4 backstop
   egui/        MIG 4.0 e-invoice XML parser (structured path)
   allocation/  OR-Tools LP + NumPy Monte-Carlo (per-line uncertainty)
-  rules/       SEE per IR 2025/2547; CBAM default values + 10/20/30% mark-ups; MOENV EFs
+  rules/       SEE per IR 2025/2547; defaults + row-derived mark-ups + resolve()
+               fallback; grid EF loader (rules/gridef.py); MOENV EFs
+  prices.py    dated certificate prices + scrap recovery (refuses unpublished quarters)
   writer/      openpyxl fill of the Commission template + flags sidecar
-  costdelta/   default-vs-actual buyer cost screen
-scripts/       corpus generator, MOENV fetcher, template inspector
-tests/golden/  the screws & nuts answer key, transcribed + reproduced
-data/cbam_official/   Commission template, filled examples, default values (committed)
-data/ef/              MOENV coefficient snapshot (committed)
+  waste/       Sight ②: scan (gross+net MoneyLoss), monthly drift + alert
+  benchmark/   Sight ④: k>=5 schema, aggregate-only export, percentile screen
+  costdelta/   fixlist.py — the ranked fix-list (screen.py feeds it)
+  scheduler/   Sight ③: live #8931 grid feed, TOU tariffs, MILP, ledger
+  api/ + line_bot/   FastAPI + LINE webhook (simulator mode without a channel)
+scripts/       corpus generator, simulator, bake-off, recalc verifier, waste CLI
+tests/golden/  screws & nuts AND cement answer keys + firm A/B/C e2e goldens
+data/cbam_official/   Commission template, filled examples, default values,
+                      legal/ (the five EUR-Lex acts + grep-able .txt)
+data/prices.yaml      dated certificate quarters + scrap recovery ranges
+data/ef/              grid_ef.yaml (2025 industrial 0.466 default) + MOENV snapshot
 data/mock_corpus/     generated synthetic corpus (gitignored)
 ```
 
-## Status vs Definition of Done (docs/11 §6)
+## Status vs Sprint-2 Definition of Done (docs/21 §7)
 
 | # | Item | Status |
 |---|------|--------|
-| 1 | Repo scaffolded, deps install cleanly | ✅ `uv sync` clean on Python 3.12 |
-| 2 | `cbam_template_map.yaml` + golden expected outputs | ✅ transcribed from the answer key |
-| 3 | Mock corpus (3 firms + ground truth) | ✅ 295 files, hand-computed SEE |
-| 4 | Ingestion runs Firm A end-to-end via qwen3-vl | ✅ 72/72 bill fields (100%), electricity rel err 2e-6 |
-| 5 | Rules engine reproduces screws & nuts SEE | ✅ rel 1e-9, pytest green |
-| 6 | Writer emits filled template with flags | ✅ + `.flags.json` sidecar |
-| 7 | README documents run commands | ✅ this file |
-
-Measured on the corpus (period 2026, cert price €75.28): firm_a — default
-precursor, SEE 2.92 tCO2e/t direct, buyer delta only €4/t (95% of the number IS
-the default → the flag tells the owner to request a mill EPD); firm_c — EPD
-supplied, SEE 2.18, delta **€60.31/t ≈ €108k/yr**. The adopted Taiwan CN 7318
-default (2.71 +10% → €224/t) is far below the older industry estimates of
-€450–750/t — use these regulation-derived numbers in any pitch.
+| 1 | All §1.1 defects closed; cement + firm_b/c goldens; ≥35 tests | ✅ 53 green |
+| 2 | `waste/` live: drift+alert, gross/net type, method note, LINE+API | ✅ |
+| 3 | Fix-list replaces costdelta; negative answer pinned | ✅ |
+| 4 | Benchmark module + public k≥5 schema + percentile screen | ✅ |
+| 5 | Simulator plays four sights in one session | ✅ (video to record) |
+| 6 | Engine consumes prices.yaml + grid_ef.yaml; refusal pinned; provenance everywhere | ✅ |
+| 6b | Legal-text gates recorded (docs/15 §8.1) | ✅ no estimation cap; CN 7221 hole confirmed in the OJ |
+| 7 | Kill-list grep clean; README current | ✅ this file |
 
 Known caveats: openpyxl drops some conditional-formatting extensions of the
 template on save (cosmetic); SEE cells in the output workbook are recomputed by
-Excel/LibreOffice on open (openpyxl does not evaluate formulas) — the engine's
-numbers, which the golden tests pin to the Commission's example, are in the
-`.flags.json` sidecar, and `scripts/verify_workbook_recalc.py` proves the
-workbook independently recomputes them. Sprint-1 status (bake-off, PP-OCRv4
-numeric backstop, Module 2 scheduler, Module 3 LINE surface):
-`docs/13_sprint1_report.md`.
+Excel/LibreOffice on open — the engine's numbers are in the `.flags.json`
+sidecar and `scripts/verify_workbook_recalc.py` proves the workbook reproduces
+them (re-verified after the 0.466 grid-EF migration). Sprint-1 history
+(bake-off, backstop, scheduler, LINE): `docs/13_sprint1_report.md`.
