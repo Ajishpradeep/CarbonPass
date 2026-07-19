@@ -122,6 +122,18 @@ def test_taiwan_has_no_stainless_rod_value_so_fallback_applies():
     assert fb_tw is False and dv_tw.direct == pytest.approx(2.297829146)
 
 
+def test_lookup_short_query_guard():
+    """Defect 10: short queries must never silently skip a precursor."""
+    # one unambiguous extension -> found (used to be a silent None)
+    dv = defaults.lookup("7223", "Taiwan")
+    assert dv is not None and dv.cn_code == "722300" and dv.direct is not None
+    # several extensions -> loud, with candidates
+    with pytest.raises(ValueError, match="ambiguous"):
+        defaults.lookup("7318", "Taiwan")
+    # no forward row, no extension carrying a value -> None (fallback path stays open)
+    assert defaults.lookup("7221", "Taiwan") is None
+
+
 def test_moenv_table_loaded_full():
     rows = ef.load_all()
     assert len(rows) > 1000, "coefficient snapshot truncated — rerun scripts/pull_moenv_ef.py"

@@ -110,10 +110,12 @@ def load_country(country: str = "Taiwan") -> list[DefaultValue]:
 def lookup(cn_code: str, country: str = "Taiwan") -> DefaultValue | None:
     """Longest-prefix match: '73181542' -> row '731815' if no exact row exists.
 
-    NOTE this matches a query against a *stored row code* (`cn.startswith(row.cn_code)`),
-    so a query SHORTER than the stored row returns None: `lookup("7223")` misses the row
-    "722300". Pass the code as the workbook spells it. See `resolve()` for the country
-    fallback a caller almost always also wants.
+    Guard (docs/15 §6 defect 10): a query SHORTER than the stored row used to return
+    None silently — `lookup("7223")` missed the row "722300" and the caller skipped a
+    precursor. Now, when the forward match fails, rows that EXTEND the query are
+    considered: exactly one -> use it; several -> raise (ambiguous short code, pass
+    more digits); none -> None, meaning genuinely unlisted, so `resolve()`'s country
+    fallback stays legitimate (IR 2025/2621 Annex I preamble).
     """
     cn = cn_code.replace(" ", "")
     rows = load_country(country)
@@ -122,7 +124,18 @@ def lookup(cn_code: str, country: str = "Taiwan") -> DefaultValue | None:
         if cn.startswith(r.cn_code) and r.direct is not None:
             if best is None or len(r.cn_code) > len(best.cn_code):
                 best = r
-    return best
+    if best is not None:
+        return best
+    # reverse match: stored rows that extend a short query
+    extending = [r for r in rows if r.cn_code.startswith(cn) and r.direct is not None]
+    if len(extending) == 1:
+        return extending[0]
+    if len(extending) > 1:
+        codes = sorted({r.cn_code for r in extending})
+        raise ValueError(
+            f"CN {cn_code!r} is ambiguous in the {country} sheet — {len(codes)} rows extend "
+            f"it ({', '.join(codes[:6])}{'…' if len(codes) > 6 else ''}); pass more digits")
+    return None
 
 
 def resolve(cn_code: str, country: str = "Taiwan") -> tuple[DefaultValue | None, bool]:
