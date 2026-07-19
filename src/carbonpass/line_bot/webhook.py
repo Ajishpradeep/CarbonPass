@@ -136,6 +136,45 @@ def _handle_schedule(session: Path) -> list[str]:
              f"（屬用電間接排放；不影響 CBAM 憑證金額）")]
 
 
+def _handle_waste(session: Path) -> list[str]:
+    """Sight ②: 「浪費」/「損耗」 — per-line waste map, gross AND net, + drift alerts."""
+    import json as _json
+
+    from carbonpass.ingestion.pipeline import ingest_firm
+    from carbonpass.waste import monthly_series, scan as waste_scan
+
+    n_inv = len(list((session / "invoices").glob("*.xml")))
+    if n_inv == 0 or not (session / "production_log.csv").exists():
+        return ["需要鋼材發票（XML）和生產日誌才能算損耗喔！請先完成資料同意設定 📄"]
+    activity = ingest_firm(session, use_vlm=False)   # invoices + log only — fast
+    act_path = session / "waste_activity.json"
+    act_path.write_text(_json.dumps(activity, ensure_ascii=False), encoding="utf-8")
+    r = waste_scan(str(act_path), str(session))
+    drift = monthly_series(str(session), activity)
+
+    lines = [f"🧮 物料損耗地圖（{r['period_year']} 年）"]
+    for l in r["lines"]:
+        tag = "⚠️不鏽鋼 " if l["stainless"] else ""
+        lines.append(f"{tag}{l['product']}：投入 {l['consumed_t']:,.0f} t → "
+                     f"產出 {l['produced_t']:,.0f} t → 邊角料 {l['scrap_t']:,.0f} t"
+                     f"（{l['loss_pct']:.1f}%）")
+        lines.append(f"　內含碳 {l['embodied_tco2e_per_yr_gross']:,.0f} tCO2e/年——買進但沒出貨")
+        if l["money_loss"]:
+            m = l["money_loss"]
+            lo, hi = m["net_of_resale_ntd_range"]
+            lines.append(f"　金額：進料價 NT${m['purchase_value_ntd']:,.0f}／"
+                         f"扣廢料轉售後淨損 NT${lo:,.0f}–{hi:,.0f}")
+    t = r["totals"]
+    lines.append(f"👉 5% 情境：每年少買 {t['scenario_embodied_reduction_tco2e_per_yr']:,.0f} tCO2e "
+                 f"的內含碳、NT${t['scenario_ntd_not_spent_per_yr']:,.0f} 不用花")
+    for dl in drift["lines"]:
+        for a in dl["alerts"]:
+            lines.append(a["message_zh"])
+    lines.append("註：質量以「裁切前」計（IR 2025/2547 附件三 F 節）；廢料是賣掉回爐的，"
+                 "看得見的是那一堆、看不見的是這些資訊。合成語料示意，試點實測後更新。")
+    return ["\n".join(lines)]
+
+
 def _handle_status(session: Path) -> list[str]:
     n_bills = len(list((session / "bills").glob("*")))
     n_inv = len(list((session / "invoices").glob("*")))
@@ -172,6 +211,8 @@ async def webhook(request: Request,
             text = msg.get("text", "").strip()
             if "產生報告" in text or "報告" in text:
                 out_texts = _handle_report(session)
+            elif "浪費" in text or "損耗" in text:
+                out_texts = _handle_waste(session)
             elif "排程" in text or "省電" in text:
                 out_texts = _handle_schedule(session)
             elif "狀態" in text:
@@ -179,7 +220,7 @@ async def webhook(request: Request,
             else:
                 out_texts = ["你好！我是 CarbonPass 🌱\n"
                              "拍電費單／發票的照片傳給我；輸入「產生報告」拿 CBAM 資料包，"
-                             "「排程」看省電建議，「狀態」看進度。"]
+                             "「浪費」看物料損耗地圖，「排程」看省電建議，「狀態」看進度。"]
 
         if out_texts:
             _reply_text(reply_token, out_texts)

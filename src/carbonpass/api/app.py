@@ -81,6 +81,27 @@ def costdelta(activity_json: str) -> dict:
     return cost_delta(load_activity(src))
 
 
+class WasteRequest(BaseModel):
+    activity_json: str
+    firm_dir: str
+
+
+@app.post("/waste")
+def waste(req: WasteRequest) -> dict:
+    """Sight ②: per-line waste map (gross AND net) + monthly drift series."""
+    from carbonpass.pack import load_activity
+    from carbonpass.waste import monthly_series, scan as waste_scan
+
+    src = Path(req.activity_json)
+    if not src.exists():
+        raise HTTPException(404, f"{src} not found")
+    if not Path(req.firm_dir).exists():
+        raise HTTPException(404, f"{req.firm_dir} not found")
+    r = waste_scan(str(src), req.firm_dir)
+    r["drift"] = monthly_series(req.firm_dir, load_activity(src))
+    return r
+
+
 @app.post("/schedule")
 def schedule(req: ScheduleRequest) -> dict:
     from carbonpass.scheduler.ledger import schedule_firm
