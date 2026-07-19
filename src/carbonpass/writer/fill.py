@@ -26,6 +26,46 @@ from carbonpass.config import BLANK_TEMPLATE
 from carbonpass.pack import load_activity, run_allocation, run_rules
 from carbonpass.rules.gridef import load_grid_ef
 
+# CN prefix -> the template's own aggregated-goods-category strings (dropdown list
+# CONST_LIST_Goods -> Translations!B; byte-exact — the workbook validates them).
+# Longest prefix wins; unmapped CN raises (docs/15 §6 defect 5).
+CN_GOODS_CATEGORY = {
+    "250700": "Calcined clays ",          # trailing space is the template's own
+    "252310": "Cement clinker",
+    "252330": "Aluminous cement",
+    "2523": "Cement",
+    "260112": "Sintered Ore",
+    "2804": "Hydrogen",
+    "2808": "Nitric acid",
+    "2814": "Ammonia",
+    "283421": "Mixed fertilisers",
+    "310210": "Urea",
+    "31": "Mixed fertilisers",
+    "7201": "Pig iron",
+    "7202": "Alloys (FeMn, FeCr, FeNi)",
+    "7203": "Direct reduced iron",
+    "7206": "Crude steel",
+    "7207": "Crude steel",
+    "72": "Iron or steel products",
+    "73": "Iron or steel products",
+    "7601": "Unwrought aluminium",
+    "76": "Aluminium products",
+}
+
+
+def goods_category(cn_code: str) -> str:
+    """Template goods-category label for a CN code (longest-prefix; loud on unmapped)."""
+    cn = str(cn_code).replace(" ", "")
+    best = ""
+    for prefix in CN_GOODS_CATEGORY:
+        if cn.startswith(prefix) and len(prefix) > len(best):
+            best = prefix
+    if not best:
+        raise KeyError(f"CN {cn_code!r}: no goods-category mapping — extend CN_GOODS_CATEGORY "
+                       f"with the template's dropdown string (CONST_LIST_Goods)")
+    return CN_GOODS_CATEGORY[best]
+
+
 # Row anchors from schema/cbam_template_map.yaml (keep in sync)
 D_PROC_HEADER = 11
 D_PROC_STRIDE = 65
@@ -91,19 +131,24 @@ def fill_template(activity: dict, out_path: str | Path) -> dict:
 
     # G62 ("Route") is a workbook formula: with no route boxes ticked in I..N it
     # evaluates to "All production routes" — write the category only.
-    f.put("A_InstData", f"E{GOODS_ROW0}", "Iron or steel products")
-
+    # Category strings come from the CN code via the template's own dropdown list
+    # (defect 5 closed: no hard-coded sector strings).
     production = agg["production"]
+    goods_cats = list(dict.fromkeys(goods_category(p["cn_code"]) for p in production))
+    for i, cat in enumerate(goods_cats):
+        f.put("A_InstData", f"E{GOODS_ROW0 + i}", cat)
+
     for i, p in enumerate(production):
         r = PROC_ROW0 + i
-        f.put("A_InstData", f"E{r}", "Iron or steel products")
+        f.put("A_InstData", f"E{r}", goods_category(p["cn_code"]))
         f.put("A_InstData", f"F{r}", "Only direct production")
         f.put("A_InstData", f"L{r}", p["process_name"])
 
     steel_inputs = agg.get("steel_inputs", [])
     for i, s in enumerate(steel_inputs):
         r = PREC_ROW0 + i
-        f.put("A_InstData", f"E{r}", "Iron or steel products")
+        f.put("A_InstData", f"E{r}",
+              goods_category(s.get("cn_code_precursor") or production[0]["cn_code"]))
         f.put("A_InstData", f"F{r}", s.get("country", "TW"))
         f.put("A_InstData", f"L{r}", s["name"])
 
