@@ -175,6 +175,30 @@ def _handle_waste(session: Path) -> list[str]:
     return ["\n".join(lines)]
 
 
+def _handle_benchmark(session: Path) -> list[str]:
+    """Sight ④: 「我正常嗎」 — percentile vs the (labelled) synthetic seed band."""
+    import json as _json
+
+    from carbonpass.benchmark import percentile_screen
+    from carbonpass.ingestion.pipeline import ingest_firm
+    from carbonpass.waste import scan as waste_scan
+
+    if not (session / "production_log.csv").exists():
+        return ["需要生產日誌和鋼材發票才能比較同業喔！請先完成資料同意設定 📄"]
+    activity = ingest_firm(session, use_vlm=False)
+    act_path = session / "waste_activity.json"
+    act_path.write_text(_json.dumps(activity, ensure_ascii=False), encoding="utf-8")
+    r = waste_scan(str(act_path), str(session))
+    if not r["lines"]:
+        return ["找不到可比較的產線資料。"]
+    # weight by consumed mass for the firm-level loss rate
+    tot_c = sum(l["consumed_t"] for l in r["lines"])
+    loss = sum(l["loss_pct"] * l["consumed_t"] for l in r["lines"]) / tot_c
+    screen = percentile_screen(loss)
+    return [screen["message_zh"] + "\n（k≥5 匿名底線：您的原始資料永遠不離開這台機器；"
+            "只有 n≥5 家的匿名彙總才可能對外發布。）"]
+
+
 def _handle_status(session: Path) -> list[str]:
     n_bills = len(list((session / "bills").glob("*")))
     n_inv = len(list((session / "invoices").glob("*")))
@@ -213,6 +237,8 @@ async def webhook(request: Request,
                 out_texts = _handle_report(session)
             elif "浪費" in text or "損耗" in text:
                 out_texts = _handle_waste(session)
+            elif "正常" in text or "同業" in text:
+                out_texts = _handle_benchmark(session)
             elif "排程" in text or "省電" in text:
                 out_texts = _handle_schedule(session)
             elif "狀態" in text:

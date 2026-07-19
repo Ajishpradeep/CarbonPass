@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://carbonpass.tw/schema/benchmark_row.schema.json",
+  "title": "CarbonPass anonymised sector benchmark row",
+  "description": "Open-data give-back spec for anonymised SME manufacturing benchmarks (first target: the Gangshan–Luzhu fastener cluster). A row is an AGGREGATE over at least 5 firms (k-anonymity floor) — publishers MUST NOT emit rows below that floor, and firm-level observations never leave the firm's device. Rows built from modelled/synthetic data MUST set synthetic=true and say so in provenance. Anyone (MOENV, TIFI, MIRDC, researchers) can publish compatible rows.",
+  "type": "object",
+  "required": ["sector", "cn_prefix", "period", "metric", "n_firms", "percentiles", "synthetic", "provenance"],
+  "properties": {
+    "sector": {
+      "type": "string",
+      "description": "Human-readable sector key, e.g. \"fasteners\"."
+    },
+    "cn_prefix": {
+      "type": "string",
+      "pattern": "^[0-9]{2,8}$",
+      "description": "CN (Combined Nomenclature) code prefix the row aggregates, e.g. \"7318\"."
+    },
+    "period": {
+      "type": "string",
+      "pattern": "^[0-9]{4}(H[12]|Q[1-4])?$",
+      "description": "Calendar aggregation period: \"2026\", \"2026H1\" or \"2026Q3\"."
+    },
+    "metric": {
+      "type": "string",
+      "enum": ["loss_pct", "kwh_per_tonne"],
+      "description": "loss_pct: whole-chain material loss, mass basis, percent of steel input (mass counted before cutting — scrap inside the declared SEE, IR 2025/2547 Annex III §F). kwh_per_tonne: process electricity per tonne of good shipped."
+    },
+    "n_firms": {
+      "type": "integer",
+      "minimum": 5,
+      "description": "Number of distinct firms aggregated. The schema itself enforces the k-anonymity floor: rows with n_firms < 5 are invalid."
+    },
+    "percentiles": {
+      "type": "object",
+      "required": ["p10", "p25", "p50", "p75", "p90"],
+      "properties": {
+        "p10": {"type": "number"},
+        "p25": {"type": "number"},
+        "p50": {"type": "number"},
+        "p75": {"type": "number"},
+        "p90": {"type": "number"}
+      },
+      "additionalProperties": false,
+      "description": "Distribution summary. No firm-identifying values (min/max are deliberately absent: in thin buckets they identify firms)."
+    },
+    "synthetic": {
+      "type": "boolean",
+      "description": "true while the row is modelled/seeded rather than measured. Consumers MUST display this label."
+    },
+    "provenance": {
+      "type": "string",
+      "description": "How the row was built and when — dated. E.g. \"pilot intake, 7 firms, 2026-10\" or \"synthetic seed — documented 5–15% band\"."
+    },
+    "notes": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  },
+  "additionalProperties": false
+}
