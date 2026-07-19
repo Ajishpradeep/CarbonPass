@@ -23,6 +23,7 @@ from __future__ import annotations
 import math
 from dataclasses import dataclass, field
 
+from carbonpass.config import indirect_in_certificate
 from carbonpass.rules import defaults
 
 
@@ -175,7 +176,10 @@ def compute_product_see(p: ProcessInput, period_year: int) -> ProductSEE:
                         _combine_rel(*dir_terms),
                         note="includes default-value precursor share" if share_default else ""),
         see_indirect=Line(see_ind, "actual", _combine_rel(*ind_terms),
-                          note="recorded; NOT in the CN 7318 certificate obligation"),
+                          note=("recorded; part of the certificate obligation for this sector"
+                                if indirect_in_certificate(p.cn_code) else
+                                f"recorded; NOT in the CN {p.cn_code.replace(' ', '')[:4]} "
+                                f"certificate obligation")),
         see_total=Line(see_dir + see_ind, "actual" if share_default == 0 else "mixed",
                        _combine_rel(*(dir_terms + ind_terms))),
         embedded_electricity_mwh_per_t=Line(emb_elec, "actual", _combine_rel(*elec_terms)),

@@ -1,0 +1,39 @@
+{
+  "_source": "data/cbam_official/template_examples/1 CBAM SEE V2.1_Example Cement_final.xlsx",
+  "_transcribed": "2026-07-20 — inputs from B_EmInst/D_Processes, expected from Summary_Products (cached formula values)",
+  "reporting_period": {"start": "2025-01-01", "end": "2025-12-31"},
+  "inputs": {
+    "source_streams": [
+      {"name": "Raw meal for clinker", "method": "Process emissions",
+       "activity_data_t": 1255000, "ef_tco2_per_t": 0.525, "biomass_pct": 0},
+      {"name": "Coal", "method": "Combustion",
+       "activity_data_t": 88000, "ncv_gj_per_t": 25, "ef_tco2_per_tj": 95, "biomass_pct": 0},
+      {"name": "Household waste", "method": "Combustion",
+       "activity_data_t": 25000, "ncv_gj_per_t": 20, "ef_tco2_per_tj": 83, "biomass_pct": 15},
+      {"name": "Heavy fuel oil", "method": "Combustion",
+       "activity_data_t": 43000, "ncv_gj_per_t": 40, "ef_tco2_per_tj": 78, "biomass_pct": 0}
+    ],
+    "production_processes": [
+      {"name": "Cement Bubble",
+       "production_level_t": 1321052.6315789474,
+       "direct_attributed_emissions_tco2e": 1037310,
+       "electricity_consumption_mwh": 193864.47368421053,
+       "electricity_ef_tco2_per_mwh": 0.833,
+       "electricity_ef_source": "D.4(b)"}
+    ],
+    "purchased_precursors": []
+  },
+  "expected": {
+    "products": [
+      {"product_name": "Cement Bubble", "cn_code": "25232900",
+       "see_direct": 0.7852147410358565,
+       "see_indirect": 0.12224275,
+       "see_total": 0.9074574910358565,
+       "embedded_electricity_mwh_per_t": 0.14675,
+       "share_default_values": 0.0}
+    ],
+    "installation_totals": {
+      "total_direct_emissions_tco2e": 1037310
+    }
+  }
+}
