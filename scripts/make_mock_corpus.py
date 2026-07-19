@@ -690,8 +690,10 @@ def make_firm(firm_key: str, firm: dict) -> dict:
             )
 
     gas_months = monthly_split(firm["natural_gas_knm3"] * 1000, rng)  # m3
+    gas_m3_emitted = 0
     for m in range(1, 13):
         m3 = round(gas_months[m - 1])
+        gas_m3_emitted += m3
         price = firm["gas_supplier"]["unit_price_ntd_per_m3"]
         emit_invoice(
             date(PERIOD_YEAR, m, 20), firm["gas_supplier"]["name"], firm["gas_supplier"]["ban"],
@@ -723,7 +725,20 @@ def make_firm(firm_key: str, firm: dict) -> dict:
     (fdir / "production_log.csv").write_text("\n".join(csv_lines) + "\n", encoding="utf-8")
     draw_production_log(fdir / "production_log.pdf", firm, monthly_prod)
 
-    gt = compute_ground_truth(firm)
+    # Ground truth from the rows the documents ACTUALLY carry, not the intended
+    # totals (docs/15 §6 defect 11): monthly production rounds to 0.1 t, gas m3 and
+    # bill kWh round to integers — the engine can only ever see the rounded sums,
+    # so the golden must be computed from them.
+    emitted = {
+        **firm,
+        "processes": [
+            {**p, "production_t": round(sum(r[p["cn_code"]] for r in rows), 6)}
+            for p in firm["processes"]
+        ],
+        "natural_gas_knm3": gas_m3_emitted / 1000.0,
+        "electricity_mwh": sum(b["kwh_total"] for b in bills_expected) / 1000.0,
+    }
+    gt = compute_ground_truth(emitted)
     gt["expected_extractions"] = {
         "bills": bills_expected,
         "invoices": invoices_expected,
