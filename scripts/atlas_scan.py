@@ -25,7 +25,8 @@ from pathlib import Path
 
 import openpyxl
 
-from carbonpass.config import CERTIFICATE_PRICE_EUR, DEFAULT_VALUES_XLSX
+from carbonpass.config import DEFAULT_VALUES_XLSX
+from carbonpass.prices import certificate_price
 from carbonpass.rules import defaults
 
 FALLBACK_SHEET = "_Other Countries and Territorie"
@@ -155,8 +156,8 @@ def identical_factory(year: int, price: float) -> dict:
 
 
 def main() -> int:
-    quarter = sorted(CERTIFICATE_PRICE_EUR)[-1]
-    price = CERTIFICATE_PRICE_EUR[quarter]
+    cert = certificate_price()
+    quarter, price = cert.quarter, cert.eur_per_tco2e
     year = 2026
 
     names = sheet_names()

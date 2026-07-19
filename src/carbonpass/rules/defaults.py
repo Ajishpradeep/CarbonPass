@@ -35,12 +35,45 @@ class DefaultValue:
     route: str
 
     def for_year(self, year: int) -> float | None:
-        """Marked-up default value applicable to a determination period."""
+        """Marked-up default value applicable to a determination period.
+
+        ⚠️ The workbook's marked-up column applies to the TOTAL (direct + indirect),
+        not to direct alone (docs/15 §2.7 / §6 defect 1). For iron & steel this is
+        harmless (indirect is N/A, so direct == total); for cement/fertiliser use
+        `for_year_direct()` / `for_year_indirect()` for the split figures.
+        """
         if year <= 2026:
             return self.y2026
         if year == 2027:
             return self.y2027
         return self.y2028
+
+    def derived_markup(self, year: int) -> float | None:
+        """Mark-up implied by the row's own marked-up column: for_year/total − 1.
+
+        Never hard-code 10/20/30: iron & steel carries 10/20/30% but fertilisers
+        carry a flat 1% in every year (docs/15 §6 defect 2). The row is the only
+        safe source.
+        """
+        mk = self.for_year(year)
+        base = self.total if self.total is not None else self.direct
+        if mk is None or not base:
+            return None
+        return mk / base - 1.0
+
+    def for_year_direct(self, year: int) -> float | None:
+        """DIRECT default with the period's row-derived mark-up applied."""
+        m = self.derived_markup(year)
+        if m is None or self.direct is None:
+            return None
+        return self.direct * (1.0 + m)
+
+    def for_year_indirect(self, year: int) -> float | None:
+        """INDIRECT default with the period's row-derived mark-up (None where N/A)."""
+        m = self.derived_markup(year)
+        if m is None or self.indirect is None:
+            return None
+        return self.indirect * (1.0 + m)
 
 
 def _num(v) -> float | None:

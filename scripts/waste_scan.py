@@ -29,8 +29,8 @@ import json
 import sys
 from pathlib import Path
 
-from carbonpass.config import CERTIFICATE_PRICE_EUR, markup_for_year
 from carbonpass.egui.parser import categorize_item, parse_mig_invoice
+from carbonpass.prices import certificate_price
 from carbonpass.ingestion.pipeline import _is_stainless, _precursor_cn
 from carbonpass.rules import defaults
 
@@ -76,9 +76,8 @@ def scan(activity_path: str, firm_dir: str) -> dict:
     country = act["installation"].get("country", "Taiwan")
     if country in ("TW",):
         country = "Taiwan"
-    quarter = sorted(CERTIFICATE_PRICE_EUR)[-1]
-    price_eur = CERTIFICATE_PRICE_EUR[quarter]
-    markup = markup_for_year(year)
+    cert = certificate_price()
+    quarter, price_eur = cert.quarter, cert.eur_per_tco2e
     prices = unit_prices_ntd_per_t(firm_dir)
 
     produced = {p["process_name"]: p["tonnes"]["value"] for p in act["aggregated"]["production"]}
@@ -99,10 +98,9 @@ def scan(activity_path: str, firm_dir: str) -> dict:
                 f"{name!r}: {country} has NO default for CN {cn_right} — Annex I fallback "
                 f"applies ({dv.direct} = the average of the ten highest-intensity exporters, "
                 f"Q&A p.37). Only Taiwan, Thailand and Vietnam have this hole.")
-        # Use the workbook's own marked-up column rather than applying the mark-up ourselves.
-        # Safe for steel specifically: indirect is N/A so direct == total, and the workbook's
-        # marked-up column is TOTAL-based (docs/15 §2.7 / §6 defect 1).
-        prec_see = dv.for_year(year) or (dv.direct * (1 + markup))
+        # Row-derived mark-up on the DIRECT figure (docs/15 §6 defects 1–2). For steel
+        # direct == total (indirect N/A) so this equals the workbook's marked-up column.
+        prec_see = dv.for_year_direct(year)
 
         if cn_used and cn_used != cn_right:
             wrong = defaults.lookup(cn_used, country)
@@ -154,7 +152,7 @@ def scan(activity_path: str, firm_dir: str) -> dict:
         "period_year": year,
         "certificate_quarter": quarter,
         "certificate_price_eur": price_eur,
-        "markup": markup,
+        "certificate_price_provenance": cert.provenance,
         "lines": lines,
         "totals": {
             "wasted_tco2e_per_yr": round(sum(l["wasted_tco2e_per_yr"] for l in lines), 1),

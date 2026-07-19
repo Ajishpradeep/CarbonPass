@@ -10,7 +10,8 @@ by tests/golden against the Commission's worked example).
 Every written value gets:
   * an Excel cell comment: source (actual/default) + relative uncertainty
   * a line in the sidecar flags JSON (machine-readable verifier checklist),
-    including needs-attention items (default-value usage, >20% default share).
+    including needs-attention items (e.g. default-value usage — recorded, never
+    capped: defaults are lawful without limit, docs/15 §8.1).
 """
 from __future__ import annotations
 

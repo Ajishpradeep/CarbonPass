@@ -1,34 +1,33 @@
 """Buyer cost-delta screen: what the EU importer pays WITH vs WITHOUT your data.
 
-The killer demo number (docs/09 §5.2): "with your data your buyer surrenders
-≈€150/t; without it €450-750/t and rising."
+Honest magnitude (docs/19): Taiwan's default for CN 7318 is mild — data is worth
+~€4/t to a carbon-steel maker, and we say so first. The delta is real money at
+volume, not a catastrophe averted.
 
-Certificate scope for CN 7318 (iron & steel) = DIRECT embedded emissions only —
-indirect is recorded in the template but not certificated (G7). Both sides of
-the comparison therefore use direct SEE:
-    actual : SEE_direct(engine)              × certificate price
-    default: default value (with year mark-up) × certificate price
+Certificate scope is sector-aware (config.indirect_in_certificate): for iron &
+steel (CN 7318) only DIRECT embedded emissions are certificated — indirect is
+recorded in the template but not charged (G7). Cement/fertiliser include
+indirect. Both sides of the comparison use the same scope:
+    actual : SEE_in_scope(engine)                 × certificate price
+    default: default value (row-derived mark-up)  × certificate price
 """
 from __future__ import annotations
 
 import json
 from pathlib import Path
 
-from carbonpass.config import CERTIFICATE_PRICE_EUR, markup_for_year
+from carbonpass.config import indirect_in_certificate
 from carbonpass.pack import load_activity, run_allocation, run_rules
+from carbonpass.prices import certificate_price
 from carbonpass.rules import defaults
-
-
-def latest_certificate_price() -> tuple[str, float]:
-    quarter = sorted(CERTIFICATE_PRICE_EUR)[-1]
-    return quarter, CERTIFICATE_PRICE_EUR[quarter]
 
 
 def cost_delta(activity: dict) -> dict:
     alloc = run_allocation(activity)
     results = run_rules(activity, alloc)
     period_year = activity["period"].get("year") or int(activity["period"]["start"][:4])
-    quarter, price = latest_certificate_price()
+    cert = certificate_price()
+    quarter, price = cert.quarter, cert.eur_per_tco2e
     country = "Taiwan" if activity["installation"]["country"] in ("Taiwan", "TW") else \
         activity["installation"]["country"]
 
@@ -36,9 +35,15 @@ def cost_delta(activity: dict) -> dict:
     products = []
     for r in results:
         dv = defaults.lookup(r.cn_code, country)
-        default_see = dv.for_year(period_year) if dv else None
+        in_scope_indirect = indirect_in_certificate(r.cn_code)
+        default_see = None
+        if dv:
+            default_see = (dv.for_year(period_year) if in_scope_indirect
+                           else dv.for_year_direct(period_year))
+        see_actual_in_scope = r.see_direct.value + (
+            r.see_indirect.value if in_scope_indirect else 0.0)
         tonnes = prod_by_name[r.product_name]["tonnes"]["value"]
-        actual_cost_t = r.see_direct.value * price
+        actual_cost_t = see_actual_in_scope * price
         default_cost_t = default_see * price if default_see else None
         products.append({
             "product_name": r.product_name,
@@ -47,8 +52,10 @@ def cost_delta(activity: dict) -> dict:
             "annual_production_t": tonnes,
             "see_direct_actual": round(r.see_direct.value, 6),
             "see_direct_uncertainty_rel": round(r.see_direct.uncertainty_rel, 4),
+            "indirect_in_certificate": in_scope_indirect,
+            "see_in_certificate_scope": round(see_actual_in_scope, 6),
             "default_value_marked_up": default_see,
-            "markup": markup_for_year(period_year),
+            "markup": dv.derived_markup(period_year) if dv else None,
             "certificate_price_eur": price,
             "certificate_quarter": quarter,
             "buyer_cost_actual_eur_per_t": round(actual_cost_t, 2),
@@ -59,8 +66,10 @@ def cost_delta(activity: dict) -> dict:
             "note_indirect": "indirect SEE recorded in the template but NOT certificated for CN 7318",
         })
     return {"products": products,
+            "certificate_price_provenance": cert.provenance,
             "disclaimer": "Prepared for verification — figures are not certified. "
-                          "Default comparison uses IR 2025/2621 values incl. the period mark-up."}
+                          "Default comparison uses IR 2025/2621 values incl. the period's "
+                          "row-derived mark-up."}
 
 
 def render_text(delta: dict) -> str:

@@ -31,13 +31,14 @@ OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "http://localhost:11434")
 OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "qwen3-vl:8b-instruct")
 
 # --- CBAM constants (sources: docs/10 §2, docs/00 §3) ------------------------
-# Default-value mark-up for iron & steel when actual data unavailable.
-DEFAULT_MARKUP_BY_YEAR = {2026: 0.10, 2027: 0.20, 2028: 0.30}  # 2028 onward
+# NOTE (Sprint 2): the default-value mark-up is NEVER a constant — it is derived
+# from the workbook row itself (`DefaultValue.derived_markup()`: steel 10/20/30%,
+# fertilisers flat 1% — docs/15 §6 defects 1–2). Certificate prices live in
+# data/prices.yaml (carbonpass.prices) and the grid EF in data/ef/grid_ef.yaml
+# (carbonpass.rules.gridef): dated config, never literals (docs/21 §2.8).
 
-# Official quarterly CBAM certificate prices, EUR/tCO2e (C13).
+# TEMPORARY — removed by the defect-3/defect-7 commits in this sprint:
 CERTIFICATE_PRICE_EUR = {"2026Q1": 75.36, "2026Q2": 75.28}
-
-# Taiwan grid electricity emission factor, kgCO2e/kWh (MOEA Energy Admin, 2024).
 GRID_EF_KGCO2_PER_KWH = 0.474
 
 # Indirect emissions are recorded in the template but are NOT part of the
@@ -46,9 +47,29 @@ GRID_EF_KGCO2_PER_KWH = 0.474
 # certificate cost for fasteners.
 INDIRECT_IN_CERTIFICATE_SECTORS = {"cement", "fertiliser"}
 
+# CN chapter/prefix -> sector key (longest prefix wins).
+CN_SECTOR_PREFIXES = {
+    "25": "cement",
+    "2808": "fertiliser", "2814": "fertiliser", "28342": "fertiliser",
+    "31": "fertiliser",
+    "2804": "hydrogen",
+    "72": "iron_steel", "73": "iron_steel",
+    "76": "aluminium",
+}
 
-def markup_for_year(year: int) -> float:
-    """Default-value mark-up for a determination period (10/20/30%, 2028 onward capped at 30%)."""
-    if year <= 2026:
-        return DEFAULT_MARKUP_BY_YEAR[2026]
-    return DEFAULT_MARKUP_BY_YEAR.get(year, DEFAULT_MARKUP_BY_YEAR[2028])
+
+def sector_for_cn(cn_code: str) -> str:
+    """Sector key for a CN code (longest-prefix match); raises on unmapped codes."""
+    cn = cn_code.replace(" ", "")
+    best = ""
+    for prefix, sector in CN_SECTOR_PREFIXES.items():
+        if cn.startswith(prefix) and len(prefix) > len(best):
+            best = prefix
+    if not best:
+        raise KeyError(f"CN {cn_code!r}: no CBAM sector mapping — extend CN_SECTOR_PREFIXES")
+    return CN_SECTOR_PREFIXES[best]
+
+
+def indirect_in_certificate(cn_code: str) -> bool:
+    """Whether indirect (electricity) emissions are inside the certificate obligation."""
+    return sector_for_cn(cn_code) in INDIRECT_IN_CERTIFICATE_SECTORS

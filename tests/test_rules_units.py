@@ -1,19 +1,54 @@
-"""Unit tests: default-value parsing, mark-up years, MOENV EF table, default fallback."""
+"""Unit tests: default-value parsing, row-derived mark-ups, MOENV EF table, fallback, prices."""
 from __future__ import annotations
 
 import pytest
 
-from carbonpass.config import markup_for_year
+from carbonpass import prices
 from carbonpass.ingestion import pipeline
 from carbonpass.rules import defaults, ef
 from carbonpass.rules.see import PrecursorInput, ProcessInput, compute_product_see
 
 
-def test_markup_years():
-    assert markup_for_year(2026) == 0.10
-    assert markup_for_year(2027) == 0.20
-    assert markup_for_year(2028) == 0.30
-    assert markup_for_year(2031) == 0.30  # 2028 onward
+def test_markup_derived_from_row_steel():
+    """Iron & steel rows carry 10/20/30% — derived, never hard-coded."""
+    dv = defaults.lookup("73181542", "Taiwan")
+    assert dv.derived_markup(2026) == pytest.approx(0.10)
+    assert dv.derived_markup(2027) == pytest.approx(0.20)
+    assert dv.derived_markup(2028) == pytest.approx(0.30)
+    assert dv.derived_markup(2031) == pytest.approx(0.30)  # 2028 onward
+
+
+def test_markup_derived_from_row_fertiliser_flat_1pct():
+    """Fertilisers carry a FLAT 1% in every year (docs/15 §6 defect 2) — the row knows."""
+    dv = defaults.lookup("28141000", "Vietnam")
+    assert dv.direct == pytest.approx(3.46)
+    assert dv.total == pytest.approx(3.61)
+    for year in (2026, 2027, 2028):
+        assert dv.derived_markup(year) == pytest.approx(0.01)
+    # marked-up column is TOTAL-based: 3.61 × 1.01 — NOT 3.46 × 1.10
+    assert dv.for_year(2026) == pytest.approx(3.6461)
+    assert dv.for_year_direct(2026) == pytest.approx(3.46 * 1.01)
+    assert dv.for_year_indirect(2026) == pytest.approx(0.15 * 1.01)
+
+
+def test_markup_basis_is_total_not_direct_cement():
+    """Defect 1's original repro: India clinker 1.551 = total 1.41 × 1.10;
+    the DIRECT marked-up figure is 1.35 × 1.10 = 1.485."""
+    dv = defaults.lookup("25231000", "India")
+    assert dv.for_year(2026) == pytest.approx(1.551)
+    assert dv.for_year_direct(2026) == pytest.approx(1.485)
+    assert dv.for_year_indirect(2026) == pytest.approx(0.07 * 1.10)
+
+
+def test_certificate_price_published_and_refusal():
+    """Engine quotes only published quarters; unpublished quarters raise (kill-list)."""
+    cert = prices.certificate_price()
+    assert cert.quarter == "2026Q2" and cert.eur_per_tco2e == pytest.approx(75.28)
+    assert cert.published and cert.provenance
+    q1 = prices.certificate_price("2026Q1")
+    assert q1.eur_per_tco2e == pytest.approx(75.36)
+    with pytest.raises(prices.UnpublishedQuarterError):
+        prices.certificate_price("2026Q3")   # lands 5 Oct 2026 — never quote before
 
 
 def test_taiwan_7318_default_row():
@@ -89,8 +124,9 @@ def test_default_precursor_fallback_and_flags():
     r = compute_product_see(p, period_year=2026)
     expected_prec = 2.297829146 * 1.10
     assert r.see_direct.value == pytest.approx(0.15 + 1.1 * expected_prec, rel=1e-9)
+    # share recorded, never capped: defaults are lawful without limit (docs/15 §8.1)
     assert r.share_default_values > 0.9
     assert any("default value used" in n for n in r.needs_attention)
-    assert any("20% ceiling" in n for n in r.needs_attention)
+    assert not any("ceiling" in n for n in r.needs_attention)
     line = r.precursor_lines[0]["see_direct_used"]
     assert line["source"] == "default"
