@@ -95,19 +95,21 @@ def lookup(cn_code: str, country: str = "Taiwan") -> DefaultValue | None:
 def resolve(cn_code: str, country: str = "Taiwan") -> tuple[DefaultValue | None, bool]:
     """Country value, else the 'Other countries and territories' table. -> (dv, used_fallback)
 
-    Implements the rule in the Commission's Q&A p.37 §4.25:
+    Implements the rule in IR (EU) 2025/2621 Annex I preamble (verified in the legal text,
+    docs/15 §8.1 Gate B; same rule in the Commission's Q&A p.37 §4.25):
 
-        "Where the CBAM good is not explicitly listed or where it is listed but the
-         relevant field shows a '-', CBAM declarants have to use the default values
-         from the table 'Other countries and territories' in Annex I."
+        "Where a country or territory is explicitly listed but no value is provided or the
+         relevant field shows '–', the default value for the respective good from the table
+         'Other countries and territories' needs to be selected."
 
     That table is "the average of the ten exporting countries with the highest emission
     intensities per good" (Q&A p.37 §4.26) — i.e. reaching it is expensive.
 
     This is not hypothetical for Taiwan: of the 33 countries with a full steel book, only
     Taiwan, Thailand and Vietnam have **no CN 7221 value at all** (stainless wire rod —
-    what a stainless fastener maker buys). Taiwan's 7221 row reads "see below" with nothing
-    below it. So every Taiwanese stainless fastener resolves here: 4.82 -> 5.302 in 2026.
+    what a stainless fastener maker buys). Taiwan's 7221 row in the published OJ reads
+    literally `see below ... #VALUE! #VALUE! #VALUE!` — a demonstrated publishing defect,
+    in law. So every Taiwanese stainless fastener resolves here: 4.82 -> 5.302 in 2026.
     """
     dv = lookup(cn_code, country)
     if dv is not None:

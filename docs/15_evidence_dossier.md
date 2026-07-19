@@ -782,8 +782,9 @@ re-publication, and they answer the application form's "suggestions for modifyin
    bare 4-digit row (China 5.59, India 6.48, Indonesia 8.69, Korea 3.65…). The benchmarks workbook
    *does* carry 7221 (`72210010`/`72210090`, colB 1.225), so the good exists in the regime — the
    defaults sheet just has a hole. Consequence: every Taiwanese stainless fastener resolves to the
-   Annex I fallback (4.82). **Most likely a publishing defect; verify against the legal text before
-   asserting intent** (§8.1).
+   Annex I fallback (4.82). **✅ Verified against the legal text (20 Jul, §8.1 Gate B): Taiwan's
+   row in the published OJ reads `see below … #VALUE! #VALUE! #VALUE!` — a demonstrated publishing
+   defect, in law.**
 7. **Mali hydrogen = 0.00** exactly, across all mark-up years, against a 10.82 median. Sentinel or gap —
    **not determinable from the file**.
 8. **Benchmarks version date 2025-02-06** — likely a typo for 2026.
@@ -799,9 +800,52 @@ re-publication, and they answer the application form's "suggestions for modifyin
 
 ## 8. Unresolved — must verify before the submission
 
-1. **🔴 IR 2025/2547 is not in this repo.** The estimation-cap question (kill-list #2) cannot be closed
-   without it. **Download and read Annex III.** It is free on EUR-Lex (`docs/10` §3, C3).
-2. **Record-retention period** — stated nowhere in our sources.
+### 8.1 Legal-text gate verdicts (20 Jul 2026 — read from the PDFs in `data/cbam_official/legal/`, grep-able `.txt` beside each)
+
+**Gate A — IR 2025/2547 estimation cap: ✅ RESOLVED — NO CAP EXISTS.** Kill-list #2 closed in the
+"no cap" direction. Evidence from the act itself (OJ L, 22.12.2025):
+- **Annex II A.1.2** (txt line 1187): *"An operator can either determine actual values of embedded
+  emissions, or make use of the default values made available in accordance with Annex IV of
+  Regulation (EU) 2023/956, **or combine actual values and default values**."* — no percentage limit.
+- **Recital 29**: flexibility to combine "actual values for the emissions of the production
+  processes … with the use of default values for other precursors" — again uncapped.
+- **Annex II A.3.1(a)**: where a monitoring method is technically not feasible or incurs
+  unreasonable costs, default values *"shall be used"* — defaults are the prescribed fallback, not
+  a rationed concession.
+- **Annex III** ("Rules for attributing emissions to goods", txt lines 2853–3446) contains **no
+  estimation/default/percentage language at all** — grep for `estimat|default value|per cent`
+  returns nothing inside it.
+- The only obligation attached to default-value use is **disclosure**: Annex IV (emissions-report
+  template) requires reporting *"the share of embedded emissions for which default values were
+  used"* (txt lines 3509, 3625). Reported, not capped.
+- **Bonus (the yield lever's legal basis, now in legal form):** Annex III §F "Monitoring of
+  activity levels" (txt line 2634): activity level = *"total mass of the goods **leaving** the
+  production process"*; *"Off-spec products, by-products, waste, and scrap … **shall not be
+  included** in the determination of the activity level."* — scrap reduces AL, so its embodied
+  emissions sit inside the declared SEE of shipped goods. Cite as **IR 2025/2547 Annex III §F**
+  (stronger than Q&A §4.11).
+- Also settles §8.2: **record retention = six years** (Annex II A.1.4-adjacent, txt line 1244:
+  "kept at the installation … for at least six years after the reporting period").
+
+**Gate B — IR 2025/2621 Annex I at CN 7221: ✅ CONFIRMED, and better than claimed.** The
+TW/TH/VN hole is in the **published legal text**, not just the workbook (OJ L, 31.12.2025):
+- **Taiwan** (txt line 56210): the CN 7221 row reads literally
+  `see below N/A see below #VALUE! #VALUE! #VALUE!` — **unresolved Excel error artifacts in the
+  Official Journal**. This upgrades "probably a publishing defect" (§7.6b) to **demonstrated**: a
+  formula referencing a value that was never filled in survived into law.
+- **Thailand** (txt ~57926) and **Vietnam** (txt ~69164): CN 7221 rows are all dashes `– – – – – –`.
+- **The fallback rule is legal text, not just Q&A** (txt line 118, Annex I preamble): *"Where a
+  country or territory is explicitly listed but no value is provided or the relevant field shows
+  '–', the default value for the respective good from the table 'Other countries and territories'
+  needs to be selected."* — confirms `defaults.resolve()` exactly.
+- **'Other countries and territories' CN 7221 = 4,820 → 5,302 (2026)** (txt line 71806) —
+  byte-matches the workbook and the engine's fallback. The "hole in the book" line and the
+  stainless-fallback logic **stand as written**; cite the `#VALUE!` rows as primary evidence.
+
+### 8.2 Still unresolved
+
+1. ~~IR 2025/2547 is not in this repo~~ **Resolved — see §8.1 Gate A.**
+2. ~~Record-retention period~~ **Resolved — six years** (IR 2025/2547 Annex II, see §8.1 Gate A).
 3. **Numeric materiality threshold** — absent. **Do not invent one.**
 4. **EC vs EA discrepancy** on BELAC/Belgium (§3.1) — flag whenever either list is cited.
 5. **"France warns of verifier shortage"** — blog → newsletter → unnamed authority. Chase the primary
