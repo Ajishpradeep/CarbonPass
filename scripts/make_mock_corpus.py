@@ -59,7 +59,9 @@ if ZH is None:  # CID fallback (Traditional Chinese)
     pdfmetrics.registerFont(UnicodeCIDFont("MSung-Light"))
     ZH = "MSung-Light"
 
-GRID_EF = 0.474          # kgCO2e/kWh, MOEA Energy Admin 2024
+from carbonpass.rules.gridef import load_grid_ef
+
+GRID_EF = load_grid_ef().kgco2e_per_kwh   # same source as the engine — GT cannot diverge
 NG_NCV_GJ_PER_KNM3 = 38.5  # GJ per 1000 Nm3 natural gas
 NG_EF_TCO2_PER_TJ = 56.1   # IPCC / template example value
 

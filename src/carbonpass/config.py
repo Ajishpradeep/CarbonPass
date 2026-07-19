@@ -37,10 +37,6 @@ OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "qwen3-vl:8b-instruct")
 # data/prices.yaml (carbonpass.prices) and the grid EF in data/ef/grid_ef.yaml
 # (carbonpass.rules.gridef): dated config, never literals (docs/21 §2.8).
 
-# TEMPORARY — removed by the defect-3/defect-7 commits in this sprint:
-CERTIFICATE_PRICE_EUR = {"2026Q1": 75.36, "2026Q2": 75.28}
-GRID_EF_KGCO2_PER_KWH = 0.474
-
 # Indirect emissions are recorded in the template but are NOT part of the
 # CN 7318 (iron & steel) certificate obligation — only cement & fertiliser
 # include indirect today (docs/10 §2A, G7). Do not fold indirect into the

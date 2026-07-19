@@ -10,7 +10,7 @@ from pathlib import Path
 
 from carbonpass.allocation.engine import (AllocationInput, AllocationResult,
                                           MachineSpec, ProcessSpec, allocate)
-from carbonpass.config import GRID_EF_KGCO2_PER_KWH
+from carbonpass.rules.gridef import load_grid_ef
 from carbonpass.rules.see import (PrecursorInput, ProcessInput, ProductSEE,
                                   compute_installation)
 
@@ -59,6 +59,15 @@ def run_rules(activity: dict, alloc: AllocationResult) -> list[ProductSEE]:
     period_year = activity["period"].get("year") or int(activity["period"]["start"][:4])
     alloc_by_name = {a.name: a for a in alloc.processes}
 
+    # The grid EF in data/ef/grid_ef.yaml is TAIWAN's — refuse to apply it elsewhere
+    # (docs/15 §6 defect 3: it used to be applied regardless of country).
+    inst_country = activity["installation"].get("country", "")
+    if inst_country not in ("TW", "Taiwan", "台灣", "臺灣"):
+        raise ValueError(
+            f"installation country {inst_country!r}: the configured grid EF is Taiwan's "
+            f"(data/ef/grid_ef.yaml) — a non-Taiwanese installation needs its own factor")
+    grid_ef = load_grid_ef()
+
     # Distribute purchased steel to processes: explicit onboarding consumption if
     # present, else all mass to the (single) matching process.
     process_inputs = []
@@ -96,8 +105,8 @@ def run_rules(activity: dict, alloc: AllocationResult) -> list[ProductSEE]:
             direct_unc_rel=a.direct_unc_rel,
             electricity_mwh=a.electricity_mwh,
             electricity_unc_rel=a.electricity_unc_rel,
-            electricity_ef=GRID_EF_KGCO2_PER_KWH,   # tCO2/MWh == kg/kWh
-            electricity_ef_source="D.4(b)",
+            electricity_ef=grid_ef.kgco2e_per_kwh,   # tCO2/MWh == kg/kWh
+            electricity_ef_source=f"D.4(b) — {grid_ef.provenance}",
             precursors=precursors,
         ))
     return compute_installation(process_inputs, period_year)

@@ -40,6 +40,24 @@ def test_markup_basis_is_total_not_direct_cement():
     assert dv.for_year_indirect(2026) == pytest.approx(0.07 * 1.10)
 
 
+def test_grid_ef_from_config_not_literal():
+    """Default = 2025 industrial 0.466 (MOEA 2 Jun 2026). 0.474 is the 2024 figure — history."""
+    from carbonpass import config
+    from carbonpass.rules.gridef import load_grid_ef
+
+    ef_ = load_grid_ef()
+    assert ef_.kgco2e_per_kwh == pytest.approx(0.466)
+    assert ef_.year == 2025 and ef_.series == "industrial"
+    assert "0.466" in ef_.provenance and "MOEA" in ef_.provenance
+    assert load_grid_ef(2024, "overall").kgco2e_per_kwh == pytest.approx(0.474)
+    with pytest.raises(KeyError):
+        load_grid_ef(2023)          # not in the file — no silent extrapolation
+    # the old hard-coded constants must stay dead (docs/21 §7.6)
+    assert not hasattr(config, "GRID_EF_KGCO2_PER_KWH")
+    assert not hasattr(config, "CERTIFICATE_PRICE_EUR")
+    assert not hasattr(config, "markup_for_year")
+
+
 def test_certificate_price_published_and_refusal():
     """Engine quotes only published quarters; unpublished quarters raise (kill-list)."""
     cert = prices.certificate_price()

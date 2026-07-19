@@ -22,8 +22,9 @@ from pathlib import Path
 import openpyxl
 from openpyxl.comments import Comment
 
-from carbonpass.config import BLANK_TEMPLATE, GRID_EF_KGCO2_PER_KWH
+from carbonpass.config import BLANK_TEMPLATE
 from carbonpass.pack import load_activity, run_allocation, run_rules
+from carbonpass.rules.gridef import load_grid_ef
 
 # Row anchors from schema/cbam_template_map.yaml (keep in sync)
 D_PROC_HEADER = 11
@@ -124,11 +125,12 @@ def fill_template(activity: dict, out_path: str | Path) -> dict:
     # --- C_Emissions&Energy ------------------------------------------------------
     f.put("C_Emissions&Energy", "J16", 0, note="no on-site electricity generation")
     f.put("C_Emissions&Energy", "K16", 0, note="no non-CBAM production")
-    total_indirect = sum(a.electricity_mwh for a in alloc.processes) * GRID_EF_KGCO2_PER_KWH
+    grid_ef = load_grid_ef()
+    total_indirect = sum(a.electricity_mwh for a in alloc.processes) * grid_ef.kgco2e_per_kwh
     elec = agg["electricity_mwh"]
     f.put("C_Emissions&Energy", "M26", round(total_indirect, 6),
           source=elec["source"], uncertainty_rel=elec.get("uncertainty_rel", 0.0),
-          note="Σ process electricity × grid EF 0.474 (MOEA 2024); manual entry per template")
+          note=f"Σ process electricity × {grid_ef.provenance}; manual entry per template")
     f.put("C_Emissions&Energy", "H40",
           "Mostly measurements & international standard factors for e.g. the emission factor")
     f.put("C_Emissions&Energy", "H42", "Four eyes principle")
@@ -150,8 +152,8 @@ def fill_template(activity: dict, out_path: str | Path) -> dict:
         f.put("D_Processes", f"L{h + 54}", round(a.electricity_mwh, 6),
               uncertainty_rel=a.electricity_unc_rel,
               note=f"allocation engine: electricity share {a.elec_share:.1%} by machine kW×h prior")
-        f.put("D_Processes", f"L{h + 55}", GRID_EF_KGCO2_PER_KWH,
-              note="Taiwan grid EF 2024, MOEA Energy Administration")
+        f.put("D_Processes", f"L{h + 55}", grid_ef.kgco2e_per_kwh,
+              note=grid_ef.provenance)
         f.put("D_Processes", f"L{h + 56}", "D.4(b)")
         f.put("D_Processes", f"L{h + 60}", 0, note="no electricity exported")
 
